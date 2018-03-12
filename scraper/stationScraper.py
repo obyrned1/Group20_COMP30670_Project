@@ -44,7 +44,7 @@ def getData():
         array = [standNum, standName, standAddress, standLat, standLng, standStatus, standAvailableBikes, standAvailableSpaces, standLastUpdate]
         #print(array)
         #https://gis.stackexchange.com/questions/72458/export-list-of-values-into-csv-or-txt-file
-        csvfile = "/home/obyrned1/compsci/comp30670/project/testData.csv"
+        csvfile = "C:\\Users\\Emmet\\Documents\\MScComputerScienceConversion\\SoftwareEngineering\\Assignments\\Group\\Group20_COMP30670_Project\\testData.csv"
         with open(csvfile, "a") as output:
             writer = csv.writer(output, lineterminator=',')
             for val in array:
