@@ -1,0 +1,23 @@
+<!-- dummyapp/app/templates/index.html -->
+<html>
+<head>
+<title>{{ title }} - microblog</title>
+</head>
+<body>
+<h1>Hello, {{ user }}!</h1>
+<div id="map" style="width:100%;height:400px;">
+<script>
+      function initMap() {
+        var dublin = {lat: 53.333424, lng: -6.329500};
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 12,
+          center: dublin
+        });
+      }
+</script>
+<script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBRUrdJ4Tz9rLrHrOkwJWpA9QSYNJbWQ0Q&callback=initMap">
+</script>
+</div>
+</body>
+</html>
