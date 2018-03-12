@@ -7,6 +7,7 @@ import urllib.request
 import json
 import datetime
 import csv
+import time
 
 
 def getData():
@@ -14,6 +15,7 @@ def getData():
     file = urllib.request.urlopen("https://api.jcdecaux.com/vls/v1/stations?contract=Dublin&apiKey=" + apiKey)
     # https://stackoverflow.com/questions/2835559/parsing-values-from-a-json-file
     standData = json.load(file)
+   
     #print(standData)
     #there are 100 stations as given by JCDecaux json
     for i in range(0,100,1):
@@ -49,4 +51,7 @@ def getData():
                 writer.writerow([val])  
             output.write("\n")
         
-getData()
+starttime=time.time()        
+while True:
+    getData()
+    time.sleep(60.0 - ((time.time() - starttime) % 60.0))
