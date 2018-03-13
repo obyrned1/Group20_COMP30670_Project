@@ -42,14 +42,14 @@ def standDataCsv(standData):
             output.write("\n")
         
 def connectDB():
-    ''' Create a connection to our AWS DB'''
+    ''' Create a connection to our AWS DB '''
     
     # http://docs.sqlalchemy.org/en/latest/core/engines.html
     engine = create_engine("mysql+mysqldb://'ScrumMasterG20':'ToxicBuzz18'@'dublin-bikes-data.csu7egshtvlv.us-west-2.rds.amazonaws.com':'3306'/'dublin-bikes-data'")
     return engine
 
 def createStaticTable(engine):
-    ''' Create a table to store the static data for each Dublin Bikes station'''
+    ''' Create a table to store the static data for each Dublin Bikes station '''
     
     # https://www.pythonsheets.com/notes/python-sqlalchemy.html
     engine.execute('CREATE TABLE IF NOT EXISTS "StaticData" ('
@@ -60,6 +60,23 @@ def createStaticTable(engine):
                    'longitude REAL,'
                    'stands Integer, '
                    'PRIMARY KEY (number));')
+
+def populateStaticTable(engine, standData):
+    ''' Populate the static table with static information for each bike station '''
+    ''' We will probably want to pass in the information for each station one at a time. '''
+
+    for i in range(0,100,1):
+    #there are 100 stations as given by JCDecaux json
+        standNum = standData[i]['number']
+        standName = standData[i]['name']
+        standAddress = standData[i]['address']
+        standLat = standData[i]['position']['lat']
+        standLng = standData[i]['position']['lng']
+        standTotalStands = standData[i]['bike_stands']
+    
+        engine.execute('INSERT INTO "StaticData" '
+                       '(number, name, address, latitude, longitude, stands) '
+                       'VALUES (str(standNum), str(standName), str(standAddress), str(standLat), str(standLng), str(standTotalStands)')
 
 if __name__ == '__main__':
     starttime=time.time()        
