@@ -10,15 +10,17 @@ import csv
 import time
 
 
-def getData():
+def getJsonData():
     apiKey = "c9ec7733fec3fc712434d79c0484b74847a1a37b"
     file = urllib.request.urlopen("https://api.jcdecaux.com/vls/v1/stations?contract=Dublin&apiKey=" + apiKey)
     # https://stackoverflow.com/questions/2835559/parsing-values-from-a-json-file
     standData = json.load(file)
-   
     #print(standData)
-    #there are 100 stations as given by JCDecaux json
+    return standData
+    
+def standDataCsv(standData):
     for i in range(0,100,1):
+    #there are 100 stations as given by JCDecaux json
         standNum = standData[i]['number']
         #print(standNum)
         standName = standData[i]['name']
@@ -44,14 +46,17 @@ def getData():
         array = [standNum, standName, standAddress, standLat, standLng, standStatus, standAvailableBikes, standAvailableSpaces, standLastUpdate]
         #print(array)
         #https://gis.stackexchange.com/questions/72458/export-list-of-values-into-csv-or-txt-file
-        csvfile = "C:\\Users\\Emmet\\Documents\\MScComputerScienceConversion\\SoftwareEngineering\\Assignments\\Group\\Group20_COMP30670_Project\\testData.csv"
+        csvfile = "/home/obyrned1/compsci/comp30670/testData.csv"
         with open(csvfile, "a") as output:
             writer = csv.writer(output, lineterminator=',')
             for val in array:
                 writer.writerow([val])  
             output.write("\n")
         
-starttime=time.time()        
-while True:
-    getData()
-    time.sleep(60.0 - ((time.time() - starttime) % 60.0))
+
+if __name__ == '__main__':
+    starttime=time.time()        
+    while True:
+        data = getJsonData()
+        standDataCsv(data)
+        time.sleep(60.0 - ((time.time() - starttime) % 60.0))
