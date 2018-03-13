@@ -25,29 +25,22 @@ def standDataCsv(standData):
     for i in range(0,100,1):
     #there are 100 stations as given by JCDecaux json
         standNum = standData[i]['number']
-        #print(standNum)
         standName = standData[i]['name']
-        #print(standName)
         standAddress = standData[i]['address']
-        #print(standAddress)
         standLat = standData[i]['position']['lat']
-        #print(standLat)
         standLng = standData[i]['position']['lng']
-        #print(standLng)
         standStatus = standData[i]['status']
-        #print(standStatus)
+        standTotalStands = standData[i]['bike_stands']
         standAvailableBikes = standData[i]['available_bikes']
-        #print(standAvailableBikes)
         standAvailableSpaces = standData[i]['available_bike_stands']
-        #print(standAvailableSpaces)
         dateTime = (standData[i]['last_update'] / 1000 )
         #divide by 1000 as the timestamp is in milliseconds
         # http://www.timestampconvert.com/?go2=true&offset=0&timestamp=1520870710000&Submit=++++++Convert+to+Date++++++
         # https://stackoverflow.com/questions/3682748/converting-unix-timestamp-string-to-readable-date-in-python
         standLastUpdate = datetime.datetime.fromtimestamp(dateTime).strftime('%Y-%m-%d %H:%M:%S')
-        #print(standLastUpdate)
-        array = [standNum, standName, standAddress, standLat, standLng, standStatus, standAvailableBikes, standAvailableSpaces, standLastUpdate]
-        #print(array)
+        
+        array = [standNum, standName, standAddress, standLat, standLng, standStatus, standTotalStands, standAvailableBikes, standAvailableSpaces, standLastUpdate]
+        
         #https://gis.stackexchange.com/questions/72458/export-list-of-values-into-csv-or-txt-file
         csvfile = "/home/obyrned1/compsci/comp30670/testData.csv"
         with open(csvfile, "a") as output:
@@ -63,7 +56,18 @@ def connectDB():
     engine = create_engine("mysql+mysqldb://'ScrumMasterG20':'ToxicBuzz18'@'dublin-bikes-data.csu7egshtvlv.us-west-2.rds.amazonaws.com':'3306'/'dublin-bikes-data'")
     return engine
 
-def createTable
+def createStaticTable(engine):
+    ''' Create a table to store the static data for each Dublin Bikes station'''
+    
+    # https://www.pythonsheets.com/notes/python-sqlalchemy.html
+    engine.execute('CREATE TABLE IF NOT EXISTS "StaticData" ('
+                   'number INTEGER NOT NULL,'
+                   'name VARCHAR,'
+                   'address VARCHAR,'
+                   'latitude REAL,'
+                   'longitude REAL,'
+                   'stands Integer, '
+                   'PRIMARY KEY (number));')
 
 if __name__ == '__main__':
     starttime=time.time()        
