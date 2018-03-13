@@ -74,4 +74,4 @@ if __name__ == '__main__':
     while True:
         data = getJsonData()
         standDataCsv(data)
-        time.sleep(300.0 - ((time.time() - starttime) % 300.0))
+        #time.sleep(300.0 - ((time.time() - starttime) % 300.0))
