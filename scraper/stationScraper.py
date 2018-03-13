@@ -17,8 +17,8 @@ def getJsonData():
     apiKey = "c9ec7733fec3fc712434d79c0484b74847a1a37b"
     file = urllib.request.urlopen("https://api.jcdecaux.com/vls/v1/stations?contract=Dublin&apiKey=" + apiKey)
     # https://stackoverflow.com/questions/2835559/parsing-values-from-a-json-file
-    standData = json.load(file)
-    #print(standData)
+    str_file = file.readall().decode('utf-8')
+    standData = json.loads(str_file)
     return standData
     
 def standDataCsv(standData):
@@ -39,7 +39,7 @@ def standDataCsv(standData):
         # https://stackoverflow.com/questions/3682748/converting-unix-timestamp-string-to-readable-date-in-python
         standLastUpdate = datetime.datetime.fromtimestamp(dateTime).strftime('%Y-%m-%d %H:%M:%S')
         
-        array = [str(standNum), str(standName), str(standAddress), str(standLat), str(standLng), str(standStatus), str(standTotalStands), str(standAvailableBikes), str(standAvailableSpaces), str(standLastUpdate)]
+        array = [standNum, standName, standAddress, standLat, standLng, standStatus, standTotalStands, standAvailableBikes, standAvailableSpaces, standLastUpdate]
         
         #https://gis.stackexchange.com/questions/72458/export-list-of-values-into-csv-or-txt-file
         csvfile = "/home/obyrned1/compsci/comp30670/testData.csv"
