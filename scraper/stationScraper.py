@@ -39,7 +39,7 @@ def standDataCsv(standData):
         # https://stackoverflow.com/questions/3682748/converting-unix-timestamp-string-to-readable-date-in-python
         standLastUpdate = datetime.datetime.fromtimestamp(dateTime).strftime('%Y-%m-%d %H:%M:%S')
         
-        array = [standNum, standName, standAddress, standLat, standLng, standStatus, standTotalStands, standAvailableBikes, standAvailableSpaces, standLastUpdate]
+        array = [str(standNum), str(standName), str(standAddress), str(standLat), str(standLng), str(standStatus), str(standTotalStands), str(standAvailableBikes), str(standAvailableSpaces), str(standLastUpdate)]
         
         #https://gis.stackexchange.com/questions/72458/export-list-of-values-into-csv-or-txt-file
         csvfile = "/home/obyrned1/compsci/comp30670/testData.csv"
