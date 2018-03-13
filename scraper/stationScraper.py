@@ -29,17 +29,9 @@ def standDataCsv(standData):
         standAddress = standData[i]['address']
         standLat = standData[i]['position']['lat']
         standLng = standData[i]['position']['lng']
-        standStatus = standData[i]['status']
         standTotalStands = standData[i]['bike_stands']
-        standAvailableBikes = standData[i]['available_bikes']
-        standAvailableSpaces = standData[i]['available_bike_stands']
-        dateTime = (standData[i]['last_update'] / 1000 )
-        #divide by 1000 as the timestamp is in milliseconds
-        # http://www.timestampconvert.com/?go2=true&offset=0&timestamp=1520870710000&Submit=++++++Convert+to+Date++++++
-        # https://stackoverflow.com/questions/3682748/converting-unix-timestamp-string-to-readable-date-in-python
-        standLastUpdate = datetime.datetime.fromtimestamp(dateTime).strftime('%Y-%m-%d %H:%M:%S')
         
-        array = [standNum, standName, standAddress, standLat, standLng, standStatus, standTotalStands, standAvailableBikes, standAvailableSpaces, standLastUpdate]
+        array = [standNum, standName, standAddress, standLat, standLng, standTotalStands]
         
         #https://gis.stackexchange.com/questions/72458/export-list-of-values-into-csv-or-txt-file
         csvfile = "/home/obyrned1/compsci/comp30670/testData.csv"
