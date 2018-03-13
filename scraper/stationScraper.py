@@ -17,7 +17,7 @@ def getJsonData():
     apiKey = "c9ec7733fec3fc712434d79c0484b74847a1a37b"
     file = urllib.request.urlopen("https://api.jcdecaux.com/vls/v1/stations?contract=Dublin&apiKey=" + apiKey)
     # https://stackoverflow.com/questions/2835559/parsing-values-from-a-json-file
-    str_file = file.readall().decode('utf-8')
+    str_file = file.read().decode('utf-8')
     standData = json.loads(str_file)
     return standData
     
