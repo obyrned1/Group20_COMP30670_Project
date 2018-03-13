@@ -8,6 +8,9 @@ import json
 import datetime
 import csv
 import time
+import sqlalchemy
+from sqlalchemy import create_engine
+from sqlalchemy.dialects.mysql import mysqldb
 
 
 def getJsonData():
@@ -53,6 +56,14 @@ def standDataCsv(standData):
                 writer.writerow([val])  
             output.write("\n")
         
+def connectDB():
+    ''' Create a connection to our AWS DB'''
+    
+    # http://docs.sqlalchemy.org/en/latest/core/engines.html
+    engine = create_engine("mysql+mysqldb://'ScrumMasterG20':'ToxicBuzz18'@'dublin-bikes-data.csu7egshtvlv.us-west-2.rds.amazonaws.com':'3306'/'dublin-bikes-data'")
+    return engine
+
+def createTable
 
 if __name__ == '__main__':
     starttime=time.time()        
