@@ -73,6 +73,6 @@ def populateStaticTable(standData):
     
 if __name__ == '__main__':
     engine = connectDB()
-    #createStaticTable() 
+    createStaticTable() 
     standData = getJsonData()
     populateStaticTable(standData)
