@@ -20,26 +20,6 @@ def getJsonData():
     str_file = file.read().decode('utf-8')
     standData = json.loads(str_file)
     return standData
-    
-def standDataCsv(standData):
-    for i in range(0,100,1):
-    #there are 100 stations as given by JCDecaux json
-        standNum = standData[i]['number']
-        standName = standData[i]['name']
-        standAddress = standData[i]['address']
-        standLat = standData[i]['position']['lat']
-        standLng = standData[i]['position']['lng']
-        standTotalStands = standData[i]['bike_stands']
-        
-        array = [standNum, standName, standAddress, standLat, standLng, standTotalStands]
-        
-        #https://gis.stackexchange.com/questions/72458/export-list-of-values-into-csv-or-txt-file
-        csvfile = "/home/obyrned1/compsci/comp30670/testData.csv"
-        with open(csvfile, "a") as output:
-            writer = csv.writer(output, lineterminator=',')
-            for val in array:
-                writer.writerow([val])  
-            output.write("\n")
         
 def connectDB():
     ''' Create a connection to our AWS DB '''
@@ -58,17 +38,7 @@ def createStaticTable():
     
     # https://www.pythonsheets.com/notes/python-sqlalchemy.html
     # https://stackoverflow.com/questions/19479853/why-do-we-need-to-use-3-quotes-while-executing-sql-query-from-python-cursor
-    sqlcreate = """
-    CREATE TABLE StaticData (
-    number INTEGER NOT NULL,
-    name VARCHAR (128),
-    address VARCHAR (128),
-    latitude DOUBLE,
-    longitude DOUBLE,
-    stands INTEGER,
-    PRIMARY KEY (number)
-    )
-    """
+    sqlcreate = "CREATE TABLE StaticData (number INTEGER NOT NULL, name VARCHAR (128), address VARCHAR (128), latitude DOUBLE, longitude DOUBLE, stands INTEGER, PRIMARY KEY (number))"
     
     try:
         engine.execute(sqlcreate)
@@ -77,7 +47,7 @@ def createStaticTable():
         print("Error2:", type(e))
         print(e)
 
-def populateStaticTable(engine, standData):
+def populateStaticTable(standData):
     ''' Populate the static table with static information for each bike station '''
     ''' We will probably want to pass in the information for each station one at a time. '''
 
@@ -85,17 +55,24 @@ def populateStaticTable(engine, standData):
     #there are 100 stations as given by JCDecaux json
         standNum = standData[i]['number']
         standName = standData[i]['name']
+        standName = standName.replace("'","")
         standAddress = standData[i]['address']
+        standAddress = standAddress.replace("'","")
         standLat = standData[i]['position']['lat']
         standLng = standData[i]['position']['lng']
         standTotalStands = standData[i]['bike_stands']
+        
+        sqlpopulate = "INSERT INTO StaticData VALUES ('" + str(standNum) + "','" + str(standName) + "','" + str(standAddress) + "','" + str(standLat) + "','" + str(standLng) + "','" + str(standTotalStands) + "');"
     
-        sqlpopulate = ('INSERT INTO "StaticData" '
-                '(number, name, address, latitude, longitude, stands) '
-                'VALUES (str(standNum), str(standName), str(standAddress), str(standLat), str(standLng), str(standTotalStands)')
-    
-        engine.execute(sqlpopulate)
+        try:
+            engine.execute(sqlpopulate)
 
+        except Exception as e:
+            print("Error3:", type(e))
+            print(e)
+    
 if __name__ == '__main__':
     engine = connectDB()
-    createStaticTable()
+    #createStaticTable() 
+    standData = getJsonData()
+    populateStaticTable(standData)
