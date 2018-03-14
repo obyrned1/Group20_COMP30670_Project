@@ -44,22 +44,38 @@ def standDataCsv(standData):
 def connectDB():
     ''' Create a connection to our AWS DB '''
     
-    # http://docs.sqlalchemy.org/en/latest/core/engines.html
-    engine = create_engine("mysql+mysqldb://'ScrumMasterG20':'ToxicBuzz18'@'dublin-bikes-data.csu7egshtvlv.us-west-2.rds.amazonaws.com':'3306'/'dublin-bikes-data'")
-    return engine
+    try:
+        # http://docs.sqlalchemy.org/en/latest/core/engines.html
+        engine = create_engine("mysql+mysqldb://ScrumMasterG20:Toxicbuzz18@dublin-bikes-data.csu7egshtvlv.us-west-2.rds.amazonaws.com:3306/DublinBikesData", echo = True)
+        return engine
 
-def createStaticTable(engine):
+    except Exception as e:
+        print("Error:", type(e))
+        print(e)
+
+def createStaticTable():
     ''' Create a table to store the static data for each Dublin Bikes station '''
     
     # https://www.pythonsheets.com/notes/python-sqlalchemy.html
-    engine.execute('CREATE TABLE IF NOT EXISTS "StaticData" ('
-                   'number INTEGER NOT NULL,'
-                   'name VARCHAR,'
-                   'address VARCHAR,'
-                   'latitude REAL,'
-                   'longitude REAL,'
-                   'stands Integer, '
-                   'PRIMARY KEY (number));')
+    # https://stackoverflow.com/questions/19479853/why-do-we-need-to-use-3-quotes-while-executing-sql-query-from-python-cursor
+    sqlcreate = """
+    CREATE TABLE StaticData (
+    number INTEGER NOT NULL,
+    name VARCHAR (128),
+    address VARCHAR (128),
+    latitude DOUBLE,
+    longitude DOUBLE,
+    stands INTEGER,
+    PRIMARY KEY (number)
+    )
+    """
+    
+    try:
+        engine.execute(sqlcreate)
+        
+    except Exception as e:
+        print("Error2:", type(e))
+        print(e)
 
 def populateStaticTable(engine, standData):
     ''' Populate the static table with static information for each bike station '''
@@ -74,13 +90,12 @@ def populateStaticTable(engine, standData):
         standLng = standData[i]['position']['lng']
         standTotalStands = standData[i]['bike_stands']
     
-        engine.execute('INSERT INTO "StaticData" '
-                       '(number, name, address, latitude, longitude, stands) '
-                       'VALUES (str(standNum), str(standName), str(standAddress), str(standLat), str(standLng), str(standTotalStands)')
+        sqlpopulate = ('INSERT INTO "StaticData" '
+                '(number, name, address, latitude, longitude, stands) '
+                'VALUES (str(standNum), str(standName), str(standAddress), str(standLat), str(standLng), str(standTotalStands)')
+    
+        engine.execute(sqlpopulate)
 
 if __name__ == '__main__':
-    starttime=time.time()        
-    while True:
-        data = getJsonData()
-        standDataCsv(data)
-        #time.sleep(300.0 - ((time.time() - starttime) % 300.0))
+    engine = connectDB()
+    createStaticTable()
