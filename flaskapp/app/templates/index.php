@@ -1,11 +1,11 @@
 <?php
-    $host = 'dublin-bikes-data.csu7egshtvlv.us-west-2.rds.amazonaws.com:3306';
+    $host = 'dublin-bikes-data.csu7egshtvlv.us-west-2.rds.amazonaws.com';
     $dbname = 'DublinBikesData';
     $username = 'ScrumMasterG20';
     $password = 'Toxicbuzz18';
 
     try {
-        $conn = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $username, $password);
+        $conn = new PDO("mysql:host=$host;dbname=$dbname; port=3306; charset=utf8", $username, $password);
     $sql = 'SELECT *
             FROM StaticData
             ORDER BY number';
@@ -55,7 +55,21 @@
           });
         marker.addListener('click', function() {
             infowindow.open(map, marker);
-        });    
+        });     
+    }
+    stands = [ 
+
+    ];
+    function setMarkers(map) {
+        for (var i = 0; i < stands.length; i++) {
+            var stand = stands[i];
+            var marker = new google.maps.Marker({
+            position: {lat: stand[5], lng: stand[6]},
+            map: map,
+            title: stand[1],
+            zIndex: stand[0]
+              });
+      }
     }
 
 </script>
@@ -63,30 +77,29 @@
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBRUrdJ4Tz9rLrHrOkwJWpA9QSYNJbWQ0Q&callback=initMap">
 </script>
 </div>
+<div>
 <table>
                  <thead>
                      <tr>
-                         <th>Customer Name</th>
+                         <th>Number</th>
+                         <th>Name</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php while ($r = $q->fetch()): ?>
                     <tr><?php 
-                            
-                            $text = "<tr> Number :<td> " . addslashes($r['number']) . "</td></tr>";?>
+                            $text = "<tr> Number :<td> " . addslashes($r['number']) . "</td><td> Name : " . addslashes($r['name']) . "</tr>";?>
                         <td><?php echo htmlspecialchars($r['number'])?></td>
-                        <td><?php echo "<button onclick=\"myFunction('$text')\">Show details</button>";
+                        <td><?php echo htmlspecialchars($r['name'])?></td>
+                        <
                             
                             ?></td>
                     </tr>
                     <?php endwhile; ?>
                 </tbody>
             </table>
-    <script>
-            function myFunction(msg) {
-                document.getElementById("details").innerHTML = msg;
-            }
-        </script>
+    <table ><tr id='details'></tr></table>
+</div>
 </body>
 </html>
 <!-- var 
@@ -102,7 +115,7 @@ function setMarkers(map) {
     for (var i = 0; i < stands.length; i++) {
         var stand = stands[i];
         var marker = new google.maps.Marker({
-        position: {lat: stand[4], lng: stand[5]},
+        position: {lat: stand[5], lng: stand[6]},
         map: map,
         title: stand[1],
         zIndex: stand[0]
