@@ -55,23 +55,33 @@
           });
         marker.addListener('click', function() {
             infowindow.open(map, marker);
-        });     
+        });    
     }
-    stands = [ 
-
-    ];
-    function setMarkers(map) {
-        for (var i = 0; i < stands.length; i++) {
-            var stand = stands[i];
-            var marker = new google.maps.Marker({
-            position: {lat: stand[5], lng: stand[6]},
-            map: map,
-            title: stand[1],
-            zIndex: stand[0]
-              });
-      }
-    }
-
+    
+        function setMarkers(map) {
+            <?php while ($r = $q->fetch()): ?>
+            { 
+            $lat = array($r['lat']);
+            $long = arrray($r['lng']);
+            $name = array($r['name']);
+            $number = array($r['number']);
+            }
+                
+            
+            for (var i = 0; i < 100; i++){
+                var marker2 = new google.maps.Marker({
+                    position: {lat: ($lat[i]), lng: ($long[i]) },
+                    map: map,
+                    title: ($name[i]),
+                    zIndex: ($number[i])
+                  });
+            }
+                
+            <?php endwhile; ?>
+            
+        }
+            
+    
 </script>
 <script async defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBRUrdJ4Tz9rLrHrOkwJWpA9QSYNJbWQ0Q&callback=initMap">
@@ -91,9 +101,6 @@
                             $text = "<tr> Number :<td> " . addslashes($r['number']) . "</td><td> Name : " . addslashes($r['name']) . "</tr>";?>
                         <td><?php echo htmlspecialchars($r['number'])?></td>
                         <td><?php echo htmlspecialchars($r['name'])?></td>
-                        <
-                            
-                            ?></td>
                     </tr>
                     <?php endwhile; ?>
                 </tbody>
@@ -102,23 +109,3 @@
 </div>
 </body>
 </html>
-<!-- var 
-
-https://developers.google.com/maps/documentation/javascript/examples/icon-complex
-
-basic code to set up markers at each bike station
-
-stands = [ 
-
-    ];
-function setMarkers(map) {
-    for (var i = 0; i < stands.length; i++) {
-        var stand = stands[i];
-        var marker = new google.maps.Marker({
-        position: {lat: stand[5], lng: stand[6]},
-        map: map,
-        title: stand[1],
-        zIndex: stand[0]
-          });
-      }
- -->
