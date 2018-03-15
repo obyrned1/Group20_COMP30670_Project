@@ -90,10 +90,10 @@ def backupDataCsv(standData):
             output.write("\n")
             
 if __name__ == '__main__':
+    engine = connectDB()
     createDynamicTable()
     starttime=time.time()        
     while True:
-        engine = connectDB()
         standData = getJsonData()
         populateDynamicTable(standData)
         backupDataCsv(standData)
