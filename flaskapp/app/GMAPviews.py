@@ -5,14 +5,15 @@ from app import app
 import sqlalchemy
 from sqlalchemy import create_engine
 from sqlalchemy.sql import select
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy.dialects.mysql import mysqldb
+from flask import jsonify
 
-@app.route('/')
-def index():
+
+
+
+'''def index():
         returnDict = {}
         returnDict['Title'] = 'Dublin Bike Planner'
-        return render_template("index.html", **returnDict)
+        return render_template("index.html", **returnDict)'''
 
 def connectDB():
     ''' Create a connection to our AWS DB '''
@@ -25,25 +26,16 @@ def connectDB():
     except Exception as e:
         print("Error:", type(e))
         print(e)
-        
-'''
-Session = sessionmaker()
-Session.configure(bind=engine)
-session = Session()
-session.add_all(StaticData)
-session.commit()
 
-print ("----> order_by(id):")
-query = session.query(User).order_by(User.id)
-for row in query.all():
-    print (row.name, row.fullname, row.birth)
-'''
-        
-def getStationData():
-    '''Get data for the map markers'''
-    result = engine.execute('SELECT * FROM "StaticData"')
-    for r in result:
-        print (r)
-            
+def getData():
+    sql = "SELECT * FROM StaticData;"
+    rows = engine.execute(sql).fetchall()
+    print("Found {} stations", len(rows))
+    stations = jsonify(stations=[dict(row) for row in rows])
+    engine.dispose()
+    return stations
+
+     
 if __name__ == '__main__':
     engine = connectDB()
+    getData()
