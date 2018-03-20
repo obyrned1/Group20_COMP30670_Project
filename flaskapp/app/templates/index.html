@@ -1,28 +1,7 @@
-<?php
-    $host = 'dublin-bikes-data.csu7egshtvlv.us-west-2.rds.amazonaws.com:3306';
-    $dbname = 'DublinBikesData';
-    $username = 'ScrumMasterG20';
-    $password = 'Toxicbuzz18';
-
-    try {
-        $conn = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $username, $password);
-    $sql = 'SELECT *
-            FROM StaticData
-            ORDER BY number';
-    $q = $conn->query($sql);
-    
-    $q->setFetchMode(PDO::FETCH_ASSOC);
- 
-    } 
-    catch (PDOException $pe) {
-        die("Ooops! Something went wrong! Could not connect to the database $dbname :" . $pe->getMessage());
-    }
-?>
-       
 <!-- dummyapp/app/templates/index.html -->
 <html>
 <head>
-<title>{{ title }}</title>
+<title>{{ Title }}</title>
 </head>
 <body>
 <h1>DUBLIN BIKES</h1>
@@ -35,11 +14,11 @@
           zoom: 14,
           center: dublin
         });
-        var contentString = '<div id="content">'+
-            '<div id="siteNotice">'+
+        var contentString = '<div>'+
+            '<div>'+
             '</div>'+
-            '<h1 id="firstHeading" class="firstHeading">Trinity College Dublin</h1>'+
-            '<div id="bodyContent">'+
+            '<h1>Trinity College Dublin</h1>'+
+            '<div>'+
             '<p><b>TRINITY</b> A great bunch of lads.</p>'+
             '</div>'+
             '</div>';
@@ -56,56 +35,28 @@
         marker.addListener('click', function() {
             infowindow.open(map, marker);
         });    
-    }
+        }
+    
+    /*var stations = JSON.parse('{{ Stations | tojson | safe }}');
+    function setMarkers(map) {
+        for (var i = 0; i < stations.length; i++) {
+            var stand = stations[i];
+            var marker = new google.maps.Marker({
+                position: {lat: stand[3], lng: stand[4]},
+                draggable: false,
+                animation: google.maps.Animation.DROP,
+                map: map,
+                title: stand[1],
+                zIndex: stand[0]
+          });
+      }
+    }*/
 
 </script>
 <script async defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBRUrdJ4Tz9rLrHrOkwJWpA9QSYNJbWQ0Q&callback=initMap">
 </script>
-</div>
-<table>
-                 <thead>
-                     <tr>
-                         <th>Customer Name</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php while ($r = $q->fetch()): ?>
-                    <tr><?php 
-                            
-                            $text = "<tr> Number :<td> " . addslashes($r['number']) . "</td></tr>";?>
-                        <td><?php echo htmlspecialchars($r['number'])?></td>
-                        <td><?php echo "<button onclick=\"myFunction('$text')\">Show details</button>";
-                            
-                            ?></td>
-                    </tr>
-                    <?php endwhile; ?>
-                </tbody>
-            </table>
-    <script>
-            function myFunction(msg) {
-                document.getElementById("details").innerHTML = msg;
-            }
-        </script>
+    </div>
 </body>
 </html>
-<!-- var 
 
-https://developers.google.com/maps/documentation/javascript/examples/icon-complex
-
-basic code to set up markers at each bike station
-
-stands = [ 
-
-    ];
-function setMarkers(map) {
-    for (var i = 0; i < stands.length; i++) {
-        var stand = stands[i];
-        var marker = new google.maps.Marker({
-        position: {lat: stand[4], lng: stand[5]},
-        map: map,
-        title: stand[1],
-        zIndex: stand[0]
-          });
-      }
- -->
