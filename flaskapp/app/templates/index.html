@@ -36,20 +36,19 @@
             infowindow.open(map, marker);
         });
         
-        /*var stations = {{ stations }};
+        var stations = {{ stations }};
         var parsedStations = JSON.parse(stations);
         document.getElementById("demo").innerHTML = parsedStations;
         for (var i = 0; i < parsedStations.length; i++) {
-            var stand = parsedStations[i];
             var markers = new google.maps.Marker({
-                position: {lat: stand[3], lng: stand[4]},
+                position: {lat: stations[i].latitude, lng: stations[i].longitude},
                 draggable: false,
                 animation: google.maps.Animation.DROP,
                 map: map,
-                title: stand[1],
-                zIndex: stand[0]
+                title: stations[i].name,
+                zIndex: stations[i].number
           });
-      }*/
+      }
     }
 </script>
 <script async defer

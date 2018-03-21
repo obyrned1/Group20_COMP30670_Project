@@ -34,6 +34,5 @@ def getStationData():
     rows = conn.execute("SELECT * FROM DublinBikesData.StaticData")
     for row in rows:
         stations.append(dict(row))
-    conn.close()
     return jsonify(stations=stations)
 
