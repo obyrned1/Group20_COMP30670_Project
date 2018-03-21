@@ -9,11 +9,11 @@
 <script>
     function initMap() {
         var dublin = {lat: 53.3454403, lng: -6.2714263,};
-        var myLatLng = {lat: 53.344407, lng: -6.257285,};
         var map = new  google.maps.Map(document.getElementById('map'), {
           zoom: 14,
           center: dublin
         });
+        var myLatLng = {lat: 53.344407, lng: -6.257285,};
         var contentString = '<div>'+
             '<div>'+
             '</div>'+
@@ -34,14 +34,14 @@
           });
         marker.addListener('click', function() {
             infowindow.open(map, marker);
-        });    
-        }
-    
-    /*var stations = JSON.parse('{{ Stations | tojson | safe }}');
-    function setMarkers(map) {
-        for (var i = 0; i < stations.length; i++) {
-            var stand = stations[i];
-            var marker = new google.maps.Marker({
+        });
+        
+        /*var stations = {{ stations }};
+        var parsedStations = JSON.parse(stations);
+        document.getElementById("demo").innerHTML = parsedStations;
+        for (var i = 0; i < parsedStations.length; i++) {
+            var stand = parsedStations[i];
+            var markers = new google.maps.Marker({
                 position: {lat: stand[3], lng: stand[4]},
                 draggable: false,
                 animation: google.maps.Animation.DROP,
@@ -49,9 +49,8 @@
                 title: stand[1],
                 zIndex: stand[0]
           });
-      }
-    }*/
-
+      }*/
+    }
 </script>
 <script async defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBRUrdJ4Tz9rLrHrOkwJWpA9QSYNJbWQ0Q&callback=initMap">
@@ -59,4 +58,6 @@
     </div>
 </body>
 </html>
+
+
 
