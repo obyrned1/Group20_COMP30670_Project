@@ -22,7 +22,7 @@ def connectDB():
 def index():
     returnDict = {}
     returnDict['Title'] = 'Dublin Bike Planner'
-    #returnDict['Stations'] = getStationData()
+    returnDict['Stations'] = getStationData()
     return render_template("index.html", **returnDict)
     
 
