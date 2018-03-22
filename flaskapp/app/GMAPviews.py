@@ -32,7 +32,7 @@ def getStationData():
     stations = []
     rows = conn.execute("SELECT * FROM DublinBikesData.StaticData")
     for row in rows:
-        stations.append(row)
-    return  stations #jsonify(stations=stations)
+        stations.append(dict(row))
+    return  stations#jsonify(stations=stations)
 
 
