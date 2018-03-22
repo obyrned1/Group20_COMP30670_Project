@@ -5,7 +5,31 @@
 </head>
 <body>
 <h1>DUBLIN BIKES</h1>
+<div id="stuff">
+</div>
 <div id="map" style="width:100%;height:600px;">
+    <!--
+        function getdaily(value){
+    var xmlhttp = new XMLHttpRequest();
+    var url = "{{ Stations }}";
+
+    xmlhttp.onreadystatechange = function(){
+        if (xmlhttp.readyState == 4 && xmlhttp.status == 200){
+            var parsedObj = JSON.parse(xmlhttp.responseText);
+            staticData(parsedObj,value);
+        }
+    };
+
+    xmlhttp.open("GET", url, true);
+    xmlhttp.send();
+}
+        function staticData(obj, value){
+        //var myObj = JSON.parse('{{ Stations }}');
+        var value = value;
+        var hello = obj;
+        document.getElementById("stuff").innerHTML = hello;
+        }
+    -->
 <script>
     function initMap() {
         var dublin = {lat: 53.3454403, lng: -6.2714263,};
@@ -36,19 +60,35 @@
             infowindow.open(map, marker);
         });
         
-        var stations = {{ stations }};
-        var parsedStations = JSON.parse(stations);
-        document.getElementById("demo").innerHTML = parsedStations;
-        for (var i = 0; i < parsedStations.length; i++) {
-            var markers = new google.maps.Marker({
-                position: {lat: stations[i].latitude, lng: stations[i].longitude},
-                draggable: false,
-                animation: google.maps.Animation.DROP,
-                map: map,
-                title: stations[i].name,
-                zIndex: stations[i].number
-          });
-      }
+        
+        
+        
+        
+        var ourLatLng = {lat:  {{ Stations[0][3] }}, lng: {{ Stations[0][4] }}, };
+        var markers = new google.maps.Marker({
+            position: ourLatLng,
+            draggable: false,
+            animation: google.maps.Animation.DROP,
+            map: map
+        });
+        
+        var rLatLng = {lat:  {{ Stations[1][3] }}, lng: {{ Stations[1][4] }}, };
+        var markors = new google.maps.Marker({
+            position: rLatLng,
+            draggable: false,
+            animation: google.maps.Animation.DROP,
+            map: map
+            
+      });
+        var orLatLng = {lat:  {{ Stations[3][3] }}, lng: {{ Stations[3][4] }}, };
+        var markrs = new google.maps.Marker({
+            position: orLatLng,
+            draggable: false,
+            animation: google.maps.Animation.DROP,
+            map: map
+            
+      });
+
     }
 </script>
 <script async defer

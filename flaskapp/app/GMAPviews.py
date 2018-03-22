@@ -6,7 +6,7 @@ from flask import render_template
 from app import app
 from flask import jsonify
 
-'''
+
 def connectDB():
     try:
         # http://docs.sqlalchemy.org/en/latest/core/engines.html
@@ -16,7 +16,6 @@ def connectDB():
     except Exception as e:
         print("Error:", type(e))
         print(e)
-'''
 
 @app.route('/')
 def index():
@@ -28,11 +27,12 @@ def index():
 
 @app.route('/stations')
 def getStationData():
-    engine = create_engine("mysql+mysqldb://ScrumMasterG20:Toxicbuzz18@dublin-bikes-data.csu7egshtvlv.us-west-2.rds.amazonaws.com:3306/DublinBikesData", echo = False)
+    engine = connectDB()
     conn = engine.connect()
     stations = []
     rows = conn.execute("SELECT * FROM DublinBikesData.StaticData")
     for row in rows:
-        stations.append(dict(row))
-    return jsonify(stations=stations)
+        stations.append(row)
+    return  stations #jsonify(stations=stations)
+
 
