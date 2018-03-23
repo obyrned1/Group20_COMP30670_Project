@@ -1,7 +1,7 @@
 '''
 Created on 12 Mar 2018
 
-@author: obyrned1
+@author: obyrned1, Emmet62, oleathlc
 '''
 import urllib.request
 import json
@@ -30,7 +30,7 @@ def connectDB():
         return engine
 
     except Exception as e:
-        print("Error:", type(e))
+        print("Connection Error:", type(e))
         print(e)
 
 def createStaticTable():
@@ -44,7 +44,7 @@ def createStaticTable():
         engine.execute(sqlcreate)
         
     except Exception as e:
-        print("Error2:", type(e))
+        print("Static Table Creation Error:", type(e))
         print(e)
 
 def populateStaticTable(standData):
@@ -68,7 +68,7 @@ def populateStaticTable(standData):
             engine.execute(sqlpopulate)
 
         except Exception as e:
-            print("Error3:", type(e))
+            print("Populate Static Table Error:", type(e))
             print(e)
     
 if __name__ == '__main__':
