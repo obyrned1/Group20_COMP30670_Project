@@ -7,68 +7,43 @@
 <h1>DUBLIN BIKES</h1>
 <div id="stuff">
 </div>
-<div id="map" style="width:100%;height:600px;">
-    <!--
-        function getdaily(value){
-    var xmlhttp = new XMLHttpRequest();
-    var url = "{{ Stations }}";
-
-    xmlhttp.onreadystatechange = function(){
-        if (xmlhttp.readyState == 4 && xmlhttp.status == 200){
-            var parsedObj = JSON.parse(xmlhttp.responseText);
-            staticData(parsedObj,value);
-        }
-    };
-
-    xmlhttp.open("GET", url, true);
-    xmlhttp.send();
-}
-        function staticData(obj, value){
-        //var myObj = JSON.parse('{{ Stations }}');
-        var value = value;
-        var hello = obj;
-        document.getElementById("stuff").innerHTML = hello;
-        }
-    -->
+<div id="map" style="width:100%;height:700px;">
 <script>
     function initMap() {
-        var dublin = {lat: 53.3454403, lng: -6.2714263,};
+        var dublin = {lat: 53.346880, lng: -6.265615,};
         var map = new  google.maps.Map(document.getElementById('map'), {
-          zoom: 14,
+          zoom: 14.1,
           center: dublin
         });
-        var myLatLng = {lat: 53.344407, lng: -6.257285,};
-        var contentString = '<div>'+
-            '<div>'+
-            '</div>'+
-            '<h1>Trinity College Dublin</h1>'+
-            '<div>'+
-            '<p><b>TRINITY</b> A great bunch of lads.</p>'+
-            '</div>'+
-            '</div>';
-        var infowindow = new google.maps.InfoWindow({
-          content: contentString
-        });
+        var cyclist = {
+            url: 'http://maps.google.com/mapfiles/kml/shapes/cycling.png',
+            size: new google.maps.Size(70, 60),
+            scaledSize: new google.maps.Size(30, 30)
+        }
+            
+        {% for Station in Stations %}
+        var location = {lat: {{ Station.latitude}}, lng: {{ Station.longitude }},};
+        var stationName = ' {{ Station.name }} ';
         var marker = new google.maps.Marker({
-          position: myLatLng,
+          position: location,
           draggable: false,
           animation: google.maps.Animation.DROP,
           map: map,
-          title: "Trinity"
+          title: stationName,
+          icon: cyclist
           });
+        var infoString = '{{ Station.stands }}';
         marker.addListener('click', function() {
-            infowindow.open(map, marker);
+            info.open(map, marker)
         });
+        var info = new google.maps.InfoWindow({
+          content: infoString
+        });
+        {% endfor %}        
         
-        {% for Station in Stations %}
-        var markers = new google.maps.Marker({
-          position: {lat: {{ Station.latitude}}, lng: {{ Station.longitude }},},
-          draggable: false,
-          animation: google.maps.Animation.DROP,
-          map: map
-          });
-        {% endfor %}
+        
     };
+                           
     </script>
 <script async defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBRUrdJ4Tz9rLrHrOkwJWpA9QSYNJbWQ0Q&callback=initMap">
