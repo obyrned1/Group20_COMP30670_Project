@@ -5,7 +5,31 @@
 </head>
 <body>
 <h1>DUBLIN BIKES</h1>
+<div id="stuff">
+</div>
 <div id="map" style="width:100%;height:600px;">
+    <!--
+        function getdaily(value){
+    var xmlhttp = new XMLHttpRequest();
+    var url = "{{ Stations }}";
+
+    xmlhttp.onreadystatechange = function(){
+        if (xmlhttp.readyState == 4 && xmlhttp.status == 200){
+            var parsedObj = JSON.parse(xmlhttp.responseText);
+            staticData(parsedObj,value);
+        }
+    };
+
+    xmlhttp.open("GET", url, true);
+    xmlhttp.send();
+}
+        function staticData(obj, value){
+        //var myObj = JSON.parse('{{ Stations }}');
+        var value = value;
+        var hello = obj;
+        document.getElementById("stuff").innerHTML = hello;
+        }
+    -->
 <script>
     function initMap() {
         var dublin = {lat: 53.3454403, lng: -6.2714263,};
@@ -36,21 +60,16 @@
             infowindow.open(map, marker);
         });
         
-        var stations = {{ stations }};
-        var parsedStations = JSON.parse(stations);
-        document.getElementById("demo").innerHTML = parsedStations;
-        for (var i = 0; i < parsedStations.length; i++) {
-            var markers = new google.maps.Marker({
-                position: {lat: stations[i].latitude, lng: stations[i].longitude},
-                draggable: false,
-                animation: google.maps.Animation.DROP,
-                map: map,
-                title: stations[i].name,
-                zIndex: stations[i].number
+        {% for Station in Stations %}
+        var markers = new google.maps.Marker({
+          position: {lat: {{ Station.latitude}}, lng: {{ Station.longitude }},},
+          draggable: false,
+          animation: google.maps.Animation.DROP,
+          map: map
           });
-      }
-    }
-</script>
+        {% endfor %}
+    };
+    </script>
 <script async defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBRUrdJ4Tz9rLrHrOkwJWpA9QSYNJbWQ0Q&callback=initMap">
 </script>
