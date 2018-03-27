@@ -91,7 +91,7 @@ def backupDataCsv(standData):
             
 if __name__ == '__main__':
     engine = connectDB()
-    createDynamicTable()
+    #createDynamicTable()
     starttime=time.time()        
     while True:
         standData = getJsonData()
