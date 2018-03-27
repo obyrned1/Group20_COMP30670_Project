@@ -22,29 +22,32 @@
         }
             
         {% for Station in Stations %}
-        var location = {lat: {{ Station.latitude}}, lng: {{ Station.longitude }},};
+        
+        var location = {lat: {{ Station.latitude }}, lng: {{ Station.longitude }},};
         var stationName = ' {{ Station.name }} ';
+        var infoString = 
+            '<h4>' + ' {{ Station.address }} ' + '</h4>'+
+            '<p> Station I.D. : ' + '{{ Station.number }}' + '<p>' + 
+            '<p> Total Number Bike Stands : ' + '{{ Station.stands }}' + '<p>' 
+            ;
         var marker = new google.maps.Marker({
           position: location,
           draggable: false,
           animation: google.maps.Animation.DROP,
           map: map,
+          contentString: infoString,    
           title: stationName,
           icon: cyclist
           });
-        var infoString = '{{ Station.stands }}';
-        marker.addListener('click', function() {
-            info.open(map, marker)
-        });
-        var locationX = {lat: {{ Station.latitude}}, lng: {{ Station.longitude }},};
-        var info = new google.maps.InfoWindow({
-          content: infoString,
-          position: locationX,
-          map: map
-        });
-        {% endfor %}        
-        
-        
+         var infowindow = new google.maps.InfoWindow({});
+         marker.addListener('click', function() {
+           infowindow.setContent(this.contentString);
+           infowindow.open(map, this);
+     });
+    
+    
+        {% endfor %}  
+        // some parts adapted from: https://stackoverflow.com/questions/30012913/google-map-api-v3-add-multiple-infowindows   
     };
                            
     </script>
