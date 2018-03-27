@@ -20,7 +20,7 @@ def connectDB():
     
     try:
         # http://docs.sqlalchemy.org/en/latest/core/engines.html
-        engine = create_engine("mysql+mysqldb://ScrumMasterG20:Toxicbuzz18@dublin-bikes-data.csu7egshtvlv.us-west-2.rds.amazonaws.com:3306/DublinBikesData", echo = True)
+        engine = create_engine("mysql+mysqldb://ScrumMasterG20:Toxicbuzz18@dublinbikes.cvzzy1efxyiq.us-east-2.rds.amazonaws.com:3306/DublinBikesData", echo = True)
         return engine
 
     except Exception as e:
@@ -82,7 +82,7 @@ def backupDataCsv(standData):
         array = [standNum, standStatus, standAvailableBikes, standAvailableSpaces, standLastUpdate]
         
         #https://gis.stackexchange.com/questions/72458/export-list-of-values-into-csv-or-txt-file
-        csvfile = "/home/obyrned1/compsci/comp30670/testData.csv"
+        csvfile = "/home/ec2-user/Group20_COMP30670_Project/testData.csv"
         with open(csvfile, "a") as output:
             writer = csv.writer(output, lineterminator=',')
             for val in array:
