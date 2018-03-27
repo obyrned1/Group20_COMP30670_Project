@@ -36,8 +36,11 @@
         marker.addListener('click', function() {
             info.open(map, marker)
         });
+        var locationX = {lat: {{ Station.latitude}}, lng: {{ Station.longitude }},};
         var info = new google.maps.InfoWindow({
-          content: infoString
+          content: infoString,
+          position: locationX,
+          map: map
         });
         {% endfor %}        
         
