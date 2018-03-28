@@ -44,7 +44,9 @@ def createDynamicTable():
 def populateDynamicTable(standData):
     ''' Populate the static table with static information for each bike station '''
     ''' We will probably want to pass in the information for each station one at a time. '''
-
+    
+    engine = connectDB()
+    
     for i in range(0,100,1):
     #there are 100 stations as given by JCDecaux json
         standNum = standData[i]['number']
@@ -90,7 +92,6 @@ def backupDataCsv(standData):
             output.write("\n")
             
 if __name__ == '__main__':
-    engine = connectDB()
     #createDynamicTable()
     starttime=time.time()        
     while True:
