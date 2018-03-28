@@ -26,7 +26,7 @@ def connectDB():
     
     try:
         # http://docs.sqlalchemy.org/en/latest/core/engines.html
-        engine = create_engine("mysql+mysqldb://ScrumMasterG20:Toxicbuzz18@dublinbikes.cvzzy1efxyiq.us-east-2.rds.amazonaws.com:3306/DublinBikesData", echo = True)
+        engine = create_engine("mysql+mysqldb://ScrumMasterG20:Toxicbuzz18@dbikes.cvzzy1efxyiq.us-east-2.rds.amazonaws.com:3306/DublinBikesData", echo = False)
         return engine
 
     except Exception as e:
