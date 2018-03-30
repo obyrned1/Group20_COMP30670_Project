@@ -7,8 +7,13 @@
 <h1>DUBLIN BIKES</h1>
 <div id="stuff">
 </div>
+<div id="TestDynamic">
+    
+</div>
 <div id="map" style="width:100%;height:700px;">
 <script>
+   //document.getElementById("TestDynamic").innerHTML = {{ Stations.42.position }};
+    
     function initMap() {
         var dublin = {lat: 53.346880, lng: -6.265615,};
         var map = new  google.maps.Map(document.getElementById('map'), {
@@ -23,12 +28,15 @@
             
         {% for Station in Stations %}
         
-        var location = {lat: {{ Station.latitude }}, lng: {{ Station.longitude }},};
+        var location = {lat: {{ Station.position.lat }}, lng: {{ Station.position.lng }},};
         var stationName = ' {{ Station.name }} ';
+        var availablebikes = '{{ Station.available_bikes }}';
+        var availablebikestands = '{{ Station.available_bike_stands}}';
+        var address = '{{ Station.address }}';
         var infoString = 
-            '<h4>' + ' {{ Station.address }} ' + '</h4>'+
-            '<p> Station I.D. : ' + '{{ Station.number }}' + '<p>' + 
-            '<p> Total Number Bike Stands : ' + '{{ Station.stands }}' + '<p>' 
+            '<h4>' + address + '</h4>'+
+            '<p> No. of Available Bikes : ' + availablebikes + '<p>' + 
+            '<p> No. of Available Stands : ' + availablebikestands + '<p>' 
             ;
         var marker = new google.maps.Marker({
           position: location,
