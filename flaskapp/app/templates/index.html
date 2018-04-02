@@ -20,11 +20,6 @@
           zoom: 14.1,
           center: dublin
         });
-        var cyclist = {
-            url: 'http://maps.google.com/mapfiles/kml/shapes/cycling.png',
-            size: new google.maps.Size(70, 60),
-            scaledSize: new google.maps.Size(30, 30)
-        }
             
         {% for Station in Stations %}
         
@@ -44,8 +39,7 @@
           animation: google.maps.Animation.DROP,
           map: map,
           contentString: infoString,    
-          title: stationName,
-          icon: cyclist
+          title: stationName
           });
          var infowindow = new google.maps.InfoWindow({});
          marker.addListener('click', function() {
