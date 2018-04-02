@@ -19,11 +19,36 @@ def connectDB():
         print("Error:", type(e))
         print(e)
         
-def getData():
+def getDayData(station):
     engine = connectDB()
+    dayData = []
     conn = engine.connect()
-    rows = conn.execute("SELECT * FROM DynamicData WHERE number = 6 AND  last_update >= '2018-03-29 12:00:00' AND last_update <= '2018-03-29 12:30:00'")
-    return rows
+    for i in range (0,7):
+        string = "SELECT ROUND(AVG(available_bikes)) FROM DynamicData WHERE number = " + str(station) + " AND WEEKDAY(last_update)=" + str(i)
+        rows = conn.execute(string)
+        for row in rows:
+            dayData.append(row)
+    var_fixed = []
+    for row in dayData:
+        var_fixed.append(list(map(int,list(row))))
+    return var_fixed
+
+
+def getHourlyData(station, day):
+    engine = connectDB()
+    hourlyData = []
+    conn = engine.connect()
+    for i in range (0,24):
+        string = "SELECT ROUND(AVG(available_bikes)) FROM DynamicData WHERE number = " + str(station) + " AND EXTRACT(HOUR FROM last_update) =" + str(i) + " AND WEEKDAY(last_update)=" + str(day)
+        rows = conn.execute(string)
+        for row in rows:
+            hourlyData.append(row)
+    var_fixed = []
+    for row in hourlyData:
+        var_fixed.append(list(map(int,list(row))))
+    return var_fixed
 
 if __name__ == '__main__':
-    getData()
+    print(getHourlyData(1, 3))
+    
+    

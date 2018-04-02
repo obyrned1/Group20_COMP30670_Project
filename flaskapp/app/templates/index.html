@@ -10,7 +10,7 @@
 <div id="TestDynamic">
     
 </div>
-<div id="map" style="width:100%;height:700px;">
+<div id="map" style="width:100%;height:400px;">
 <script>
    //document.getElementById("TestDynamic").innerHTML = {{ Stations.42.position }};
     
@@ -63,25 +63,75 @@
 
       function drawChart() {
         var data = google.visualization.arrayToDataTable([
-          ['Year', 'Sales', {role: 'style'}],
-          ['2004',  1000, 'silver'],
-          ['2005',  1170, 'red'],
-          ['2006',  660, 'green'],
-          ['2007',  1030, 'blue']
+          ['Day', 'Number of Bikes Available'],
+          ['Monday', {{ DayData[0][0] }}],
+          ['Tuesday',  {{ DayData[1][0] }}],
+          ['Wednesday',  {{ DayData[2][0] }}],
+          ['Thursday',  {{ DayData[3][0] }}],
+          ['Friday',  {{ DayData[4][0] }}],
+          ['Saturday',  {{ DayData[5][0] }}],
+          ['Sunday',  {{ DayData[6][0] }}]
         ]);
 
         var options = {
-          title: 'Company Performance',
-          
+          title: 'Daily Avg. Bike Availability',
+          vAxis: {minValue: 0},
           legend: { position: 'bottom' }
         };
 
-        var chart = new google.visualization.ColumnChart(document.getElementById('chart'));
+        var chart = new google.visualization.LineChart(document.getElementById('chart'));
+
+        chart.draw(data, options);
+      }
+    </script>
+    <script type="text/javascript">
+      google.charts.load('current', {packages: ['corechart']});
+      google.charts.setOnLoadCallback(drawChart);
+
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+             ['Time', 'Number of Bikes Available'],
+             ['12am', {{ HourlyData[0][0] }}],
+             ['1am', {{ HourlyData[1][0] }}],
+             ['2am', {{ HourlyData[2][0] }}],
+             ['3am', {{ HourlyData[3][0] }}],
+             ['4am', {{ HourlyData[4][0] }}],
+             ['5am', {{ HourlyData[5][0] }}],
+             ['6am', {{ HourlyData[6][0] }}],
+             ['7am', {{ HourlyData[7][0] }}],
+             ['8am', {{ HourlyData[8][0] }}],
+             ['9am', {{ HourlyData[9][0] }}],
+             ['10am', {{ HourlyData[10][0] }}],
+             ['11am', {{ HourlyData[11][0] }}],
+             ['12pm', {{ HourlyData[12][0] }}],
+             ['1pm', {{ HourlyData[13][0] }}],
+             ['2pm', {{ HourlyData[14][0] }}],
+             ['3pm', {{ HourlyData[15][0] }}],
+             ['4pm', {{ HourlyData[16][0] }}],
+             ['5pm', {{ HourlyData[17][0] }}],
+             ['6pm', {{ HourlyData[18][0] }}],
+             ['7pm', {{ HourlyData[19][0] }}],
+             ['8pm', {{ HourlyData[20][0] }}],
+             ['9pm', {{ HourlyData[21][0] }}],
+             ['10pm', {{ HourlyData[22][0] }}],
+             ['11pm', {{ HourlyData[23][0] }}]
+        ]);
+
+        var options = {
+          title: 'Hourly Avg. Bike Availability',
+          vAxis: {minValue: 0, 
+                 gridlines: {count:7}},
+          height:300,
+          legend: { position: 'bottom' }
+        };
+
+        var chart = new google.visualization.LineChart(document.getElementById('hourlyChart'));
 
         chart.draw(data, options);
       }
     </script>
     </div>
     <div id = "chart"></div>
+    <div id = "hourlyChart"></div>
 </body>
 </html>

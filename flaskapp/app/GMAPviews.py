@@ -29,7 +29,8 @@ def index():
     returnDict = {}
     returnDict['Title'] = 'Dublin Bike Planner'
     returnDict['Stations'] = getDynamicData()
-    #returnDict['DynamicStations'] = getDynamicData()
+    returnDict['DayData'] = getDayData(1)
+    returnDict['HourlyData'] = getHourlyData(1, 3)
     return render_template("index.html", **returnDict)
     
 # Will need to use the below to add robustness - if API goes down we will use this to place markers
@@ -45,7 +46,7 @@ def index():
 #     return  stations#jsonify(stations=stations)
 #===============================================================================
 
-@app.route('/dydata')
+#@app.route('/dydata')
 def getDynamicData():
     
     apiKey = "c9ec7733fec3fc712434d79c0484b74847a1a37b"
@@ -55,3 +56,30 @@ def getDynamicData():
     standData = json.loads(str_file)
     return standData
 
+def getDayData(station):
+    engine = connectDB()
+    dayData = []
+    conn = engine.connect()
+    for i in range (0,7):
+        string = "SELECT ROUND(AVG(available_bikes)) FROM DynamicData WHERE number = " + str(station) + " AND WEEKDAY(last_update)=" + str(i)
+        rows = conn.execute(string)
+        for row in rows:
+            dayData.append(row)
+    var_fixed = []
+    for row in dayData:
+        var_fixed.append(list(map(int,list(row))))
+    return var_fixed
+
+def getHourlyData(station, day):
+    engine = connectDB()
+    hourlyData = []
+    conn = engine.connect()
+    for i in range (0,24):
+        string = "SELECT ROUND(AVG(available_bikes)) FROM DynamicData WHERE number = " + str(station) + " AND EXTRACT(HOUR FROM last_update) =" + str(i) + " AND WEEKDAY(last_update)=" + str(day)
+        rows = conn.execute(string)
+        for row in rows:
+            hourlyData.append(row)
+    var_fixed1 = []
+    for row in hourlyData:
+        var_fixed1.append(list(map(int,list(row))))
+    return var_fixed1
