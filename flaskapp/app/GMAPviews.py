@@ -46,6 +46,18 @@ def index():
 #     return  stations#jsonify(stations=stations)
 #===============================================================================
 
+#===============================================================================
+# @app.route("/available/<int:station_id>")
+# def get_stations(station_id):
+#     engine = connectDB()
+#     data = []
+#     rows = engine.execute("SELECT available_bikes from DynamicData where number = {};".format(station_id))
+#     for row in rows:
+#         data.append(dict(row))
+# 
+#     return jsonify(available=data) 
+#===============================================================================
+
 #@app.route('/dydata')
 def getDynamicData():
     
@@ -56,12 +68,13 @@ def getDynamicData():
     standData = json.loads(str_file)
     return standData
 
-def getDayData(station):
+@app.route("/available/<int:station_id>")
+def getDayData(station_id):
     engine = connectDB()
     dayData = []
     conn = engine.connect()
     for i in range (0,7):
-        string = "SELECT ROUND(AVG(available_bikes)) FROM DynamicData WHERE number = " + str(station) + " AND WEEKDAY(last_update)=" + str(i)
+        string = "SELECT ROUND(AVG(available_bikes)) FROM DynamicData WHERE number = {} AND WEEKDAY(last_update) = " + str(i).format(station_id)
         rows = conn.execute(string)
         for row in rows:
             dayData.append(row)
