@@ -29,7 +29,7 @@ def index():
     returnDict = {}
     returnDict['Title'] = 'Dublin Bike Planner'
     returnDict['Stations'] = getDynamicData()
-    returnDict['DayData'] = getDayData(1)
+    #returnDict['DayData'] = getDayData(1)
     returnDict['HourlyData'] = getHourlyData(1, 3)
     return render_template("index.html", **returnDict)
     
@@ -68,20 +68,20 @@ def getDynamicData():
     standData = json.loads(str_file)
     return standData
 
-@app.route("/available/<int:station_id>")
+@app.route("/available/<station_id>")
 def getDayData(station_id):
     engine = connectDB()
     dayData = []
     conn = engine.connect()
     for i in range (0,7):
-        string = "SELECT ROUND(AVG(available_bikes)) FROM DynamicData WHERE number = {} AND WEEKDAY(last_update) = " + str(i).format(station_id)
+        string = "SELECT ROUND(AVG(available_bikes)) FROM DynamicData WHERE number = "+ str(station_id)+" AND WEEKDAY(last_update) = " + str(i)
         rows = conn.execute(string)
         for row in rows:
             dayData.append(row)
     var_fixed = []
     for row in dayData:
         var_fixed.append(list(map(int,list(row))))
-    return var_fixed
+    return jsonify(data=var_fixed)
 
 def getHourlyData(station, day):
     engine = connectDB()

@@ -1,16 +1,16 @@
 <!-- dummyapp/app/templates/index.html -->
+
+
+
+
 <html>
 <head>
 <title>{{ Title }}</title>
 </head>
 <body>
 <h1>DUBLIN BIKES</h1>
-<div id="stuff">
-</div>
-<div id="TestDynamic">
-    
-</div>
 <div id="map" style="width:100%;height:400px;">
+
 <script>
    //document.getElementById("TestDynamic").innerHTML = {{ Stations.42.position }};
     
@@ -30,8 +30,9 @@
         var address = '{{ Station.address }}';
         var infoString = 
             '<h4>' + address + '</h4>'+
-            '<p> No. of Available Bikes : ' + availablebikes + '<p>' + 
-            '<p> No. of Available Stands : ' + availablebikestands + '<p>' 
+            '<p> No. of Available Bikes : ' + availablebikes + '</p>' + 
+            '<p> No. of Available Stands : ' + availablebikestands + '</p>' +
+            '<p onclick="insertAddInfo( {{ Station.number}} )">More Information</p>'
             ;
         var marker = new google.maps.Marker({
           position: location,
@@ -51,26 +52,66 @@
         {% endfor %}  
         // some parts adapted from: https://stackoverflow.com/questions/30012913/google-map-api-v3-add-multiple-infowindows   
     };
-                           
+    
+    function insertAddInfo(currentStation){
+        document.getElementById('infoTitle').innerHTML = '<h2> Information for:' + currentStation + '</h2>';
+        //document.getElementById('additionalInfo').style.display = 'block';
+        createChart(currentStation);
+    }    
+    function createChart(currentStation){
+        var xmlhttp = new XMLHttpRequest();
+        var url = "/available/" + currentStation;
+        
+        google.charts.setOnLoadCallback(drawWeeklyChart);
+        google.charts.load('current', {packages: ['corechart']});
+        console.log(url);
+        xmlhttp.onreadystatechange = function() {
+            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                var data = xmlhttp.response;
+                drawWeeklyChart(data);
+                }
+            };
+        xmlhttp.open("GET",url, true);
+        xmlhttp.send();
+        }  
     </script>
 <script async defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBRUrdJ4Tz9rLrHrOkwJWpA9QSYNJbWQ0Q&callback=initMap">
 </script>
+     </div>
+    <div id = 'infoTitle'></div>
+    
+        <select id="myDropdown"></select>
+    <script>
+        var stations = [];
+        var listItem = '';
+        {% for Station in Stations %}
+        var stationAddress = '{{ Station.address}}';
+        stations.push(stationAddress);
+            {% endfor %}
+        stations.sort();
+        for(i=0; i < stations.length; i++){
+            listItem += '<option>' + stations[i] + '</option>';
+        }
+        document.getElementById('myDropdown').innerHTML = listItem;
+        </script>
+  <div id = "chart"></div>
+    <div id = "hourlyChart"></div>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
-      google.charts.load('current', {packages: ['corechart']});
-      google.charts.setOnLoadCallback(drawChart);
+      
 
-      function drawChart() {
-        var data = google.visualization.arrayToDataTable([
+      function drawWeeklyChart(data) {
+          document.getElementById('infoTitle').innerHTML = data;
+        /*var data = google.visualization.arrayToDataTable([
           ['Day', 'Number of Bikes Available'],
-          ['Monday', {{ DayData[0][0] }}],
-          ['Tuesday',  {{ DayData[1][0] }}],
-          ['Wednesday',  {{ DayData[2][0] }}],
-          ['Thursday',  {{ DayData[3][0] }}],
-          ['Friday',  {{ DayData[4][0] }}],
-          ['Saturday',  {{ DayData[5][0] }}],
-          ['Sunday',  {{ DayData[6][0] }}]
+          ['Monday', data[0][0]],
+          ['Tuesday',  data[1][0]],
+          ['Wednesday',   data[2][0]],
+          ['Thursday',  data[3][0]],
+          ['Friday',  data[4][0]],
+          ['Saturday',  data[5][0]],
+          ['Sunday',  data[6][0]]
         ]);
 
         var options = {
@@ -81,14 +122,14 @@
 
         var chart = new google.visualization.LineChart(document.getElementById('chart'));
 
-        chart.draw(data, options);
+        chart.draw(data, options);*/
       }
     </script>
     <script type="text/javascript">
       google.charts.load('current', {packages: ['corechart']});
-      google.charts.setOnLoadCallback(drawChart);
+      google.charts.setOnLoadCallback(drawDailyChart);
 
-      function drawChart() {
+      function drawDailyChart() {
         var data = google.visualization.arrayToDataTable([
              ['Time', 'Number of Bikes Available'],
              ['12am', {{ HourlyData[0][0] }}],
@@ -130,8 +171,5 @@
         chart.draw(data, options);
       }
     </script>
-    </div>
-    <div id = "chart"></div>
-    <div id = "hourlyChart"></div>
 </body>
 </html>
