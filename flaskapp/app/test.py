@@ -1,5 +1,7 @@
 import urllib.request
-import json
+import json, decimal
+from flask import jsonify
+from decimal import Decimal
 import datetime
 import csv
 import time
@@ -18,20 +20,32 @@ def connectDB():
     except Exception as e:
         print("Error:", type(e))
         print(e)
-        
+
+def decimal_default(obj):
+    if isinstance(obj, decimal.Decimal):
+        return float(obj)
+    raise TypeError
+
 def getDayData(station):
     engine = connectDB()
     dayData = []
+    string = "SELECT ROUND(AVG(available_bikes)) FROM DynamicData WHERE number = " + str(station) + " AND WEEKDAY(last_update)=" + str(0) + ';'
+        
     conn = engine.connect()
-    for i in range (0,7):
-        string = "SELECT ROUND(AVG(available_bikes)) FROM DynamicData WHERE number = " + str(station) + " AND WEEKDAY(last_update)=" + str(i)
-        rows = conn.execute(string)
-        for row in rows:
-            dayData.append(row)
-    var_fixed = []
-    for row in dayData:
-        var_fixed.append(list(map(int,list(row))))
-    return var_fixed
+    #===========================================================================
+    # 
+    # for i in range (0,7):
+    #     string = "SELECT ROUND(AVG(available_bikes)) FROM DynamicData WHERE number = " + str(station) + " AND WEEKDAY(last_update)=" + str(i) + ';'
+    #===========================================================================
+    rows = conn.execute(string)
+    for row in rows:
+        dayData.append((row))
+    #===========================================================================
+    # var_fixed = []
+    # for row in dayData:
+    #     var_fixed.append(list(map(int,list(row))))
+    #===========================================================================
+    return jsonify(available = dayData)
 
 
 def getHourlyData(station, day):
@@ -43,12 +57,15 @@ def getHourlyData(station, day):
         rows = conn.execute(string)
         for row in rows:
             hourlyData.append(row)
-    var_fixed = []
-    for row in hourlyData:
-        var_fixed.append(list(map(int,list(row))))
-    return var_fixed
+    #===========================================================================
+    # var_fixed = []
+    # for row in hourlyData:
+    #     var_fixed.append(list(map(int,list(row))))
+    # return var_fixed
+    #===========================================================================
+    return hourlyData
 
 if __name__ == '__main__':
-    print(getHourlyData(1, 3))
+    print(getDayData(1))
     
     

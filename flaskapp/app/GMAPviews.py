@@ -3,6 +3,7 @@
 from sqlalchemy import create_engine
 from sqlalchemy.dialects.mysql import mysqldb
 from flask import render_template
+import simplejson
 from app import app
 from flask import jsonify
 import time
@@ -68,20 +69,26 @@ def getDynamicData():
     standData = json.loads(str_file)
     return standData
 
-@app.route("/available/<station_id>")
-def getDayData(station_id):
+@app.route("/available/<currentStation>")
+def getDayData(currentStation):
     engine = connectDB()
     dayData = []
+    #string = "SELECT ROUND(AVG(available_bikes)) FROM DynamicData WHERE number = {} AND WEEKDAY(last_update)= 0;".format(currentStation)
+        
     conn = engine.connect()
+     
     for i in range (0,7):
-        string = "SELECT ROUND(AVG(available_bikes)) FROM DynamicData WHERE number = "+ str(station_id)+" AND WEEKDAY(last_update) = " + str(i)
+        string = "SELECT ROUND(AVG(available_bikes)) FROM DynamicData WHERE number = {} AND WEEKDAY(last_update)= {};".format(currentStation,i)
         rows = conn.execute(string)
         for row in rows:
-            dayData.append(row)
-    var_fixed = []
-    for row in dayData:
-        var_fixed.append(list(map(int,list(row))))
-    return jsonify(data=var_fixed)
+            dayData.append(dict(row))
+    #json.dumps([(dict(row.items())) for row in dayData])
+    #===========================================================================
+    # var_fixed = []
+    # for row in dayData:
+    #     var_fixed.append(list(map(int,list(row))))
+    #===========================================================================
+    return jsonify(dayData)
 
 def getHourlyData(station, day):
     engine = connectDB()
