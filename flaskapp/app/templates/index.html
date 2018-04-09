@@ -27,12 +27,13 @@
         var stationName = ' {{ Station.name }} ';
         var availablebikes = '{{ Station.available_bikes }}';
         var availablebikestands = '{{ Station.available_bike_stands}}';
+        var stationNumber = '{{ Station.number}}';
         var address = '{{ Station.address }}';
         var infoString = 
             '<h4>' + address + '</h4>'+
             '<p> No. of Available Bikes : ' + availablebikes + '</p>' + 
             '<p> No. of Available Stands : ' + availablebikestands + '</p>' +
-            '<p onclick="insertAddInfo( {{ Station.number}} )">More Information</p>'
+            '<p onclick="insertAddInfo(' + stationNumber + ')">More Information</p>'
             ;
         var marker = new google.maps.Marker({
           position: location,
@@ -52,7 +53,7 @@
         {% endfor %}  
         // some parts adapted from: https://stackoverflow.com/questions/30012913/google-map-api-v3-add-multiple-infowindows   
     };
-    
+ 
     function insertAddInfo(currentStation){
         document.getElementById('infoTitle').innerHTML = '<h2> Information for:' + currentStation + '</h2>';
         //document.getElementById('additionalInfo').style.display = 'block';
@@ -67,13 +68,14 @@
         console.log(url);
         xmlhttp.onreadystatechange = function() {
             if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-                var data = xmlhttp.response;
+                var data = JSON.parse(xmlhttp.response);
+                console.log('data', data);
                 drawWeeklyChart(data);
                 }
             };
         xmlhttp.open("GET",url, true);
         xmlhttp.send();
-        }  
+        }
     </script>
 <script async defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBRUrdJ4Tz9rLrHrOkwJWpA9QSYNJbWQ0Q&callback=initMap">
@@ -102,16 +104,16 @@
       
 
       function drawWeeklyChart(data) {
-          document.getElementById('infoTitle').innerHTML = data;
-        /*var data = google.visualization.arrayToDataTable([
+         // document.getElementById('infoTitle').innerHTML = data[0]["ROUND(AVG(available_bikes))"];
+        var data = google.visualization.arrayToDataTable([
           ['Day', 'Number of Bikes Available'],
-          ['Monday', data[0][0]],
-          ['Tuesday',  data[1][0]],
-          ['Wednesday',   data[2][0]],
-          ['Thursday',  data[3][0]],
-          ['Friday',  data[4][0]],
-          ['Saturday',  data[5][0]],
-          ['Sunday',  data[6][0]]
+          ['Monday', data[0]["ROUND(AVG(available_bikes))"]],
+          ['Tuesday',  data[1]["ROUND(AVG(available_bikes))"]],
+          ['Wednesday',   data[2]["ROUND(AVG(available_bikes))"]],
+          ['Thursday',  data[3]["ROUND(AVG(available_bikes))"]],
+          ['Friday',  data[4]["ROUND(AVG(available_bikes))"]],
+          ['Saturday',  data[5]["ROUND(AVG(available_bikes))"]],
+          ['Sunday',  data[6]["ROUND(AVG(available_bikes))"]]
         ]);
 
         var options = {
@@ -122,7 +124,7 @@
 
         var chart = new google.visualization.LineChart(document.getElementById('chart'));
 
-        chart.draw(data, options);*/
+        chart.draw(data, options);
       }
     </script>
     <script type="text/javascript">

@@ -45,7 +45,7 @@ def getDayData(station):
     # for row in dayData:
     #     var_fixed.append(list(map(int,list(row))))
     #===========================================================================
-    return jsonify(available = dayData)
+    return jsonify(dayData)
 
 
 def getHourlyData(station, day):

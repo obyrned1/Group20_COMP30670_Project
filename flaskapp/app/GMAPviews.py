@@ -12,6 +12,7 @@ import json
 import datetime
 import csv
 import time
+import pandas as pd
 
 
 def connectDB():
@@ -69,6 +70,17 @@ def getDynamicData():
     standData = json.loads(str_file)
     return standData
 
+@app.route("/occupancy/<int:station_id>")
+def get_occupancy(station_id):
+    engine = connectDB()
+    df = pd.read_sql_query("select * from DynamicData where number = %(number)s", engine, params={"number": station_id}) 
+    #df['last_update_date'] = pd.to_datetime(df.last_update, unit='ms')
+    df.set_index('last_update', inplace=True)
+    res = df['available_bikes'].resample('1d').mean()
+    #res['dt'] = df.index
+    print(res)
+    return jsonify(data=json.dumps(list(zip(map(lambda x:x.isoformat(), res.index), res.values)))) 
+
 @app.route("/available/<currentStation>")
 def getDayData(currentStation):
     engine = connectDB()
@@ -103,3 +115,4 @@ def getHourlyData(station, day):
     for row in hourlyData:
         var_fixed1.append(list(map(int,list(row))))
     return var_fixed1
+
