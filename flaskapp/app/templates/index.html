@@ -48,6 +48,7 @@
     };
  
     function insertAddInfo(currentStation){
+        chosenStation = currentStation;
         document.getElementById('infoTitle').innerHTML = '<h2> Information for:' + currentStation + '</h2>';
         //document.getElementById('additionalInfo').style.display = 'block';
         createChart(currentStation);
@@ -140,14 +141,14 @@
         //getElementById('infoTitle').innerHTML = '<h2> Information for:' + selected + '</h2>';
         //document.getElementById('additionalInfo').style.display = 'block';
         
-        createHourlyChart(50,day);
+        createHourlyChart(chosenStation,day);
         };    
         function createHourlyChart(currentStation,day){
         var xmlhttp = new XMLHttpRequest();
         var url = "/hourly/" + currentStation + "/" + day;
         
         google.charts.load('current', {packages: ['corechart']});
-        google.charts.setOnLoadCallback(drawWeeklyChart);
+        google.charts.setOnLoadCallback(drawHourlyChart);
         console.log(url);
         xmlhttp.onreadystatechange = function() {
             if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
