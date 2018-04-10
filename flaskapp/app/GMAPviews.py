@@ -31,22 +31,19 @@ def index():
     returnDict = {}
     returnDict['Title'] = 'Dublin Bike Planner'
     returnDict['Stations'] = getDynamicData()
-    #returnDict['DayData'] = getDayData(1)
-    returnDict['HourlyData'] = getHourlyData(1, 3)
+    returnDict['Static'] = getStationData()
     return render_template("index.html", **returnDict)
     
-# Will need to use the below to add robustness - if API goes down we will use this to place markers
-#===============================================================================
-# @app.route('/stations')
-# def getStationData():
-#     engine = connectDB()
-#     conn = engine.connect()
-#     stations = []
-#     rows = conn.execute("SELECT * FROM DublinBikesData.StaticData")
-#     for row in rows:
-#         stations.append(dict(row))
-#     return  stations#jsonify(stations=stations)
-#===============================================================================
+#Will need to use the below to add robustness - if API goes down we will use this to place markers
+#@app.route('/stations')
+def getStationData():
+    engine = connectDB()
+    conn = engine.connect()
+    stations = []
+    rows = conn.execute("SELECT * FROM DublinBikesData.StaticData")
+    for row in rows:
+        stations.append(dict(row))
+    return  stations#jsonify(stations=stations)
 
 #===============================================================================
 # @app.route("/available/<int:station_id>")
@@ -62,7 +59,6 @@ def index():
 
 #@app.route('/dydata')
 def getDynamicData():
-    
     apiKey = "c9ec7733fec3fc712434d79c0484b74847a1a37b"
     file = urllib.request.urlopen("https://api.jcdecaux.com/vls/v1/stations?contract=Dublin&apiKey=" + apiKey)
     # https://stackoverflow.com/questions/2835559/parsing-values-from-a-json-file
@@ -84,35 +80,24 @@ def get_occupancy(station_id):
 @app.route("/available/<currentStation>")
 def getDayData(currentStation):
     engine = connectDB()
-    dayData = []
-    #string = "SELECT ROUND(AVG(available_bikes)) FROM DynamicData WHERE number = {} AND WEEKDAY(last_update)= 0;".format(currentStation)
-        
+    dayData = []  
     conn = engine.connect()
-     
     for i in range (0,7):
         string = "SELECT ROUND(AVG(available_bikes)) FROM DynamicData WHERE number = {} AND WEEKDAY(last_update)= {};".format(currentStation,i)
         rows = conn.execute(string)
         for row in rows:
             dayData.append(dict(row))
-    #json.dumps([(dict(row.items())) for row in dayData])
-    #===========================================================================
-    # var_fixed = []
-    # for row in dayData:
-    #     var_fixed.append(list(map(int,list(row))))
-    #===========================================================================
     return jsonify(dayData)
 
-def getHourlyData(station, day):
+@app.route("/hourly/<currentStation>/<day>")
+def getHourlyData(currentStation, day):
     engine = connectDB()
     hourlyData = []
     conn = engine.connect()
     for i in range (0,24):
-        string = "SELECT ROUND(AVG(available_bikes)) FROM DynamicData WHERE number = " + str(station) + " AND EXTRACT(HOUR FROM last_update) =" + str(i) + " AND WEEKDAY(last_update)=" + str(day)
+        string = "SELECT ROUND(AVG(available_bikes)) FROM DynamicData WHERE number =  {} AND EXTRACT(HOUR FROM last_update) = {} AND WEEKDAY(last_update)= {};".format(currentStation,i,day)
         rows = conn.execute(string)
         for row in rows:
-            hourlyData.append(row)
-    var_fixed1 = []
-    for row in hourlyData:
-        var_fixed1.append(list(map(int,list(row))))
-    return var_fixed1
+            hourlyData.append(dict(row))
+    return jsonify(hourlyData)
 

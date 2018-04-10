@@ -1,8 +1,4 @@
 <!-- dummyapp/app/templates/index.html -->
-
-
-
-
 <html>
 <head>
 <title>{{ Title }}</title>
@@ -10,17 +6,14 @@
 <body>
 <h1>DUBLIN BIKES</h1>
 <div id="map" style="width:100%;height:400px;">
-
 <script>
-   //document.getElementById("TestDynamic").innerHTML = {{ Stations.42.position }};
-    
     function initMap() {
         var dublin = {lat: 53.346880, lng: -6.265615,};
         var map = new  google.maps.Map(document.getElementById('map'), {
           zoom: 14.1,
           center: dublin
         });
-            
+    
         {% for Station in Stations %}
         
         var location = {lat: {{ Station.position.lat }}, lng: {{ Station.position.lng }},};
@@ -63,8 +56,8 @@
         var xmlhttp = new XMLHttpRequest();
         var url = "/available/" + currentStation;
         
-        google.charts.setOnLoadCallback(drawWeeklyChart);
         google.charts.load('current', {packages: ['corechart']});
+        google.charts.setOnLoadCallback(drawWeeklyChart);
         console.log(url);
         xmlhttp.onreadystatechange = function() {
             if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
@@ -83,20 +76,33 @@
      </div>
     <div id = 'infoTitle'></div>
     
-        <select id="myDropdown"></select>
+        <select id="myDropdown" onchange = "insertAddInfo(value)"></select>
     <script>
         var stations = [];
         var listItem = '';
-        {% for Station in Stations %}
-        var stationAddress = '{{ Station.address}}';
-        stations.push(stationAddress);
+        {% for Station in Static %}
+        //var stationAddress = '{{ Station.address}}';
+        stations.push({
+            key: '{{ Station.address }}',
+            value: {{ Station.number }}});
             {% endfor %}
-        stations.sort();
+        //stations.sort(function(a,b) {return (a.key > b.key) ? 1 : ((b.key > a.key) ? -1 : 0);} );
+        //stations.sort(key);
         for(i=0; i < stations.length; i++){
-            listItem += '<option>' + stations[i] + '</option>';
+            listItem += '<option value='+ stations[i].value+'>' + stations[i].key + '</option>';
         }
         document.getElementById('myDropdown').innerHTML = listItem;
         </script>
+    <select id="dayOfWeek" onchange="insertAddHourlyInfo(value)" >
+        <option>Choose Day</option>
+        <option value =0>Monday</option>
+        <option value =1>Tuesday</option>
+        <option value =2>Wednesday</option>
+        <option value =3>Thursday</option>
+        <option value =4>Friday</option>
+        <option value =5>Saturday</option>
+        <option value =6>Sunday</option>
+    </select>
   <div id = "chart"></div>
     <div id = "hourlyChart"></div>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
@@ -127,62 +133,34 @@
         chart.draw(data, options);
       }
     </script>
-    <script type="text/javascript">
-      google.charts.load('current', {packages: ['corechart']});
-      google.charts.setOnLoadCallback(drawDailyChart);
-
-      function drawDailyChart() {
-        var data = google.visualization.arrayToDataTable([
-             ['Time', 'Number of Bikes Available'],
-             ['12am', {{ HourlyData[0][0] }}],
-             ['1am', {{ HourlyData[1][0] }}],
-             ['2am', {{ HourlyData[2][0] }}],
-             ['3am', {{ HourlyData[3][0] }}],
-             ['4am', {{ HourlyData[4][0] }}],
-             ['5am', {{ HourlyData[5][0] }}],
-             ['6am', {{ HourlyData[6][0] }}],
-             ['7am', {{ HourlyData[7][0] }}],
-             ['8am', {{ HourlyData[8][0] }}],
-             ['9am', {{ HourlyData[9][0] }}],
-             ['10am', {{ HourlyData[10][0] }}],
-             ['11am', {{ HourlyData[11][0] }}],
-             ['12pm', {{ HourlyData[12][0] }}],
-             ['1pm', {{ HourlyData[13][0] }}],
-             ['2pm', {{ HourlyData[14][0] }}],
-             ['3pm', {{ HourlyData[15][0] }}],
-             ['4pm', {{ HourlyData[16][0] }}],
-             ['5pm', {{ HourlyData[17][0] }}],
-             ['6pm', {{ HourlyData[18][0] }}],
-             ['7pm', {{ HourlyData[19][0] }}],
-             ['8pm', {{ HourlyData[20][0] }}],
-             ['9pm', {{ HourlyData[21][0] }}],
-             ['10pm', {{ HourlyData[22][0] }}],
-             ['11pm', {{ HourlyData[23][0] }}]
-        ]);
-
-        var options = {
-          title: 'Hourly Avg. Bike Availability',
-          vAxis: {minValue: 0, 
-                 gridlines: {count:7}},
-          height:300,
-          legend: { position: 'bottom' }
-        };
-
-        var chart = new google.visualization.LineChart(document.getElementById('hourlyChart'));
-
-        chart.draw(data, options);
-      }
-    </script>
-</body>
-</html>
-
-
-
-
-<!--
-    <script type="text/javascript">
+        <script type="text/javascript">
+            
+        function insertAddHourlyInfo(day){
+        //var selected = document.getElementById('myDropdown')HTMLOptionElement.value;
+        //getElementById('infoTitle').innerHTML = '<h2> Information for:' + selected + '</h2>';
+        //document.getElementById('additionalInfo').style.display = 'block';
+        
+        createHourlyChart(50,day);
+        };    
+        function createHourlyChart(currentStation,day){
+        var xmlhttp = new XMLHttpRequest();
+        var url = "/hourly/" + currentStation + "/" + day;
+        
+        google.charts.load('current', {packages: ['corechart']});
+        google.charts.setOnLoadCallback(drawWeeklyChart);
+        console.log(url);
+        xmlhttp.onreadystatechange = function() {
+            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                var data = JSON.parse(xmlhttp.response);
+                console.log('data', data);
+                drawHourlyChart(data);
+                }
+            };
+        xmlhttp.open("GET",url, true);
+        xmlhttp.send();
+        }
       function drawHourlyChart(data) {
-          document.getElementById('infoTitle').innerHTML = data[0]["ROUND(AVG(available_bikes))"];}
+         // document.getElementById('infoTitle').innerHTML = data[0]["ROUND(AVG(available_bikes))"];}
         var data = google.visualization.arrayToDataTable([
              ['Time', 'Number of Bikes Available'],
              ['12am', data[0]["ROUND(AVG(available_bikes))"]],
@@ -199,7 +177,7 @@
              ['11am', data[11]["ROUND(AVG(available_bikes))"]],
              ['12pm', data[12]["ROUND(AVG(available_bikes))"]],
              ['1pm', data[13]["ROUND(AVG(available_bikes))"]],
-             ['2pm', data[14]["ROUND(AVG(available_bikes))"]]
+             ['2pm', data[14]["ROUND(AVG(available_bikes))"]],
              ['3pm', data[15]["ROUND(AVG(available_bikes))"]],
              ['4pm',data[16]["ROUND(AVG(available_bikes))"]],
              ['5pm', data[17]["ROUND(AVG(available_bikes))"]],
@@ -223,4 +201,6 @@
         chart.draw(data, options);
       }
     </script>
--->
+
+</body>
+</html>
