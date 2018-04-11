@@ -13,7 +13,6 @@ import datetime
 import csv
 import time
 import pandas as pd
-from conda_build.api import render
 
 
 def connectDB():
