@@ -1,33 +1,210 @@
-
+<!-- dummyapp/app/templates/index.html -->
 <html>
-  <head>
+<head>
+<title>{{ Title }}</title>
+</head>
+<body>
+<h1>DUBLIN BIKES</h1>
+<div id="map" style="width:100%;height:400px;">
+<script>
+    function initMap() {
+        var dublin = {lat: 53.346880, lng: -6.265615,};
+        var map = new  google.maps.Map(document.getElementById('map'), {
+          zoom: 14.1,
+          center: dublin
+        });
+    
+        {% for Station in Stations %}
+        
+        var location = {lat: {{ Station.position.lat }}, lng: {{ Station.position.lng }},};
+        var stationName = ' {{ Station.name }} ';
+        var availablebikes = '{{ Station.available_bikes }}';
+        var availablebikestands = '{{ Station.available_bike_stands}}';
+        var stationNumber = '{{ Station.number}}';
+        var address = '{{ Station.address }}';
+        var infoString = 
+            '<h4>' + address + '</h4>'+
+            '<p> No. of Available Bikes : ' + availablebikes + '</p>' + 
+            '<p> No. of Available Stands : ' + availablebikestands + '</p>' +
+            '<p onclick="insertAddInfo(' + stationNumber + ')">More Information</p>'
+            ;
+        var marker = new google.maps.Marker({
+          position: location,
+          draggable: false,
+          animation: google.maps.Animation.DROP,
+          map: map,
+          contentString: infoString,    
+          title: stationName
+          });
+         var infowindow = new google.maps.InfoWindow({});
+         marker.addListener('click', function() {
+           infowindow.setContent(this.contentString);
+           infowindow.open(map, this);
+     });
+    
+    
+        {% endfor %}  
+        // some parts adapted from: https://stackoverflow.com/questions/30012913/google-map-api-v3-add-multiple-infowindows   
+    };
+ 
+    function insertAddInfo(currentStation){
+        chosenStation = currentStation;
+        document.getElementById('infoTitle').innerHTML = '<h2> Information for:' + currentStation + '</h2>';
+        //document.getElementById('additionalInfo').style.display = 'block';
+        createChart(currentStation);
+    }    
+    function createChart(currentStation){
+        var xmlhttp = new XMLHttpRequest();
+        var url = "/available/" + currentStation;
+        
+        google.charts.load('current', {packages: ['corechart']});
+        google.charts.setOnLoadCallback(drawWeeklyChart);
+        console.log(url);
+        xmlhttp.onreadystatechange = function() {
+            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                var data = JSON.parse(xmlhttp.response);
+                console.log('data', data);
+                drawWeeklyChart(data);
+                }
+            };
+        xmlhttp.open("GET",url, true);
+        xmlhttp.send();
+        }
+    </script>
+<script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBRUrdJ4Tz9rLrHrOkwJWpA9QSYNJbWQ0Q&callback=initMap">
+</script>
+     </div>
+    <div id = 'infoTitle'></div>
+    
+        <select id="myDropdown" onchange = "insertAddInfo(value)"></select>
+    <script>
+        var stations = [];
+        var listItem = '';
+        {% for Station in Static %}
+        //var stationAddress = '{{ Station.address}}';
+        stations.push({
+            key: '{{ Station.address }}',
+            value: {{ Station.number }}});
+            {% endfor %}
+        //stations.sort(function(a,b) {return (a.key > b.key) ? 1 : ((b.key > a.key) ? -1 : 0);} );
+        //stations.sort(key);
+        for(i=0; i < stations.length; i++){
+            listItem += '<option value='+ stations[i].value+'>' + stations[i].key + '</option>';
+        }
+        document.getElementById('myDropdown').innerHTML = listItem;
+        </script>
+    <select id="dayOfWeek" onchange="insertAddHourlyInfo(value)" >
+        <option>Choose Day</option>
+        <option value =0>Monday</option>
+        <option value =1>Tuesday</option>
+        <option value =2>Wednesday</option>
+        <option value =3>Thursday</option>
+        <option value =4>Friday</option>
+        <option value =5>Saturday</option>
+        <option value =6>Sunday</option>
+    </select>
+  <div id = "chart"></div>
+    <div id = "hourlyChart"></div>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
-      google.charts.load('current', {packages: ['corechart']});
-      google.charts.setOnLoadCallback(drawChart);
+      
 
-      function drawChart() {
+      function drawWeeklyChart(data) {
+         // document.getElementById('infoTitle').innerHTML = data[0]["ROUND(AVG(available_bikes))"];
         var data = google.visualization.arrayToDataTable([
-          ['Year', 'Sales', {role: 'style'}],
-          ['2004',  1000, 'silver'],
-          ['2005',  1170, 'red'],
-          ['2006',  660, 'green'],
-          ['2007',  1030, 'blue']
+          ['Day', 'Number of Bikes Available'],
+          ['Monday', data[0]["ROUND(AVG(available_bikes))"]],
+          ['Tuesday',  data[1]["ROUND(AVG(available_bikes))"]],
+          ['Wednesday',   data[2]["ROUND(AVG(available_bikes))"]],
+          ['Thursday',  data[3]["ROUND(AVG(available_bikes))"]],
+          ['Friday',  data[4]["ROUND(AVG(available_bikes))"]],
+          ['Saturday',  data[5]["ROUND(AVG(available_bikes))"]],
+          ['Sunday',  data[6]["ROUND(AVG(available_bikes))"]]
         ]);
 
         var options = {
-          title: 'Company Performance',
-          
+          title: 'Daily Avg. Bike Availability',
+          vAxis: {minValue: 0},
+          height:300,
+          width: 400,
           legend: { position: 'bottom' }
         };
 
-        var chart = new google.visualization.ColumnChart(document.getElementById('curve_chart'));
+        var chart = new google.visualization.LineChart(document.getElementById('chart'));
 
         chart.draw(data, options);
       }
     </script>
-  </head>
-  <body>
-    <div id="curve_chart" style="width: 900px; height: 500px"></div>
-  </body>
+        <script type="text/javascript">
+            
+        function insertAddHourlyInfo(day){
+        //var selected = document.getElementById('myDropdown')HTMLOptionElement.value;
+        //getElementById('infoTitle').innerHTML = '<h2> Information for:' + selected + '</h2>';
+        //document.getElementById('additionalInfo').style.display = 'block';
+        
+        createHourlyChart(chosenStation,day);
+        };    
+        function createHourlyChart(currentStation,day){
+        var xmlhttp = new XMLHttpRequest();
+        var url = "/hourly/" + currentStation + "/" + day;
+        
+        google.charts.load('current', {packages: ['corechart']});
+        google.charts.setOnLoadCallback(drawHourlyChart);
+        console.log(url);
+        xmlhttp.onreadystatechange = function() {
+            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                var data = JSON.parse(xmlhttp.response);
+                console.log('data', data);
+                drawHourlyChart(data);
+                }
+            };
+        xmlhttp.open("GET",url, true);
+        xmlhttp.send();
+        }
+      function drawHourlyChart(data) {
+         // document.getElementById('infoTitle').innerHTML = data[0]["ROUND(AVG(available_bikes))"];}
+        var data = google.visualization.arrayToDataTable([
+             ['Time', 'Number of Bikes Available'],
+             ['12am', data[0]["ROUND(AVG(available_bikes))"]],
+             ['1am', data[1]["ROUND(AVG(available_bikes))"]],
+             ['2am', data[2]["ROUND(AVG(available_bikes))"]],
+             ['3am', data[3]["ROUND(AVG(available_bikes))"]],
+             ['4am', data[4]["ROUND(AVG(available_bikes))"]],
+             ['5am', data[5]["ROUND(AVG(available_bikes))"]],
+             ['6am', data[6]["ROUND(AVG(available_bikes))"]],
+             ['7am', data[7]["ROUND(AVG(available_bikes))"]],
+             ['8am', data[8]["ROUND(AVG(available_bikes))"]],
+             ['9am', data[9]["ROUND(AVG(available_bikes))"]],
+             ['10am', data[10]["ROUND(AVG(available_bikes))"]],
+             ['11am', data[11]["ROUND(AVG(available_bikes))"]],
+             ['12pm', data[12]["ROUND(AVG(available_bikes))"]],
+             ['1pm', data[13]["ROUND(AVG(available_bikes))"]],
+             ['2pm', data[14]["ROUND(AVG(available_bikes))"]],
+             ['3pm', data[15]["ROUND(AVG(available_bikes))"]],
+             ['4pm',data[16]["ROUND(AVG(available_bikes))"]],
+             ['5pm', data[17]["ROUND(AVG(available_bikes))"]],
+             ['6pm', data[18]["ROUND(AVG(available_bikes))"]],
+             ['7pm', data[19]["ROUND(AVG(available_bikes))"]],
+             ['8pm', data[20]["ROUND(AVG(available_bikes))"]],
+             ['9pm', data[21]["ROUND(AVG(available_bikes))"]],
+             ['10pm', data[22]["ROUND(AVG(available_bikes))"]],
+             ['11pm', data[23]["ROUND(AVG(available_bikes))"]]
+        ]);
+
+        var options = {
+          title: 'Hourly Avg. Bike Availability',
+          vAxis: {minValue: 0,
+                 gridlines: {count:7}},
+          height:300,
+          width: 400,
+          legend: { position: 'bottom' }
+        };
+
+        var chart = new google.visualization.LineChart(document.getElementById('hourlyChart'));
+        chart.draw(data, options);
+      }
+    </script>
+
+</body>
 </html>

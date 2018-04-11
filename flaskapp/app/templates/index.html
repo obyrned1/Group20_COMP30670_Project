@@ -1,6 +1,7 @@
 <!-- dummyapp/app/templates/index.html -->
 <html>
 <head>
+<link rel="stylesheet" type="text/css" href="./static/styling.css">
 <title>{{ Title }}</title>
 </head>
 <body>
@@ -104,7 +105,7 @@
         <option value =5>Saturday</option>
         <option value =6>Sunday</option>
     </select>
-  <div id = "chart"></div>
+  <div id = "chart" ></div>
     <div id = "hourlyChart"></div>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
@@ -126,6 +127,8 @@
         var options = {
           title: 'Daily Avg. Bike Availability',
           vAxis: {minValue: 0},
+          //height:300,
+          //width: 400,
           legend: { position: 'bottom' }
         };
 
@@ -195,6 +198,7 @@
           vAxis: {minValue: 0,
                  gridlines: {count:7}},
           height:300,
+          width: 400,
           legend: { position: 'bottom' }
         };
 
