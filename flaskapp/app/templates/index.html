@@ -206,6 +206,17 @@
         chart.draw(data, options);
       }
     </script>
+    <div id=weather></div>
+    <script src = "http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.6.2.min.js"></script>
+    <button id = "getIt" onclick = "getJSON()">Get JSON</button>
+    <script>
+function getJSON(){
+        var weather;
+        $.getJSON("http://api.openweathermap.org/data/2.5/weather?q=Dublin&id=7778677&APPID=2abe029b7b8d40e80d1ed447f4522f0d",function(json){
+            document.write(JSON.stringify(json));
+        });
+    }
+</script>
 
 </body>
 </html>
