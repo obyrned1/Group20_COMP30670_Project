@@ -3,6 +3,7 @@
 <head>
 <title>{{ Title }}</title>
 <link rel="stylesheet" href="{{ url_for('static', filename='css/styling.css') }}">
+<script src = "http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.6.2.min.js"></script>
 </head>
 <body>
 <h1>DUBLIN BIKES</h1>
@@ -29,21 +30,19 @@
   
 <!--Hourly Chart-->
 <div id = "hourlyChart"></div>
+    
+<!-- Weather API -->   
+<div><a href="#" class="get_weather">Get weather</a></div>
+<div id="result" style="display: none">
+    <div id="weather"></div>
+    <div id= "temp"></div>
+    <div id= "humidity"></div>
+    <div id= "wind"></div>
+    <a href="#" class="hide">Hide</a>
+</div>
 
 
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    
-    <div id=weather></div>
-    <script src = "http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.6.2.min.js"></script>
-    <button id = "getIt" onclick = "getJSON()">Get JSON</button>
-    <script>
-function getJSON(){
-        var weather;
-        $.getJSON("http://api.openweathermap.org/data/2.5/weather?q=Dublin&id=7778677&APPID=2abe029b7b8d40e80d1ed447f4522f0d",function(json){
-            document.write(JSON.stringify(json));
-        });
-    }
-</script>
   
 <!-- The Map -->
 <script>
@@ -228,6 +227,35 @@ function getJSON(){
         chart.draw(data, options);
       }
     </script>
+
+
+<!-- Weather API --> 
+<script type="text/javascript">
+  jQuery(function($){
+    function getWeather(){
+      $.ajax("http://api.openweathermap.org/data/2.5/weather?q=Dublin&id=7778677&APPID=2abe029b7b8d40e80d1ed447f4522f0d", {
+        dataType: 'json',
+        success: function(json) {
+          $('div#weather').text("Description: " +json.weather[0].description);
+            $('div#temp').text("Temperature: " + json.main.temp);
+            $('div#humidity').text("Humidity: " + json.main.humidity);
+            $('div#wind').text("Windspeed: " + json.wind.speed);
+        }
+      });
+    }
+    $('a.get_weather').click(function(e) {
+      e.preventDefault();
+      $(this).hide();
+      getWeather();
+      $('#result').fadeIn(1000);
+    });
+    $('a.hide').click(function(e) {
+      e.preventDefault();
+      $('#result').hide();
+      $('a.get_weather').show();
+    })
+  })
+</script>
 
 </body>
 </html>
