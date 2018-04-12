@@ -19,15 +19,43 @@ h1 {
 }
 */
 
+#dds{
+    float: left;
+    width: 100%;
+    margin-left: auto;
+    margin-top: 30px;
+    margin-right: auto;
+    text-align: center;   
+}
+
 #chart{
     float: left;
-    width: 35%;
+    width: 40%;
     height: 300px;
+    display: inline-block;
 }
 
 #hourlyChart{
-    float: left;
-    width: 35%;
+    float: right;
+    width: 40%;
     height: 300px;
+    display: inline-block;
 }
 
+#dropdownHolder{
+    width: 20%;
+    float left: ;
+    height: 300px;
+    display: inline-block;
+}
+
+.loader {
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+    background: url('../bike_sticker.gif') 50% 50% no-repeat rgb(249,249,249);
+    opacity: .8;
+}
