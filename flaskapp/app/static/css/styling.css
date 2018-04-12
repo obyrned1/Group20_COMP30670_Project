@@ -1,0 +1,23 @@
+h1 {
+    color: green;
+    align-content: center;
+}
+
+
+#map{
+    float: left;
+    width: 100%;
+    height: 600px;
+}
+
+#chart{
+    float: left;
+    width: 40%;
+    height: 300px;
+}
+
+#hourlyChart{
+    float: right;
+    width: 40%;
+    height: 300px;
+}

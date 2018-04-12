@@ -1,8 +1,8 @@
 <!-- dummyapp/app/templates/index.html -->
 <html>
 <head>
-<link rel="stylesheet" type="text/css" href="./static/styling.css">
 <title>{{ Title }}</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/styling.css') }}">
 </head>
 <body>
 <h1>DUBLIN BIKES</h1>
@@ -197,8 +197,8 @@
           title: 'Hourly Avg. Bike Availability',
           vAxis: {minValue: 0,
                  gridlines: {count:7}},
-          height:300,
-          width: 400,
+          //height:300,
+          //width: 400,
           legend: { position: 'bottom' }
         };
 
