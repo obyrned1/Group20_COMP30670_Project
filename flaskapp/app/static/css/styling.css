@@ -10,6 +10,15 @@ h1 {
     height: 600px;
 }
 
+/*
+.get_weather{
+    position: fixed;
+    z-index: 2;
+    top: 50%;
+    left: 50%;
+}
+*/
+
 #chart{
     float: left;
     width: 35%;

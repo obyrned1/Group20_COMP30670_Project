@@ -238,7 +238,7 @@
         dataType: 'json',
         success: function(json) {
           $('div#weather').text("Description: " +json.weather[0].description);
-            $('div#temp').text("Temperature: " + json.main.temp);
+            $('div#temp').text("Temperature: " + (json.main.temp - 273.15));
             $('div#humidity').text("Humidity: " + json.main.humidity);
             $('div#wind').text("Windspeed: " + json.wind.speed);
         }
