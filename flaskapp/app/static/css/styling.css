@@ -12,12 +12,13 @@ h1 {
 
 #chart{
     float: left;
-    width: 40%;
+    width: 35%;
     height: 300px;
 }
 
 #hourlyChart{
-    float: right;
-    width: 40%;
+    float: left;
+    width: 35%;
     height: 300px;
 }
+
