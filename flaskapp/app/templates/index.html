@@ -88,18 +88,33 @@ $(window).load(function() {
           draggable: false,
           map: map,
           contentString: infoString,    
-          title: stationName
-          });
+          title: stationName,
+          available: {{ Station.available_bikes }}
+            });
+        
+    
          var infowindow = new google.maps.InfoWindow({});
          marker.addListener('click', function() {
            infowindow.setContent(this.contentString);
            infowindow.open(map, this);
      });
+          
+        if (  marker.available >= 15) {
+                marker.setIcon('http://maps.google.com/mapfiles/ms/icons/green-dot.png');
+        }
+        else if ( marker.available >= 10) {
+                marker.setIcon('http://maps.google.com/mapfiles/ms/icons/yellow-dot.png');
+            }
+        else {
+                marker.setIcon('http://maps.google.com/mapfiles/ms/icons/red-dot.png');
+            }
     
     
         {% endfor %}  
         // some parts adapted from: https://stackoverflow.com/questions/30012913/google-map-api-v3-add-multiple-infowindows   
+        
     };
+    
  
     function insertAddInfo(currentStation){
         chosenStation = currentStation;
