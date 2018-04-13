@@ -73,10 +73,11 @@ $(window).load(function() {
         
         var location = {lat: {{ Station.position.lat }}, lng: {{ Station.position.lng }},};
         var stationName = ' {{ Station.name }} ';
-        var availablebikes = '{{ Station.available_bikes }}';
-        var availablebikestands = '{{ Station.available_bike_stands}}';
+        var availablebikes = {{ Station.available_bikes }};
+        var availablebikestands = {{ Station.available_bike_stands}};
         var stationNumber = '{{ Station.number}}';
         var address = '{{ Station.address }}';
+        var totalBikes = availablebikes + availablebikestands;
         var infoString = 
             '<h4>' + address + '</h4>'+
             '<p> No. of Available Bikes : ' + availablebikes + '</p>' + 
@@ -89,7 +90,7 @@ $(window).load(function() {
           map: map,
           contentString: infoString,    
           title: stationName,
-          available: {{ Station.available_bikes }}
+          available: (availablebikes/totalBikes)
             });
         
     
@@ -99,11 +100,14 @@ $(window).load(function() {
            infowindow.open(map, this);
      });
           
-        if (  marker.available >= 15) {
+        if (  marker.available >= 0.75) {
                 marker.setIcon('http://maps.google.com/mapfiles/ms/icons/green-dot.png');
         }
-        else if ( marker.available >= 10) {
+        else if ( marker.available >= 0.5) {
                 marker.setIcon('http://maps.google.com/mapfiles/ms/icons/yellow-dot.png');
+            }
+        else if ( marker.available >= 0.2) {
+                marker.setIcon('http://maps.google.com/mapfiles/ms/icons/orange-dot.png');
             }
         else {
                 marker.setIcon('http://maps.google.com/mapfiles/ms/icons/red-dot.png');
