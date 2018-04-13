@@ -1,261 +1,93 @@
-<!-- dummyapp/app/templates/index.html -->
+<!DOCTYPE html>
 <html>
-<head>
-<title>{{ Title }}</title>
-<link rel="stylesheet" href="{{ url_for('static', filename='css/styling.css') }}">
-<script src = "http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.6.2.min.js"></script>
-</head>
-<body>
-<h1>DUBLIN BIKES</h1>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <title>Adding a Custom Overlay</title>
+    <style>
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+        height: 100%;
+      }
+      /* Optional: Makes the sample page fill the window. */
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBRUrdJ4Tz9rLrHrOkwJWpA9QSYNJbWQ0Q&callback=initMap"></script>
+    <script>
+      var overlay;
+      USGSOverlay.prototype = new google.maps.OverlayView();
 
-<!--The Map-->
-<div id="map" style="width:100%;height:400px;"></div>
-    
-<div>
-<select id="myDropdown" onchange = "insertAddInfo(value)"></select>    
-<select id="dayOfWeek" onchange="insertAddHourlyInfo(value)" >
-        <option>Choose Day</option>
-        <option value =0>Monday</option>
-        <option value =1>Tuesday</option>
-        <option value =2>Wednesday</option>
-        <option value =3>Thursday</option>
-        <option value =4>Friday</option>
-        <option value =5>Saturday</option>
-        <option value =6>Sunday</option>
-</select>
-</div> 
-    
-<!--Weekly Chart-->
-<div id = "chart" ></div>
-  
-<!--Hourly Chart-->
-<div id = "hourlyChart"></div>
-    
-<!-- Weather API -->   
-<div><a href="#" class="get_weather">Get weather</a></div>
-<div id="result" style="display: none">
-    <div id="weather"></div>
-    <div id= "temp"></div>
-    <div id= "humidity"></div>
-    <div id= "wind"></div>
-    <a href="#" class="hide">Hide</a>
-</div>
-
-
-<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-  
-<!-- The Map -->
-<script>
-    function initMap() {
-        var dublin = {lat: 53.346880, lng: -6.265615,};
-        var map = new  google.maps.Map(document.getElementById('map'), {
-          zoom: 14.1,
-          center: dublin
+      function initMap() {
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 11,
+          center: {lat: 53.346880, lng: -6.265615,,
+          mapTypeId: 'satellite'
         });
-    
-        {% for Station in Stations %}
-        
-        var location = {lat: {{ Station.position.lat }}, lng: {{ Station.position.lng }},};
-        var stationName = ' {{ Station.name }} ';
-        var availablebikes = '{{ Station.available_bikes }}';
-        var availablebikestands = '{{ Station.available_bike_stands}}';
-        var stationNumber = '{{ Station.number}}';
-        var address = '{{ Station.address }}';
-        var infoString = 
-            '<h4>' + address + '</h4>'+
-            '<p> No. of Available Bikes : ' + availablebikes + '</p>' + 
-            '<p> No. of Available Stands : ' + availablebikestands + '</p>' +
-            '<p onclick="insertAddInfo(' + stationNumber + ')">More Information</p>'
-            ;
-        var marker = new google.maps.Marker({
-          position: location,
-          draggable: false,
-          animation: google.maps.Animation.DROP,
-          map: map,
-          contentString: infoString,    
-          title: stationName
-          });
-         var infowindow = new google.maps.InfoWindow({});
-         marker.addListener('click', function() {
-           infowindow.setContent(this.contentString);
-           infowindow.open(map, this);
-     });
-    
-    
-        {% endfor %}  
-        // some parts adapted from: https://stackoverflow.com/questions/30012913/google-map-api-v3-add-multiple-infowindows   
-    };
- 
-    function insertAddInfo(currentStation){
-        createChart(currentStation);
-    }    
-        
-    function createChart(currentStation){
-        var xmlhttp = new XMLHttpRequest();
-        var url = "/available/" + currentStation;
-        
-        google.charts.load('current', {packages: ['corechart']});
-        google.charts.setOnLoadCallback(drawWeeklyChart);
-        console.log(url);
-        xmlhttp.onreadystatechange = function() {
-            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-                var data = JSON.parse(xmlhttp.response);
-                console.log('data', data);
-                drawWeeklyChart(data);
-                }
-            };
-        xmlhttp.open("GET",url, true);
-        xmlhttp.send();
-        }
-    </script>
-<script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBRUrdJ4Tz9rLrHrOkwJWpA9QSYNJbWQ0Q&callback=initMap">
-</script>
-    
-<!--The Dropdown-->
-<script>
-        var stations = [];
-        var listItem = '';
-        {% for Station in Static %}
-        //var stationAddress = '{{ Station.address}}';
-        stations.push({
-            key: '{{ Station.address }}',
-            value: {{ Station.number }}});
-            {% endfor %}
-        //stations.sort(function(a,b) {return (a.key > b.key) ? 1 : ((b.key > a.key) ? -1 : 0);} );
-        //stations.sort(key);
-        for(i=0; i < stations.length; i++){
-            listItem += '<option value='+ stations[i].value+'>' + stations[i].key + '</option>';
-        }
-        document.getElementById('myDropdown').innerHTML = listItem;
-</script>
-    
-<!--Weekly Chart-->
-<script type="text/javascript">
-      function drawWeeklyChart(data) {
-        var data = google.visualization.arrayToDataTable([
-          ['Day', 'Number of Bikes Available'],
-          ['Monday', data[0]["ROUND(AVG(available_bikes))"]],
-          ['Tuesday',  data[1]["ROUND(AVG(available_bikes))"]],
-          ['Wednesday',   data[2]["ROUND(AVG(available_bikes))"]],
-          ['Thursday',  data[3]["ROUND(AVG(available_bikes))"]],
-          ['Friday',  data[4]["ROUND(AVG(available_bikes))"]],
-          ['Saturday',  data[5]["ROUND(AVG(available_bikes))"]],
-          ['Sunday',  data[6]["ROUND(AVG(available_bikes))"]]
-        ]);
 
-        var options = {
-          title: 'Daily Avg. Bike Availability',
-          vAxis: {minValue: 0},
-          //height:300,
-          //width: 400,
-          legend: { position: 'bottom' }
-        };
+        var bounds = new google.maps.LatLngBounds(
+            new google.maps.LatLng(53.363505, -6.216626),
+            new google.maps.LatLng(53.354950, -6.215553));
 
-        var chart = new google.visualization.LineChart(document.getElementById('chart'));
+        var srcImage = 'https://developers.google.com/maps/documentation/' +
+            'javascript/examples/full/images/talkeetna.png';
 
-        chart.draw(data, options);
+        overlay = new USGSOverlay(bounds, srcImage, map);
       }
-    </script>
-    
-<!--Hourly Chart-->
-<script type="text/javascript">
-            
-        function insertAddHourlyInfo(day){
-        //var selected = document.getElementById('myDropdown')HTMLOptionElement.value;
-        //getElementById('infoTitle').innerHTML = '<h2> Information for:' + selected + '</h2>';
-        //document.getElementById('additionalInfo').style.display = 'block';
-        
-        createHourlyChart(chosenStation,day);
-        };    
-        function createHourlyChart(currentStation,day){
-        var xmlhttp = new XMLHttpRequest();
-        var url = "/hourly/" + currentStation + "/" + day;
-        
-        google.charts.load('current', {packages: ['corechart']});
-        google.charts.setOnLoadCallback(drawHourlyChart);
-        console.log(url);
-        xmlhttp.onreadystatechange = function() {
-            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-                var data = JSON.parse(xmlhttp.response);
-                console.log('data', data);
-                drawHourlyChart(data);
-                }
-            };
-        xmlhttp.open("GET",url, true);
-        xmlhttp.send();
-        }
-      function drawHourlyChart(data) {
-        var data = google.visualization.arrayToDataTable([
-             ['Time', 'Number of Bikes Available'],
-             ['12am', data[0]["ROUND(AVG(available_bikes))"]],
-             ['1am', data[1]["ROUND(AVG(available_bikes))"]],
-             ['2am', data[2]["ROUND(AVG(available_bikes))"]],
-             ['3am', data[3]["ROUND(AVG(available_bikes))"]],
-             ['4am', data[4]["ROUND(AVG(available_bikes))"]],
-             ['5am', data[5]["ROUND(AVG(available_bikes))"]],
-             ['6am', data[6]["ROUND(AVG(available_bikes))"]],
-             ['7am', data[7]["ROUND(AVG(available_bikes))"]],
-             ['8am', data[8]["ROUND(AVG(available_bikes))"]],
-             ['9am', data[9]["ROUND(AVG(available_bikes))"]],
-             ['10am', data[10]["ROUND(AVG(available_bikes))"]],
-             ['11am', data[11]["ROUND(AVG(available_bikes))"]],
-             ['12pm', data[12]["ROUND(AVG(available_bikes))"]],
-             ['1pm', data[13]["ROUND(AVG(available_bikes))"]],
-             ['2pm', data[14]["ROUND(AVG(available_bikes))"]],
-             ['3pm', data[15]["ROUND(AVG(available_bikes))"]],
-             ['4pm',data[16]["ROUND(AVG(available_bikes))"]],
-             ['5pm', data[17]["ROUND(AVG(available_bikes))"]],
-             ['6pm', data[18]["ROUND(AVG(available_bikes))"]],
-             ['7pm', data[19]["ROUND(AVG(available_bikes))"]],
-             ['8pm', data[20]["ROUND(AVG(available_bikes))"]],
-             ['9pm', data[21]["ROUND(AVG(available_bikes))"]],
-             ['10pm', data[22]["ROUND(AVG(available_bikes))"]],
-             ['11pm', data[23]["ROUND(AVG(available_bikes))"]]
-        ]);
 
-        var options = {
-          title: 'Hourly Avg. Bike Availability',
-          vAxis: {minValue: 0,
-                 gridlines: {count:7}},
-          //height:300,
-          //width: 400,
-          legend: { position: 'bottom' }
-        };
+      function USGSOverlay(bounds, image, map) {
 
-        var chart = new google.visualization.LineChart(document.getElementById('hourlyChart'));
-        chart.draw(data, options);
+        this.bounds_ = bounds;
+        this.image_ = image;
+        this.map_ = map;
+
+        this.div_ = null;
+
+        this.setMap(map);
       }
+      USGSOverlay.prototype.onAdd = function() {
+
+        var div = document.createElement('div');
+        div.style.borderStyle = 'none';
+        div.style.borderWidth = '0px';
+        div.style.position = 'absolute';
+
+        var img = document.createElement('img');
+        img.src = this.image_;
+        img.style.width = '100%';
+        img.style.height = '100%';
+        img.style.position = 'absolute';
+        div.appendChild(img);
+
+        this.div_ = div;
+
+        var panes = this.getPanes();
+        panes.overlayLayer.appendChild(div);
+      };
+
+      USGSOverlay.prototype.draw = function() {
+        var overlayProjection = this.getProjection();
+        var sw = overlayProjection.fromLatLngToDivPixel(this.bounds_.getSouthWest());
+        var ne = overlayProjection.fromLatLngToDivPixel(this.bounds_.getNorthEast());
+        var div = this.div_;
+        div.style.left = sw.x + 'px';
+        div.style.top = ne.y + 'px';
+        div.style.width = (ne.x - sw.x) + 'px';
+        div.style.height = (sw.y - ne.y) + 'px';
+      };
+
+      USGSOverlay.prototype.onRemove = function() {
+        this.div_.parentNode.removeChild(this.div_);
+        this.div_ = null;
+      };
+      google.maps.event.addDomListener(window, 'load', initMap);
     </script>
-
-
-<!-- Weather API --> 
-<script type="text/javascript">
-  jQuery(function($){
-    function getWeather(){
-      $.ajax("http://api.openweathermap.org/data/2.5/weather?q=Dublin&id=7778677&APPID=2abe029b7b8d40e80d1ed447f4522f0d", {
-        dataType: 'json',
-        success: function(json) {
-          $('div#weather').text("Description: " +json.weather[0].description);
-            $('div#temp').text("Temperature: " + json.main.temp);
-            $('div#humidity').text("Humidity: " + json.main.humidity);
-            $('div#wind').text("Windspeed: " + json.wind.speed);
-        }
-      });
-    }
-    $('a.get_weather').click(function(e) {
-      e.preventDefault();
-      $(this).hide();
-      getWeather();
-      $('#result').fadeIn(1000);
-    });
-    $('a.hide').click(function(e) {
-      e.preventDefault();
-      $('#result').hide();
-      $('a.get_weather').show();
-    })
-  })
-</script>
-
-</body>
+  </head>
+  <body>
+    <div id="map"></div>
+  </body>
 </html>
