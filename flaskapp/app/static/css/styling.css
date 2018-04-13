@@ -1,6 +1,5 @@
 h1 {
     color: black;
-    align-content: center;
     text-align: center;
 }
 
@@ -44,8 +43,9 @@ body{
     border: solid 2px;
 }
 
-#centredetail {
+.centredetail {
     text-align: center;
+    border: solid 2px;
 }
 
 #hourlyChart{
@@ -86,4 +86,13 @@ body{
 
 #footer a:hover {
     background-color: white;
+}
+
+.minorinfo {
+    width: 25%;
+    height: 200px;
+    display: inline-block;
+    margin: 10px;
+    border: solid 2px;
+    overflow: auto;
 }

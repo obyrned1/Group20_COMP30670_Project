@@ -21,9 +21,20 @@ $(window).load(function() {
 <!--The Map-->
 <div id="map"></div>
 
-<h1>DUBLIN BIKES</h1>
+<div class = "centredetail">
+    <div class = "minorinfo"><p>Dublin Bikes</p></div>
+    <div class = "minorinfo"><h2>Dublin Bikes</h2></div>
+    <div class = "minorinfo">
+        <div>
+            <p id="weather"></p>
+            <p id= "temp"></p>
+            <p id= "humidity"></p>
+            <p id= "wind"></p>
+        </div>
+    </div>
+</div>
     
-<div id = "centredetail">    
+<div class = "centredetail">    
 <!--Weekly Chart-->
 <div id = "chart" ></div>
   
@@ -55,12 +66,6 @@ $(window).load(function() {
 
 <!-- Footer -->
 <div id="footer">More info: <a href ="http://www.dublinbikes.ie/">DublinBikes.ie</a></div>
-    <div id="result">
-    <p id="weather"></p>
-    <p id= "temp"></p>
-    <p id= "humidity"></p>
-    <p id= "wind"></p>
-</div>
 
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
   
@@ -72,7 +77,10 @@ $(window).load(function() {
           zoom: 13.6,
           center: dublin
         });
-    
+        
+        var bikeLayer = new google.maps.BicyclingLayer();
+        bikeLayer.setMap(map);
+        
         {% for Station in Stations %}
         
         var location = {lat: {{ Station.position.lat }}, lng: {{ Station.position.lng }},};
@@ -160,6 +168,9 @@ $(window).load(function() {
             key: '{{ Station.address }}',
             value: {{ Station.number }}});
             {% endfor %}
+            stations = stations.sort(function (a, b) {
+            return a.key.localeCompare( b.key );
+            });
         //stations.sort(function(a,b) {return (a.key > b.key) ? 1 : ((b.key > a.key) ? -1 : 0);} );
         //stations.sort(key);
         for(i=0; i < stations.length; i++){
