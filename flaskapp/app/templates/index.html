@@ -18,7 +18,12 @@ $(window).load(function() {
 
 <h1>DUBLIN BIKES</h1>
 
-
+<div id="result">
+    <p id="weather"></p>
+    <p id= "temp"></p>
+    <p id= "humidity"></p>
+    <p id= "wind"></p>
+</div>
 <!--The Map-->
 <div id="map"></div>
 
@@ -31,6 +36,7 @@ $(window).load(function() {
 <div id="dds">
 <select id="myDropdown" onchange = "insertAddInfo(value); resetDropdown()"></select>    
 <select id="dayOfWeek" onchange="insertAddHourlyInfo(value)" >
+        <option value=7>Choose Day</option>
         <option value =0>Monday</option>
         <option value =1>Tuesday</option>
         <option value =2>Wednesday</option>
@@ -49,13 +55,7 @@ $(window).load(function() {
 </div>
 <!-- Weather API -->   
 <!--<div><a href="#" class="get_weather">Get weather</a></div>-->
-<div id="result" style="display: none">
-    <div id="weather"></div>
-    <div id= "temp"></div>
-    <div id= "humidity"></div>
-    <div id= "wind"></div>
-    <a href="#" class="hide">Hide</a>
-</div>
+
 
 <!-- Footer -->
 <div id="footer">More info: <a href ="http://www.dublinbikes.ie/">DublinBikes.ie</a></div>
@@ -258,30 +258,54 @@ $(window).load(function() {
 
 <!-- Weather API --> 
 <script type="text/javascript">
-  jQuery(function($){
-    function getWeather(){
-      $.ajax("http://api.openweathermap.org/data/2.5/weather?q=Dublin&id=7778677&APPID=2abe029b7b8d40e80d1ed447f4522f0d", {
-        dataType: 'json',
-        success: function(json) {
-          $('div#weather').text("Description: " +json.weather[0].description);
-            $('div#temp').text("Temperature: " + (json.main.temp - 273.15));
-            $('div#humidity').text("Humidity: " + json.main.humidity);
-            $('div#wind').text("Windspeed: " + json.wind.speed);
-        }
-      });
-    }
-    $('a.get_weather').click(function(e) {
-      e.preventDefault();
-      $(this).hide();
-      getWeather();
-      $('#result').fadeIn(1000);
+    $( document ).ready(function() {
+        console.log( "document loaded" );
+        getWeather();
     });
-    $('a.hide').click(function(e) {
-      e.preventDefault();
-      $('#result').hide();
-      $('a.get_weather').show();
-    })
-  })
+
+    function getWeather(){
+//call weather API from openweathermap
+    var weatherdata;
+    $.getJSON("http://api.openweathermap.org/data/2.5/weather?q=Dublin&id=7778677&APPID=2abe029b7b8d40e80d1ed447f4522f0d",function(data){
+    var currentWeather = data.weather[7].description;
+    var current_temp=data.main.temp;
+    var wind_speed=data.wind.speed;
+    var icon = data.weather[0].icon;
+    var iconUrl = ("<img src='http://openweathermap.org/img/w/" + icon + ".png'>");
+    
+    $('p#weather').html("Description: " + currentWeather);
+    $('p#temp').html("Temperature: " + parseInt( + current_temp - 273.15) + " °C");
+    $('p#humidity').html("Wind Speed: " + wind_speed + " m/s");
+    $('p#wind').html(iconUrl);
+    
+})
+}
+    
+    
+//  jQuery(function($){
+//    function getWeather(){
+//      $.ajax("http://api.openweathermap.org/data/2.5/weather?q=Dublin&id=7778677&APPID=2abe029b7b8d40e80d1ed447f4522f0d", {
+//        dataType: 'json',
+//        success: function(json) {
+//          $('div#weather').text("Description: " +json.weather[0].description);
+//            $('div#temp').text("Temperature: " + (json.main.temp - 273.15));
+//            $('div#humidity').text("Humidity: " + json.main.humidity);
+//            $('div#wind').text("Windspeed: " + json.wind.speed);
+//        }
+//      });
+//    }
+//    $('a.get_weather').click(function(e) {
+//      e.preventDefault();
+//      $(this).hide();
+//      getWeather();
+//      $('#result').fadeIn(1000);
+//    });
+//    $('a.hide').click(function(e) {
+//      e.preventDefault();
+//      $('#result').hide();
+//      $('a.get_weather').show();
+//    })
+//  })
 </script>
 
 </body>
