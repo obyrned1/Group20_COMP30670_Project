@@ -96,7 +96,7 @@ def getHourlyData(currentStation, day):
     engine = connectDB()
     hourlyData = []
     conn = engine.connect()
-    for i in range (0,24):
+    for i in range (5,24):
         string = "SELECT ROUND(AVG(available_bikes)) FROM DynamicData WHERE number =  {} AND EXTRACT(HOUR FROM last_update) = {} AND WEEKDAY(last_update)= {};".format(currentStation,i,day)
         rows = conn.execute(string)
         for row in rows:
