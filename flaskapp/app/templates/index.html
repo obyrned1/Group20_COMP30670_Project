@@ -16,8 +16,6 @@ $(window).load(function() {
 <body>
 <div class="loader"></div> 
 
-<h1>DUBLIN BIKES</h1>
-
 <div id="result">
     <p id="weather"></p>
     <p id= "temp"></p>
@@ -27,6 +25,8 @@ $(window).load(function() {
 <!--The Map-->
 <div id="map"></div>
 
+<h1>DUBLIN BIKES</h1>
+    
 <div id = "centredetail">    
 <!--Weekly Chart-->
 <div id = "chart" ></div>
@@ -36,7 +36,7 @@ $(window).load(function() {
 <div id="dds">
 <select id="myDropdown" onchange = "insertAddInfo(value); resetDropdown()"></select>    
 <select id="dayOfWeek" onchange="insertAddHourlyInfo(value)" >
-        <option value=7>Choose Day</option>
+        <option value="" selected disabled hidden>Choose Day</option>
         <option value =0>Monday</option>
         <option value =1>Tuesday</option>
         <option value =2>Wednesday</option>
@@ -67,7 +67,7 @@ $(window).load(function() {
     function initMap() {
         var dublin = {lat: 53.346880, lng: -6.265615,};
         var map = new  google.maps.Map(document.getElementById('map'), {
-          zoom: 14.1,
+          zoom: 13.6,
           center: dublin
         });
     
@@ -195,8 +195,10 @@ $(window).load(function() {
 <!--Hourly Chart-->
 <script type="text/javascript">
         function resetDropdown() {
-        document.getElementById("dayOfWeek").value=0;
-        createHourlyChart(chosenStation,0);
+            var d = new Date();
+            var n = d.getDay();
+        document.getElementById("dayOfWeek").value=n-1;
+        createHourlyChart(chosenStation, n-1);
         }   
         function insertAddHourlyInfo(day){
         
