@@ -81,6 +81,8 @@ $(window).load(function() {
         var bikeLayer = new google.maps.BicyclingLayer();
         bikeLayer.setMap(map);
         
+        var heatmapData = [];
+        
         {% for Station in Stations %}
         
         var location = {lat: {{ Station.position.lat }}, lng: {{ Station.position.lng }},};
@@ -104,7 +106,11 @@ $(window).load(function() {
           title: stationName,
           available: (availablebikes/totalBikes)
             });
-        
+
+    heatmapData.push(
+    {location: new google.maps.LatLng({{ Station.position.lat }}, {{ Station.position.lng }}),
+    weight: {{ Station.available_bikes }}
+});
     
          var infowindow = new google.maps.InfoWindow({});
          marker.addListener('click', function() {
@@ -128,9 +134,31 @@ $(window).load(function() {
     
         {% endfor %}  
         // some parts adapted from: https://stackoverflow.com/questions/30012913/google-map-api-v3-add-multiple-infowindows   
-        
-    };
     
+// the below was attempt at getting the heat map going
+// the heatmapData is populating correctly but below doesnt work
+        
+//            document.getElementById('chart').innerHTML = heatmapData;
+//            google.maps.event.addDomListener(map, 'zoom_changed', function() {
+//            var zoom = map.getZoom();
+//            if (zoom <= 15) {
+//                heatmap = new google.maps.visualization.HeatmapLayer({
+//                data: heatmapData,
+//                map: map
+//                });
+//                heatmap.setMap(map);
+//                heatmap.set('radius', 40);
+//            };
+//         
+//         heatmap = new google.maps.visualization.HeatmapLayer({
+//            data: heatmapData,
+//            map: map
+//            });
+//        console.log(heatmap);
+//        heatmap.setMap(map);
+//        heatmap.set('radius', 40); 
+//    };
+//    
  
     function insertAddInfo(currentStation){
         chosenStation = currentStation;
