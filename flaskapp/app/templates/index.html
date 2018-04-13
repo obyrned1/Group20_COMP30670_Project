@@ -47,7 +47,7 @@ $(window).load(function() {
 <div id = "hourlyChart"></div>
     
 <!-- Weather API -->   
-<div><a href="#" class="get_weather">Get weather</a></div>
+<!--<div><a href="#" class="get_weather">Get weather</a></div>-->
 <div id="result" style="display: none">
     <div id="weather"></div>
     <div id= "temp"></div>
@@ -81,7 +81,7 @@ $(window).load(function() {
             '<h4>' + address + '</h4>'+
             '<p> No. of Available Bikes : ' + availablebikes + '</p>' + 
             '<p> No. of Available Stands : ' + availablebikestands + '</p>' +
-            '<p onclick="insertAddInfo(' + stationNumber + ')">More Information</p>'
+            '<p onclick="insertAddInfo(' + stationNumber + ');resetDropdown()">More Information</p>'
             ;
         var marker = new google.maps.Marker({
           position: location,
@@ -180,8 +180,6 @@ $(window).load(function() {
         var options = {
           title: 'Daily Avg. Bike Availability',
           vAxis: {minValue: 0},
-          //height:300,
-          //width: 400,
           legend: { position: 'bottom' }
         };
 
@@ -221,39 +219,32 @@ $(window).load(function() {
       function drawHourlyChart(data) {
         var data = google.visualization.arrayToDataTable([
              ['Time', 'Number of Bikes Available'],
-             ['12am', data[0]["ROUND(AVG(available_bikes))"]],
-             ['1am', data[1]["ROUND(AVG(available_bikes))"]],
-             ['2am', data[2]["ROUND(AVG(available_bikes))"]],
-             ['3am', data[3]["ROUND(AVG(available_bikes))"]],
-             ['4am', data[4]["ROUND(AVG(available_bikes))"]],
-             ['5am', data[5]["ROUND(AVG(available_bikes))"]],
-             ['6am', data[6]["ROUND(AVG(available_bikes))"]],
-             ['7am', data[7]["ROUND(AVG(available_bikes))"]],
-             ['8am', data[8]["ROUND(AVG(available_bikes))"]],
-             ['9am', data[9]["ROUND(AVG(available_bikes))"]],
-             ['10am', data[10]["ROUND(AVG(available_bikes))"]],
-             ['11am', data[11]["ROUND(AVG(available_bikes))"]],
-             ['12pm', data[12]["ROUND(AVG(available_bikes))"]],
-             ['1pm', data[13]["ROUND(AVG(available_bikes))"]],
-             ['2pm', data[14]["ROUND(AVG(available_bikes))"]],
-             ['3pm', data[15]["ROUND(AVG(available_bikes))"]],
-             ['4pm',data[16]["ROUND(AVG(available_bikes))"]],
-             ['5pm', data[17]["ROUND(AVG(available_bikes))"]],
-             ['6pm', data[18]["ROUND(AVG(available_bikes))"]],
-             ['7pm', data[19]["ROUND(AVG(available_bikes))"]],
-             ['8pm', data[20]["ROUND(AVG(available_bikes))"]],
-             ['9pm', data[21]["ROUND(AVG(available_bikes))"]],
-             ['10pm', data[22]["ROUND(AVG(available_bikes))"]],
-             ['11pm', data[23]["ROUND(AVG(available_bikes))"]]
+             ['5am', data[0]["ROUND(AVG(available_bikes))"]],
+             ['6am', data[1]["ROUND(AVG(available_bikes))"]],
+             ['7am', data[2]["ROUND(AVG(available_bikes))"]],
+             ['8am', data[3]["ROUND(AVG(available_bikes))"]],
+             ['9am', data[4]["ROUND(AVG(available_bikes))"]],
+             ['10am', data[5]["ROUND(AVG(available_bikes))"]],
+             ['11am', data[6]["ROUND(AVG(available_bikes))"]],
+             ['12pm', data[7]["ROUND(AVG(available_bikes))"]],
+             ['1pm', data[8]["ROUND(AVG(available_bikes))"]],
+             ['2pm', data[9]["ROUND(AVG(available_bikes))"]],
+             ['3am', data[10]["ROUND(AVG(available_bikes))"]],
+             ['4m', data[11]["ROUND(AVG(available_bikes))"]],
+             ['5pm', data[12]["ROUND(AVG(available_bikes))"]],
+             ['6pm', data[13]["ROUND(AVG(available_bikes))"]],
+             ['7pm', data[14]["ROUND(AVG(available_bikes))"]],
+             ['8pm', data[15]["ROUND(AVG(available_bikes))"]],
+             ['9pm',data[16]["ROUND(AVG(available_bikes))"]],
+             ['10pm', data[17]["ROUND(AVG(available_bikes))"]],
+             ['11pm', data[18]["ROUND(AVG(available_bikes))"]]
         ]);
 
         var options = {
           title: 'Hourly Avg. Bike Availability',
           vAxis: {minValue: 0,
                  gridlines: {count:7}},
-          //height:300,
-          //width: 400,
-          legend: { position: 'bottom' }
+                 legend: { position: 'bottom' }
         };
 
         var chart = new google.visualization.LineChart(document.getElementById('hourlyChart'));
