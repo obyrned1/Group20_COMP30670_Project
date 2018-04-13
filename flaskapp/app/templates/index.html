@@ -29,9 +29,8 @@ $(window).load(function() {
 <!--The Dropdowns  -->
 <div id="dropdownHolder">
 <div id="dds">
-<select id="myDropdown" onchange = "insertAddInfo(value)"></select>    
+<select id="myDropdown" onchange = "insertAddInfo(value); resetDropdown()"></select>    
 <select id="dayOfWeek" onchange="insertAddHourlyInfo(value)" >
-        <option>Choose Day</option>
         <option value =0>Monday</option>
         <option value =1>Tuesday</option>
         <option value =2>Wednesday</option>
@@ -150,9 +149,8 @@ $(window).load(function() {
 <!--The Dropdown-->
 <script>
         var stations = [];
-        var listItem = '';
+        var listItem = '<option>Choose Station</option>';
         {% for Station in Static %}
-        //var stationAddress = '{{ Station.address}}';
         stations.push({
             key: '{{ Station.address }}',
             value: {{ Station.number }}});
@@ -195,11 +193,11 @@ $(window).load(function() {
     
 <!--Hourly Chart-->
 <script type="text/javascript">
-            
+        function resetDropdown() {
+        document.getElementById("dayOfWeek").value=0;
+        createHourlyChart(chosenStation,0);
+        }   
         function insertAddHourlyInfo(day){
-        //var selected = document.getElementById('myDropdown')HTMLOptionElement.value;
-        //getElementById('infoTitle').innerHTML = '<h2> Information for:' + selected + '</h2>';
-        //document.getElementById('additionalInfo').style.display = 'block';
         
         createHourlyChart(chosenStation,day);
         };    
