@@ -41,6 +41,11 @@ body{
     height: 300px;
     display: inline-block;
     margin: 10px;
+    border: solid 2px;
+}
+
+#centredetail {
+    text-align: center;
 }
 
 #hourlyChart{
@@ -48,6 +53,7 @@ body{
     height: 300px;
     display: inline-block;
     margin: 10px;
+    border: solid 2px;
 }
 
 #dropdownHolder{
@@ -55,6 +61,7 @@ body{
     height: 300px;
     display: inline-block;
     margin: 10px;
+    border: solid 2px;
 }
 
 .loader {
@@ -65,4 +72,10 @@ body{
     height: 100%;
     z-index: 9999;
     background: url('../bikeGIF.gif') 50% 50% no-repeat rgb(249,249,249);
+}
+
+#footer {
+    text-align: right;
+    padding: 5px;
+    border-top: solid;
 }
