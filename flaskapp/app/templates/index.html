@@ -26,7 +26,7 @@ $(window).load(function() {
     <div class = "minorinfo"><h2>Dublin Bikes</h2></div>
     <div class = "minorinfo">
         <div>
-            <p id="weather"></p>
+            <h3 id="weather"></h3>
             <p id= "temp"></p>
             <p id= "humidity"></p>
             <p id= "wind"></p>
@@ -132,7 +132,8 @@ $(window).load(function() {
             }
     
     
-        {% endfor %}  
+        {% endfor %}
+        }
         // some parts adapted from: https://stackoverflow.com/questions/30012913/google-map-api-v3-add-multiple-infowindows   
     
 // the below was attempt at getting the heat map going
@@ -190,7 +191,7 @@ $(window).load(function() {
 <!--The Dropdown-->
 <script>
         var stations = [];
-        var listItem = '<option>Choose Station</option>';
+        var listItem = '<option value="" selected disabled hidden>Choose Station</option>';
         {% for Station in Static %}
         stations.push({
             key: '{{ Station.address }}',
@@ -316,7 +317,7 @@ $(window).load(function() {
     var icon = data.weather[0].icon;
     var iconUrl = ("<img src='http://openweathermap.org/img/w/" + icon + ".png'>");
     
-    $('p#weather').html("Description: " + currentWeather);
+    $('h3#weather').html("Current Weather in Dublin");
     $('p#temp').html("Temperature: " + parseInt( + current_temp - 273.15) + " °C");
     $('p#humidity').html("Wind Speed: " + wind_speed + " m/s");
     $('p#wind').html(iconUrl);
