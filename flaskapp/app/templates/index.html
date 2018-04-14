@@ -20,6 +20,8 @@ $(window).load(function() {
 
 <!--The Map-->
 <div id="map"></div>
+<div id="legend"><h3>Legend</h3></div>
+<div id="legend2"></div>
 
 <div class = "centredetail">
     <div class = "minorinfo"><p>Dublin Bikes</p></div>
@@ -134,6 +136,53 @@ $(window).load(function() {
     
     
         {% endfor %}
+        var icons = {
+          green: {
+            name: '> 75% Bikes Available',
+            icon: 'http://maps.google.com/mapfiles/ms/icons/green-dot.png'
+          },
+        yellow: {
+            name: '50-75% Bikes Available',
+            icon: 'http://maps.google.com/mapfiles/ms/icons/yellow-dot.png'
+          },
+            orange: {
+            name: '25-50% Bikes Available',
+            icon: 'http://maps.google.com/mapfiles/ms/icons/orange-dot.png'
+          },
+            red: {
+            name: '< 25% Bikes Available',
+            icon: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png'
+          }
+          
+        };
+        var icons2 = {
+          trails: {
+            name: '',
+            icon: "../static/bike_trails.png"
+          }
+        };
+        var legend = document.getElementById('legend');
+        for (var key in icons) {
+          var type = icons[key];
+          var name = type.name;
+          var icon = type.icon;
+          var div = document.createElement('div');
+          div.innerHTML = '<img src="' + icon + '"height="22" width="22"> ' + name;
+          legend.appendChild(div);
+        }
+         
+        var legend2 = document.getElementById('legend');
+        for (var key in icons2) {
+          var type = icons2[key];
+          var name = type.name;
+          var icon = type.icon;
+          var div = document.createElement('div');
+          div.innerHTML = '<img src="' + icon + '"> ' + name;
+          legend.appendChild(div);
+        }
+
+        map.controls[google.maps.ControlPosition.RIGHT_TOP].push
+(document.getElementById('legend'));
         }
     function resetStation(stationNumber){
         document.getElementById("myDropdown").value=stationNumber;
