@@ -52,7 +52,7 @@ body{
     height: 300px;
     display: inline-block;
     margin: 10px;
-    border: solid 2px;
+    
 }
 
 .centredetail {
@@ -64,7 +64,7 @@ body{
     height: 300px;
     display: inline-block;
     margin: 10px;
-    border: solid 2px;
+   
 }
 
 #dropdownHolder{
@@ -72,7 +72,7 @@ body{
     height: 300px;
     display: inline-block;
     margin: 10px;
-    border: solid 2px;
+   
     overflow: auto;
 }
 
@@ -164,4 +164,10 @@ body{
   top: 49%;
   width: 100%;
   text-align: center;
+}
+
+span{
+    color: white;
+    font-weight: 600;
+    font-size: 25px;
 }
