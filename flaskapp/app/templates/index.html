@@ -22,8 +22,15 @@ $(window).load(function() {
 <div id="map"></div>
 
 <div class = "centredetail">
-    <div class = "minorinfo"><p>Dublin Bikes</p></div>
-    <div class = "minorinfo"><h2>Dublin Bikes</h2></div>
+    <div class = "minorinfo">
+        <a class="twitter-timeline"  href="https://twitter.com/hashtag/DublinBikes" data-height = "205" data-widget-id="985166481745948673">#DublinBikes Tweets</a>
+        <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>  
+    </div>
+    <div class = "minorinfo">
+        <h2>Dublin Bikes App</h2>
+        <p>Welcome to the Dublin Bikes app! Here you can find live data and historical usage trends to better plan your trips<br>
+        Please select a marker above or use the dropdowns below</p>
+    </div>
     <div class = "minorinfo">
         <div>
             <h3 id="weather"></h3>
@@ -36,8 +43,10 @@ $(window).load(function() {
     
 <div class = "centredetail">    
 <!--Weekly Chart-->
-<div id = "chart" ></div>
-  
+<div id = "chart" >
+    <div id="chartdiv"></div>
+    <div id="curtain"><span>Chart Loads Here</span></div>
+</div>  
 <!--The Dropdowns  -->
 <div id="dropdownHolder">
 <div id="dds">
@@ -56,9 +65,11 @@ $(window).load(function() {
     <div id = "stationInfoBox"></div>
 </div> 
     
-
 <!--Hourly Chart-->
-<div id = "hourlyChart"></div>
+<div id = "hourlyChart">
+    <div id="chartdiv"></div>
+    <div id="curtain"><span></span></div>
+</div>
 
 </div>
 <!-- Weather API -->   
@@ -97,7 +108,7 @@ $(window).load(function() {
             '<h4>' + address + '</h4>'+
             '<p> No. of Available Bikes : ' + availablebikes + '</p>' + 
             '<p> No. of Available Stands : ' + availablebikestands + '</p>' +
-            '<p onclick="insertAddInfo(' + stationNumber + ');populateStationBox(' + availablebikes + ',' + availablebikestands + '); resetDropdown(); resetStation('+stationNumber+')">More Information</p>'
+            '<p class="button button5" onclick="insertAddInfo(' + stationNumber + ');populateStationBox(' + availablebikes + ',' + availablebikestands + '); resetDropdown(); resetStation('+stationNumber+')">More Information</p>'
             ;
         var marker = new google.maps.Marker({
           position: location,
@@ -167,10 +178,12 @@ $(window).load(function() {
  
     
     function populateStationBox(bikes, stands){
-        var infoString1 = 
+        var boxInfo = 
             '<p> No. of Available Bikes : ' + bikes + '</p>' + 
-            '<p> No. of Available Stands : ' + stands + '</p>';
-            document.getElementById('stationInfoBox').innerHTML = infoString1 ;
+            '<p> No. of Available Stands : ' + stands + '</p>' +
+            '<p> Credit Card Terminal : Yes</p>' + 
+            '<p> Leap Card Accepted : Yes';
+            document.getElementById('stationInfoBox').innerHTML = boxInfo ;
         }
     
     function insertAddInfo(currentStation){
