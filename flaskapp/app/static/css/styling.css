@@ -62,6 +62,7 @@ body{
     display: inline-block;
     margin: 10px;
     border: solid 2px;
+    overflow: auto;
 }
 
 .loader {
@@ -95,4 +96,10 @@ body{
     margin: 10px;
     border: solid 2px;
     overflow: auto;
+}
+
+#stationInfoBox {
+    text-align: center;
+    margin-top: 50px;
+    padding: 30px;
 }

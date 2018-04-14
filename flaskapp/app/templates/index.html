@@ -1,4 +1,4 @@
-<!-- dummyapp/app/templates/index.html -->
+
 <html>
 <head>
  <!-- The below link for Google Fonts was sourced from https://www.w3schools.com/howto/howto_google_fonts.asp-->
@@ -53,6 +53,7 @@ $(window).load(function() {
         <option value =6>Sunday</option>
 </select>
 </div>
+    <div id = "stationInfoBox"></div>
 </div> 
     
 
@@ -96,7 +97,7 @@ $(window).load(function() {
             '<h4>' + address + '</h4>'+
             '<p> No. of Available Bikes : ' + availablebikes + '</p>' + 
             '<p> No. of Available Stands : ' + availablebikestands + '</p>' +
-            '<p onclick="insertAddInfo(' + stationNumber + ');resetDropdown()">More Information</p>'
+            '<p onclick="insertAddInfo(' + stationNumber + ');populateStationBox(' + availablebikes + ',' + availablebikestands + '); resetDropdown(); resetStation('+stationNumber+')">More Information</p>'
             ;
         var marker = new google.maps.Marker({
           position: location,
@@ -134,6 +135,9 @@ $(window).load(function() {
     
         {% endfor %}
         }
+    function resetStation(stationNumber){
+        document.getElementById("myDropdown").value=stationNumber;
+    }
         // some parts adapted from: https://stackoverflow.com/questions/30012913/google-map-api-v3-add-multiple-infowindows   
     
 // the below was attempt at getting the heat map going
@@ -161,6 +165,14 @@ $(window).load(function() {
 //    };
 //    
  
+    
+    function populateStationBox(bikes, stands){
+        var infoString1 = 
+            '<p> No. of Available Bikes : ' + bikes + '</p>' + 
+            '<p> No. of Available Stands : ' + stands + '</p>';
+            document.getElementById('stationInfoBox').innerHTML = infoString1 ;
+        }
+    
     function insertAddInfo(currentStation){
         chosenStation = currentStation;
         createChart(currentStation);
