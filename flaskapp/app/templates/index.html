@@ -52,7 +52,8 @@ $(window).load(function() {
 <!--The Dropdowns  -->
 <div id="dropdownHolder">
 <div id="dds">
-<select id="myDropdown" onchange = "insertAddInfo(value); resetDropdown()"></select>    
+<!--<select id="myDropdown" onchange = "insertAddInfo(value); resetDropdown();populateStationBox('stations[value].value[1]', 'stations[value].value[2]')"></select>    -->
+<div id="myDropdown"></div>
 <select id="dayOfWeek" onchange="insertAddHourlyInfo(value)" >
         <option value="" selected disabled hidden>Choose Day</option>
         <option value =0>Monday</option>
@@ -95,10 +96,15 @@ $(window).load(function() {
         var bikeLayer = new google.maps.BicyclingLayer();
         bikeLayer.setMap(map);
         
-        var heatmapData = [];
+        var stations = [];
         
         {% for Station in Stations %}
         
+        stations.push({
+            key: '{{ Station.address }}',
+            value: [{{ Station.number }}, {{ Station.available_bikes }}, {{ Station.available_bike_stands}}]
+        })
+                      
         var location = {lat: {{ Station.position.lat }}, lng: {{ Station.position.lng }},};
         var stationName = ' {{ Station.name }} ';
         var availablebikes = {{ Station.available_bikes }};
@@ -121,10 +127,6 @@ $(window).load(function() {
           available: (availablebikes/totalBikes)
             });
 
-    heatmapData.push(
-    {location: new google.maps.LatLng({{ Station.position.lat }}, {{ Station.position.lng }}),
-    weight: {{ Station.available_bikes }}
-});
     
          var infowindow = new google.maps.InfoWindow({});
          marker.addListener('click', function() {
@@ -138,7 +140,7 @@ $(window).load(function() {
         else if ( marker.available >= 0.5) {
                 marker.setIcon('http://maps.google.com/mapfiles/ms/icons/yellow-dot.png');
             }
-        else if ( marker.available >= 0.2) {
+        else if ( marker.available >= 0.25) {
                 marker.setIcon('http://maps.google.com/mapfiles/ms/icons/orange-dot.png');
             }
         else {
@@ -147,6 +149,7 @@ $(window).load(function() {
     
     
         {% endfor %}
+        
         var icons = {
           green: {
             name: '> 75% Bikes Available',
@@ -193,38 +196,28 @@ $(window).load(function() {
         }
 
         map.controls[google.maps.ControlPosition.RIGHT_TOP].push
-(document.getElementById('legend'));
+        (document.getElementById('legend'));
+        
+//        Create station dropdown from station dictionary created above
+        stations = stations.sort(function (a, b) {return a.key.localeCompare( b.key );
+            });
+        
+        var stationnum =  'value';
+        var listItem = '<select onchange = "insertAddInfo(value); resetDropdown();populateStationBox('+stations[stationnum].value[1] +',' + stations[stationnum].value[2]+')"><option value="" selected disabled hidden>Choose Station</option>'; 
+         
+        for(i=0; i < stations.length; i++){
+            listItem += '<option value='+ stations[i].value[0]+'>' + stations[i].key + '</option>';
         }
+         listItem += '</select>';
+        document.getElementById('myDropdown').innerHTML = listItem;
+        }
+    
+
     function resetStation(stationNumber){
         document.getElementById("myDropdown").value=stationNumber;
     }
-        // some parts adapted from: https://stackoverflow.com/questions/30012913/google-map-api-v3-add-multiple-infowindows   
+    // some parts adapted from: https://stackoverflow.com/questions/30012913/google-map-api-v3-add-multiple-infowindows   
     
-// the below was attempt at getting the heat map going
-// the heatmapData is populating correctly but below doesnt work
-        
-//            document.getElementById('chart').innerHTML = heatmapData;
-//            google.maps.event.addDomListener(map, 'zoom_changed', function() {
-//            var zoom = map.getZoom();
-//            if (zoom <= 15) {
-//                heatmap = new google.maps.visualization.HeatmapLayer({
-//                data: heatmapData,
-//                map: map
-//                });
-//                heatmap.setMap(map);
-//                heatmap.set('radius', 40);
-//            };
-//         
-//         heatmap = new google.maps.visualization.HeatmapLayer({
-//            data: heatmapData,
-//            map: map
-//            });
-//        console.log(heatmap);
-//        heatmap.setMap(map);
-//        heatmap.set('radius', 40); 
-//    };
-//    
- 
     
     function populateStationBox(bikes, stands){
         var boxInfo = 
@@ -262,7 +255,8 @@ $(window).load(function() {
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBRUrdJ4Tz9rLrHrOkwJWpA9QSYNJbWQ0Q&callback=initMap">
 </script>
     
-<!--The Dropdown-->
+<!--
+The Dropdown
 <script>
         var stations = [];
         var listItem = '<option value="" selected disabled hidden>Choose Station</option>';
@@ -274,13 +268,12 @@ $(window).load(function() {
             stations = stations.sort(function (a, b) {
             return a.key.localeCompare( b.key );
             });
-        //stations.sort(function(a,b) {return (a.key > b.key) ? 1 : ((b.key > a.key) ? -1 : 0);} );
-        //stations.sort(key);
         for(i=0; i < stations.length; i++){
             listItem += '<option value='+ stations[i].value+'>' + stations[i].key + '</option>';
         }
         document.getElementById('myDropdown').innerHTML = listItem;
 </script>
+-->
     
 <!--Weekly Chart-->
 <script type="text/javascript">
