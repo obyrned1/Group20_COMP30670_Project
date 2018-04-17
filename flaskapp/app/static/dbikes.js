@@ -6,13 +6,13 @@ function populateStationBox(bikes, stands) {
 function drawWeeklyChart(data) {
         var data = google.visualization.arrayToDataTable([
           ['Day', 'Number of Bikes Available'],
-          ['Monday', data[0]["ROUND(AVG(available_bikes))"]],
-          ['Tuesday',  data[1]["ROUND(AVG(available_bikes))"]],
-          ['Wednesday',   data[2]["ROUND(AVG(available_bikes))"]],
-          ['Thursday',  data[3]["ROUND(AVG(available_bikes))"]],
-          ['Friday',  data[4]["ROUND(AVG(available_bikes))"]],
-          ['Saturday',  data[5]["ROUND(AVG(available_bikes))"]],
-          ['Sunday',  data[6]["ROUND(AVG(available_bikes))"]]
+          ['Monday', data[1]["ROUND(AVG(available_bikes))"]],
+          ['Tuesday',  data[2]["ROUND(AVG(available_bikes))"]],
+          ['Wednesday',   data[3]["ROUND(AVG(available_bikes))"]],
+          ['Thursday',  data[4]["ROUND(AVG(available_bikes))"]],
+          ['Friday',  data[5]["ROUND(AVG(available_bikes))"]],
+          ['Saturday',  data[6]["ROUND(AVG(available_bikes))"]],
+          ['Sunday',  data[0]["ROUND(AVG(available_bikes))"]]
         ]);
 
         var options = {
@@ -27,12 +27,12 @@ function drawWeeklyChart(data) {
       }
 
 
-function resetStation(stationNumber){
-        document.getElementById("myDropdown").value=stationNumber;
+function resetStation(station){
+        document.getElementById("myDropdown").value=document.getElementById(station).value;
     }
     // some parts adapted from: https://stackoverflow.com/questions/30012913/google-map-api-v3-add-multiple-infowindows   
    
-    function insertAddInfo(currentStation){
+function insertAddInfo(currentStation){
         chosenStation = currentStation;
         createChart(currentStation);
     }    
@@ -57,8 +57,8 @@ function resetStation(stationNumber){
 function resetDropdown() {
             var d = new Date();
             var n = d.getDay();
-        document.getElementById("dayOfWeek").value=n-1;
-        createHourlyChart(chosenStation, n-1);
+        document.getElementById("dayOfWeek").value=n;
+        createHourlyChart(chosenStation, n);
         }   
         function insertAddHourlyInfo(day){
         

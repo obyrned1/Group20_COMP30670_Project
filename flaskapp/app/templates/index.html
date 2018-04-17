@@ -91,7 +91,7 @@ $(window).load(function() {
   
 <!-- The Map -->
 <script>
-    var stations = {};
+    var stations = [];
     function initMap() {
         var dublin = {lat: 53.346880, lng: -6.265615,};
         var map = new  google.maps.Map(document.getElementById('map'), {
@@ -106,21 +106,24 @@ $(window).load(function() {
         
         {% for Station in Stations %}
         
-        stations.key{{ Station.number }}='{{ Station.address }}';
+        stations.push({
+            key: {{ Station.number }},
+            value: ['{{ Station.address }}',{{ Station.available_bikes }},{{ Station.available_bike_stands}},{{ Station.number }}]
+                      });
         
                       
         var location = {lat: {{ Station.position.lat }}, lng: {{ Station.position.lng }},};
         var stationName = ' {{ Station.name }} ';
         var availablebikes = {{ Station.available_bikes }};
         var availablebikestands = {{ Station.available_bike_stands}};
-        var stationNumber = '{{ Station.number}}';
-        var address = '{{ Station.address }}';
+        var stationNumber = {{ Station.number}};
+        var address = ' {{ Station.address }} ';
         var totalBikes = availablebikes + availablebikestands;
         var infoString = 
             '<h4>' + address + '</h4>'+
             '<p> No. of Available Bikes : ' + availablebikes + '</p>' + 
             '<p> No. of Available Stands : ' + availablebikestands + '</p>' +
-            '<p class="button button5" onclick="insertAddInfo(' + stationNumber + ');populateStationBox(' + availablebikes + ',' + availablebikestands + '); resetDropdown(); resetStation('+stationNumber+')">More Information</p>'
+            '<p class="button button5" onclick="insertAddInfo(' + stationNumber + ');populateStationBox(' + availablebikes + ',' + availablebikestands + '); resetDropdown();resetStation('+ stationNumber +')">More Information</p>'
             ;
         var marker = new google.maps.Marker({
           position: location,
@@ -203,13 +206,13 @@ $(window).load(function() {
         (document.getElementById('legend'));
         
 //        Create station dropdown from station dictionary created above
-//        stations = stations.sort(function (a, b) {return a.value[0].localeCompare( b.value[0] );
-//            });
+        stations = stations.sort(function (a, b) {return a.value[0].localeCompare( b.value[0] );
+            });
     
         var listItem = '<option value="" selected disabled hidden>Choose Station</option>'; 
          
         for(i=0; i < stations.length; i++){
-            listItem += '<option value='+ stations[i]+'>' + stations[i] +'</option>';
+            listItem += '<option value='+i+' id='+stations[i].value[3]+'>' + stations[i].value[0] +'</option>';
         }
          
         document.getElementById('myDropdown').innerHTML = listItem;
