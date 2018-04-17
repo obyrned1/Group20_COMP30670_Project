@@ -5,14 +5,14 @@ function populateStationBox(bikes, stands) {
     
 function drawWeeklyChart(data) {
         var data = google.visualization.arrayToDataTable([
-          ['Day', 'Number of Bikes Available'],
-          ['Monday', data[1]["ROUND(AVG(available_bikes))"]],
-          ['Tuesday',  data[2]["ROUND(AVG(available_bikes))"]],
-          ['Wednesday',   data[3]["ROUND(AVG(available_bikes))"]],
-          ['Thursday',  data[4]["ROUND(AVG(available_bikes))"]],
-          ['Friday',  data[5]["ROUND(AVG(available_bikes))"]],
-          ['Saturday',  data[6]["ROUND(AVG(available_bikes))"]],
-          ['Sunday',  data[0]["ROUND(AVG(available_bikes))"]]
+          ['Day', 'No. of Bikes', 'No. of Bikes (Raining)'],
+          ['Monday', data[1]["ROUND(AVG(available_bikes))"], (data[1]["ROUND(AVG(available_bikes))"]*1.15)],
+          ['Tuesday',  data[2]["ROUND(AVG(available_bikes))"], (data[2]["ROUND(AVG(available_bikes))"]*1.15)],
+          ['Wednesday',   data[3]["ROUND(AVG(available_bikes))"], (data[3]["ROUND(AVG(available_bikes))"]*1.15)],
+          ['Thursday',  data[4]["ROUND(AVG(available_bikes))"], (data[4]["ROUND(AVG(available_bikes))"]*1.15)],
+          ['Friday',  data[5]["ROUND(AVG(available_bikes))"], (data[5]["ROUND(AVG(available_bikes))"]*1.15)],
+          ['Saturday',  data[6]["ROUND(AVG(available_bikes))"], (data[6]["ROUND(AVG(available_bikes))"]*1.15)],
+          ['Sunday',  data[0]["ROUND(AVG(available_bikes))"], (data[0]["ROUND(AVG(available_bikes))"]*1.15)]
         ]);
 
         var options = {
@@ -37,7 +37,7 @@ function insertAddInfo(currentStation){
         createChart(currentStation);
     }    
         
-    function createChart(currentStation){
+function createChart(currentStation){
         var xmlhttp = new XMLHttpRequest();
         var url = "/available/" + currentStation;
         
@@ -53,7 +53,7 @@ function insertAddInfo(currentStation){
             };
         xmlhttp.open("GET",url, true);
         xmlhttp.send();
-        }
+    }
 function resetDropdown() {
             var d = new Date();
             var n = d.getDay();
@@ -83,26 +83,26 @@ function resetDropdown() {
         }
       function drawHourlyChart(data) {
         var data = google.visualization.arrayToDataTable([
-             ['Time', 'Number of Bikes Available'],
-             ['5am', data[0]["ROUND(AVG(available_bikes))"]],
-             ['6am', data[1]["ROUND(AVG(available_bikes))"]],
-             ['7am', data[2]["ROUND(AVG(availabsle_bikes))"]],
-             ['8am', data[3]["ROUND(AVG(available_bikes))"]],
-             ['9am', data[4]["ROUND(AVG(available_bikes))"]],
-             ['10am', data[5]["ROUND(AVG(available_bikes))"]],
-             ['11am', data[6]["ROUND(AVG(available_bikes))"]],
-             ['12pm', data[7]["ROUND(AVG(available_bikes))"]],
-             ['1pm', data[8]["ROUND(AVG(available_bikes))"]],
-             ['2pm', data[9]["ROUND(AVG(available_bikes))"]],
-             ['3am', data[10]["ROUND(AVG(available_bikes))"]],
-             ['4m', data[11]["ROUND(AVG(available_bikes))"]],
-             ['5pm', data[12]["ROUND(AVG(available_bikes))"]],
-             ['6pm', data[13]["ROUND(AVG(available_bikes))"]],
-             ['7pm', data[14]["ROUND(AVG(available_bikes))"]],
-             ['8pm', data[15]["ROUND(AVG(available_bikes))"]],
-             ['9pm',data[16]["ROUND(AVG(available_bikes))"]],
-             ['10pm', data[17]["ROUND(AVG(available_bikes))"]],
-             ['11pm', data[18]["ROUND(AVG(available_bikes))"]]
+             ['Day', 'No. of Bikes', 'No. of Bikes (Raining)'],
+             ['5am', data[0]["ROUND(AVG(available_bikes))"], (data[0]["ROUND(AVG(available_bikes))"] * 1.15)],
+             ['6am', data[1]["ROUND(AVG(available_bikes))"], (data[1]["ROUND(AVG(available_bikes))"] * 1.15)],
+             ['7am', data[2]["ROUND(AVG(availabsle_bikes))"], (data[2]["ROUND(AVG(available_bikes))"] * 1.15)],
+             ['8am', data[3]["ROUND(AVG(available_bikes))"], (data[3]["ROUND(AVG(available_bikes))"] * 1.15)],
+             ['9am', data[4]["ROUND(AVG(available_bikes))"], (data[4]["ROUND(AVG(available_bikes))"] * 1.15)],
+             ['10am', data[5]["ROUND(AVG(available_bikes))"], (data[5]["ROUND(AVG(available_bikes))"] * 1.15)],
+             ['11am', data[6]["ROUND(AVG(available_bikes))"], (data[6]["ROUND(AVG(available_bikes))"] * 1.15)],
+             ['12pm', data[7]["ROUND(AVG(available_bikes))"], (data[7]["ROUND(AVG(available_bikes))"] * 1.15)],
+             ['1pm', data[8]["ROUND(AVG(available_bikes))"], (data[8]["ROUND(AVG(available_bikes))"] * 1.15)],
+             ['2pm', data[9]["ROUND(AVG(available_bikes))"] , (data[9]["ROUND(AVG(available_bikes))"] * 1.15)],
+             ['3am', data[10]["ROUND(AVG(available_bikes))"], (data[10]["ROUND(AVG(available_bikes))"] * 1.15)],
+             ['4m', data[11]["ROUND(AVG(available_bikes))"], (data[11]["ROUND(AVG(available_bikes))"] * 1.15)],
+             ['5pm', data[12]["ROUND(AVG(available_bikes))"], (data[12]["ROUND(AVG(available_bikes))"] * 1.15)],
+             ['6pm', data[13]["ROUND(AVG(available_bikes))"], (data[13]["ROUND(AVG(available_bikes))"] * 1.15)],
+             ['7pm', data[14]["ROUND(AVG(available_bikes))"], (data[14]["ROUND(AVG(available_bikes))"] * 1.15)],
+             ['8pm', data[15]["ROUND(AVG(available_bikes))"], (data[15]["ROUND(AVG(available_bikes))"] * 1.15)],
+             ['9pm',data[16]["ROUND(AVG(available_bikes))"], (data[16]["ROUND(AVG(available_bikes))"] * 1.15)],
+             ['10pm', data[17]["ROUND(AVG(available_bikes))"], (data[17]["ROUND(AVG(available_bikes))"] * 1.15)],
+             ['11pm', data[18]["ROUND(AVG(available_bikes))"], (data[18]["ROUND(AVG(available_bikes))"] * 1.15)]
         ]);
 
         var options = {
