@@ -205,7 +205,7 @@ $(window).load(function() {
             });
         
         var stationnum =  'value';
-        var listItem = '<select onchange = "insertAddInfo(value); resetDropdown();populateStationBox('+stations[stationnum].value[1] +',' + stations[stationnum].value[2]+')"><option value="" selected disabled hidden>Choose Station</option>'; 
+        var listItem = '<select onchange = "insertAddInfo(value); resetDropdown();populateStationBox('+stations[5].value[1] +',' + stations[5].value[2]+')"><option value="" selected disabled hidden>Choose Station</option>'; 
          
         for(i=0; i < stations.length; i++){
             listItem += '<option value='+ stations[i].value[0]+'>' + stations[i].key + '</option>';
