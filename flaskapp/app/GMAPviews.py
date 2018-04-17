@@ -1,5 +1,6 @@
 #dummmyapp/app/views.py
  
+
 from sqlalchemy import create_engine
 from sqlalchemy.dialects.mysql import mysqldb
 from flask import render_template

@@ -1,0 +1,5 @@
+{
+  "tests/test.py": true,
+  "tests/test.py::test_connectDB": true,
+  "tests/test_dublinbikesgroup20.py": true
+}
