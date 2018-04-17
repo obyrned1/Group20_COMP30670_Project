@@ -2,6 +2,7 @@
 <html>
 <head>
  <!-- The below link for Google Fonts was sourced from https://www.w3schools.com/howto/howto_google_fonts.asp-->
+<link rel="shortcut icon" href="../static/cycling.png" type="image/x-icon">
 <link href='https://fonts.googleapis.com/css?family=Open%20Sans' rel='stylesheet'>
 <title>{{ Title }}</title>
 <link rel="stylesheet" href="{{ url_for('static', filename='css/styling.css') }}">
@@ -9,7 +10,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 <script src="../static/dbikes.js"></script>
 </head>
-    
+ 
 
 <script type="text/javascript">
 $(window).load(function() {
@@ -54,8 +55,10 @@ $(window).load(function() {
 <!--The Dropdowns  -->
 <div id="dropdownHolder">
 <div id="dds">
-<!--<select id="myDropdown" onchange = "insertAddInfo(value); resetDropdown();populateStationBox('stations[value].value[1]', 'stations[value].value[2]')"></select>    -->
-<div id="myDropdown"></div>
+<!--<div id="myDropdown">-->
+<select id='myDropdown' onchange = "insertAddInfo(value); resetDropdown();populateStationBox(stations[value].value[1], stations[value].value[2])"></select>
+    
+<!--    </div>-->
 <select id="dayOfWeek" onchange="insertAddHourlyInfo(value)" >
         <option value="" selected disabled hidden>Choose Day</option>
         <option value =0>Monday</option>
@@ -88,6 +91,7 @@ $(window).load(function() {
   
 <!-- The Map -->
 <script>
+    var stations = {};
     function initMap() {
         var dublin = {lat: 53.346880, lng: -6.265615,};
         var map = new  google.maps.Map(document.getElementById('map'), {
@@ -98,14 +102,12 @@ $(window).load(function() {
         var bikeLayer = new google.maps.BicyclingLayer();
         bikeLayer.setMap(map);
         
-        var stations = [];
+        
         
         {% for Station in Stations %}
         
-        stations.push({
-            key: '{{ Station.address }}',
-            value: [{{ Station.number }}, {{ Station.available_bikes }}, {{ Station.available_bike_stands}}]
-        })
+        stations.key{{ Station.number }}='{{ Station.address }}';
+        
                       
         var location = {lat: {{ Station.position.lat }}, lng: {{ Station.position.lng }},};
         var stationName = ' {{ Station.name }} ';
@@ -201,16 +203,15 @@ $(window).load(function() {
         (document.getElementById('legend'));
         
 //        Create station dropdown from station dictionary created above
-        stations = stations.sort(function (a, b) {return a.key.localeCompare( b.key );
-            });
-        
-        var stationnum =  'value';
-        var listItem = '<select onchange = "insertAddInfo(value); resetDropdown();populateStationBox('+stations[5].value[1] +',' + stations[5].value[2]+')"><option value="" selected disabled hidden>Choose Station</option>'; 
+//        stations = stations.sort(function (a, b) {return a.value[0].localeCompare( b.value[0] );
+//            });
+    
+        var listItem = '<option value="" selected disabled hidden>Choose Station</option>'; 
          
         for(i=0; i < stations.length; i++){
-            listItem += '<option value='+ stations[i].value[0]+'>' + stations[i].key + '</option>';
+            listItem += '<option value='+ stations[i]+'>' + stations[i] +'</option>';
         }
-         listItem += '</select>';
+         
         document.getElementById('myDropdown').innerHTML = listItem;
         }
     

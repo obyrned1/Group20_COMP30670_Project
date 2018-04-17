@@ -1,13 +1,7 @@
- 
-    
-    function populateStationBox(bikes, stands){
-        var boxInfo = 
-            '<p> No. of Available Bikes : ' + bikes + '</p>' + 
-            '<p> No. of Available Stands : ' + stands + '</p>' +
-            '<p> Credit Card Terminal : Yes</p>' + 
-            '<p> Leap Card Accepted : Yes';
-            document.getElementById('stationInfoBox').innerHTML = boxInfo ;
-        }
+function populateStationBox(bikes, stands) {
+        var boxInfo = '<p> No. of Available Bikes : ' + bikes + '</p>' + '<p> No. of Available Stands : ' + stands + '</p>' +'<p> Credit Card Terminal : Yes</p>' + '<p> Leap Card Accepted : Yes';
+        document.getElementById('stationInfoBox').innerHTML = boxInfo;
+}
     
 function drawWeeklyChart(data) {
         var data = google.visualization.arrayToDataTable([
