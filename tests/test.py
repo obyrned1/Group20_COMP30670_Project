@@ -1,7 +1,9 @@
 
 """Tests for `dublinbikesgroup20` package."""
 
-from flaskapp import app
+import sys
+sys.path.append(".")
+from flaskapp.app.GMAPviews import *
 
 def test_connectDB():
     engine = connectDB()

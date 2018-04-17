@@ -116,6 +116,7 @@ function resetDropdown() {
         chart.draw(data, options);
       }
 
+/*
 function getWeather(){
 //call weather API from openweathermap
     var weatherdata;
@@ -133,3 +134,37 @@ function getWeather(){
     
 })
 }
+*/
+
+function getWeather() {
+
+    //call weather API from openweathermap
+    var weatherdata;
+    $.getJSON("http://api.openweathermap.org/data/2.5/forecast?q=Dublin&id=7778677&APPID=2abe029b7b8d40e80d1ed447f4522f0d",function(data){
+
+    var dailydesc = "Daily Weather Forecast";
+    var breakdown = "";
+    
+//code for this 'for' loop was adapted from practical 5, exercise 5//
+    for (i = 0; i <= 32 ; i+= 8) {
+        
+        var weathericon =data.list[i].weather[0].icon;
+        var weatherdesc = data.list[i].weather[0].description;
+        var icon = data.list[i].weather[0].icon;
+        var iconUrl = ("<img src='http://openweathermap.org/img/w/" + icon + ".png'>");
+
+        
+//code for the below table formation adapted from practical 6, exercise 4//
+        
+        breakdown += "<table id = 'dailytable'><tr><td>" + iconUrl + "</tr></td><tr><td class = 'capitalisedesc'>" + weatherdesc + "</tr></td>";
+        
+        breakdown += "</table>"
+          
+    }
+    
+        document.getElementById("dailyfore").innerHTML = breakdown;
+    
+        document.getElementById("daydesc").innerHTML = dailydesc;
+    
+    })
+              }
