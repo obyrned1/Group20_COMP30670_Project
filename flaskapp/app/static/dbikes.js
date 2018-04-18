@@ -160,7 +160,7 @@ function getWeather() {
 //code for this 'for' loop was adapted from practical 5, exercise 5//
     for (i = 0; i <= 32 ; i+= 8) {
         
-        var weathericon =data.list[i].weather[0].icon;
+        var date = new Date(data.list[i].dt*1000);
         var weatherdesc = data.list[i].weather[0].description;
         var icon = data.list[i].weather[0].icon;
         var iconUrl = ("<img src='http://openweathermap.org/img/w/" + icon + ".png'>");
@@ -168,7 +168,7 @@ function getWeather() {
         
 //code for the below table formation adapted from practical 6, exercise 4//
         
-        breakdown += "<table id = 'dailytable'><tr><td>" + iconUrl + "</tr></td><tr><td class = 'capitalisedesc'>" + weatherdesc + "</tr></td>";
+        breakdown += "<table id = 'dailytable'><tr><td>" + date +"</tr></td><tr><td>" + iconUrl + "</tr></td><tr><td class = 'capitalisedesc'>" + weatherdesc + "</tr></td>";
         
         breakdown += "</table>"
           
