@@ -4,6 +4,8 @@ function populateStationBox(bikes, stands) {
 }
     
 function drawWeeklyChart(data) {
+        var loading = ("<img src='../static/BikeBreaking.gif' style='height:300px;width:100%;'>");
+        document.getElementById('chart').innerHTML = loading;
         var data = google.visualization.arrayToDataTable([
           ['Day', 'No. of Bikes', 'No. of Bikes (Raining)'],
           ['Monday', data[1]["ROUND(AVG(available_bikes))"], (data[1]["ROUND(AVG(available_bikes))"]*1.15)],
@@ -18,7 +20,11 @@ function drawWeeklyChart(data) {
         var options = {
           title: 'Daily Avg. Bike Availability',
           vAxis: {minValue: 0},
-          legend: { position: 'bottom' }
+          legend: { position: 'bottom' },
+          animation: {
+                duration: 750,
+                startup: true //This is the new option
+            }
         };
 
         var chart = new google.visualization.LineChart(document.getElementById('chart'));
@@ -82,6 +88,8 @@ function resetDropdown() {
         xmlhttp.send();
         }
       function drawHourlyChart(data) {
+        var loading2 = ("<img src='../static/BikeBreaking.gif' style='height:300px;width:100%;'>");
+        document.getElementById('hourlyChart').innerHTML = loading2;
         var data = google.visualization.arrayToDataTable([
              ['Day', 'No. of Bikes', 'No. of Bikes (Raining)'],
              ['5am', data[0]["ROUND(AVG(available_bikes))"], (data[0]["ROUND(AVG(available_bikes))"] * 1.15)],
@@ -109,7 +117,11 @@ function resetDropdown() {
           title: 'Hourly Avg. Bike Availability',
           vAxis: {minValue: 0,
                  gridlines: {count:7}},
-                 legend: { position: 'bottom' }
+          legend: { position: 'bottom' },
+          animation: {
+                duration: 750,
+                startup: true //This is the new option
+            }                
         };
 
         var chart = new google.visualization.LineChart(document.getElementById('hourlyChart'));
