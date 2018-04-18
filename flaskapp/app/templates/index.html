@@ -55,7 +55,7 @@ $(window).load(function() {
 <div id="dropdownHolder">
 <div id="dds">
 <!--<div id="myDropdown">-->
-<select id='myDropdown' onchange = "insertAddInfo(value); resetDropdown();populateStationBox(stations[value].value[1], stations[value].value[2])"></select>
+<select id='myDropdown' onchange = "insertAddInfo(stations[value].value[3]); resetDropdown();populateStationBox(stations[value].value[1], stations[value].value[2])"></select>
     
 <!--    </div>-->
 <select id="dayOfWeek" onchange="insertAddHourlyInfo(value)" >
