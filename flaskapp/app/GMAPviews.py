@@ -69,7 +69,7 @@ def getDayData(currentStation):
     dayData = []  
     conn = engine.connect()
     for i in range (0,7):
-        string = "SELECT ROUND(AVG(available_bikes)) FROM DynamicData WHERE number = {} AND WEEKDAY(last_update)= {};".format(currentStation,i)
+        string = "SELECT AVG(available_bikes) FROM DynamicData WHERE number = {} AND WEEKDAY(last_update)= {};".format(currentStation,i)
         rows = conn.execute(string)
         for row in rows:
             dayData.append(dict(row))
@@ -81,7 +81,7 @@ def getHourlyData(currentStation, day):
     hourlyData = []
     conn = engine.connect()
     for i in range (5,24):
-        string = "SELECT ROUND(AVG(available_bikes)) FROM DynamicData WHERE number =  {} AND EXTRACT(HOUR FROM last_update) = {} AND WEEKDAY(last_update)= {};".format(currentStation,i,day)
+        string = "SELECT AVG(available_bikes) FROM DynamicData WHERE number =  {} AND EXTRACT(HOUR FROM last_update) = {} AND WEEKDAY(last_update)= {};".format(currentStation,i,day)
         rows = conn.execute(string)
         for row in rows:
             hourlyData.append(dict(row))

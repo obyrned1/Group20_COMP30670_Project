@@ -8,13 +8,13 @@ function drawWeeklyChart(data) {
         document.getElementById('chart').innerHTML = loading;
         var data = google.visualization.arrayToDataTable([
           ['Day', 'No. of Bikes', 'No. of Bikes (Raining)'],
-          ['Monday', data[1]["ROUND(AVG(available_bikes))"], (data[1]["ROUND(AVG(available_bikes))"]*1.15)],
-          ['Tuesday',  data[2]["ROUND(AVG(available_bikes))"], (data[2]["ROUND(AVG(available_bikes))"]*1.15)],
-          ['Wednesday',   data[3]["ROUND(AVG(available_bikes))"], (data[3]["ROUND(AVG(available_bikes))"]*1.15)],
-          ['Thursday',  data[4]["ROUND(AVG(available_bikes))"], (data[4]["ROUND(AVG(available_bikes))"]*1.15)],
-          ['Friday',  data[5]["ROUND(AVG(available_bikes))"], (data[5]["ROUND(AVG(available_bikes))"]*1.15)],
-          ['Saturday',  data[6]["ROUND(AVG(available_bikes))"], (data[6]["ROUND(AVG(available_bikes))"]*1.15)],
-          ['Sunday',  data[0]["ROUND(AVG(available_bikes))"], (data[0]["ROUND(AVG(available_bikes))"]*1.15)]
+          ['Monday', Math.round(data[1]["AVG(available_bikes)"]), Math.ceil(data[1]["AVG(available_bikes)"]*1.04)],
+          ['Tuesday',  Math.round(data[2]["AVG(available_bikes)"]), Math.ceil(data[2]["AVG(available_bikes)"]*1.04)],
+          ['Wednesday',   Math.round(data[3]["AVG(available_bikes)"]), Math.ceil(data[3]["AVG(available_bikes)"]*1.04)],
+          ['Thursday',  Math.round(data[4]["AVG(available_bikes)"]), Math.ceil(data[4]["AVG(available_bikes)"]*1.04)],
+          ['Friday',  Math.round(data[5]["AVG(available_bikes)"]), Math.ceil(data[5]["AVG(available_bikes)"]*1.04)],
+          ['Saturday',  Math.round(data[6]["AVG(available_bikes)"]), Math.ceil(data[6]["AVG(available_bikes)"]*1.04)],
+          ['Sunday',  Math.round(data[0]["AVG(available_bikes)"]), Math.ceil(data[0]["AVG(available_bikes)"]*1.04)]
         ]);
 
         var options = {
@@ -92,25 +92,25 @@ function resetDropdown() {
         document.getElementById('hourlyChart').innerHTML = loading2;
         var data = google.visualization.arrayToDataTable([
              ['Day', 'No. of Bikes', 'No. of Bikes (Raining)'],
-             ['5am', data[0]["ROUND(AVG(available_bikes))"], (data[0]["ROUND(AVG(available_bikes))"] * 1.15)],
-             ['6am', data[1]["ROUND(AVG(available_bikes))"], (data[1]["ROUND(AVG(available_bikes))"] * 1.15)],
-             ['7am', data[2]["ROUND(AVG(availabsle_bikes))"], (data[2]["ROUND(AVG(available_bikes))"] * 1.15)],
-             ['8am', data[3]["ROUND(AVG(available_bikes))"], (data[3]["ROUND(AVG(available_bikes))"] * 1.15)],
-             ['9am', data[4]["ROUND(AVG(available_bikes))"], (data[4]["ROUND(AVG(available_bikes))"] * 1.15)],
-             ['10am', data[5]["ROUND(AVG(available_bikes))"], (data[5]["ROUND(AVG(available_bikes))"] * 1.15)],
-             ['11am', data[6]["ROUND(AVG(available_bikes))"], (data[6]["ROUND(AVG(available_bikes))"] * 1.15)],
-             ['12pm', data[7]["ROUND(AVG(available_bikes))"], (data[7]["ROUND(AVG(available_bikes))"] * 1.15)],
-             ['1pm', data[8]["ROUND(AVG(available_bikes))"], (data[8]["ROUND(AVG(available_bikes))"] * 1.15)],
-             ['2pm', data[9]["ROUND(AVG(available_bikes))"] , (data[9]["ROUND(AVG(available_bikes))"] * 1.15)],
-             ['3am', data[10]["ROUND(AVG(available_bikes))"], (data[10]["ROUND(AVG(available_bikes))"] * 1.15)],
-             ['4m', data[11]["ROUND(AVG(available_bikes))"], (data[11]["ROUND(AVG(available_bikes))"] * 1.15)],
-             ['5pm', data[12]["ROUND(AVG(available_bikes))"], (data[12]["ROUND(AVG(available_bikes))"] * 1.15)],
-             ['6pm', data[13]["ROUND(AVG(available_bikes))"], (data[13]["ROUND(AVG(available_bikes))"] * 1.15)],
-             ['7pm', data[14]["ROUND(AVG(available_bikes))"], (data[14]["ROUND(AVG(available_bikes))"] * 1.15)],
-             ['8pm', data[15]["ROUND(AVG(available_bikes))"], (data[15]["ROUND(AVG(available_bikes))"] * 1.15)],
-             ['9pm',data[16]["ROUND(AVG(available_bikes))"], (data[16]["ROUND(AVG(available_bikes))"] * 1.15)],
-             ['10pm', data[17]["ROUND(AVG(available_bikes))"], (data[17]["ROUND(AVG(available_bikes))"] * 1.15)],
-             ['11pm', data[18]["ROUND(AVG(available_bikes))"], (data[18]["ROUND(AVG(available_bikes))"] * 1.15)]
+             ['5am', Math.round(data[0]["AVG(available_bikes)"]), Math.ceil(data[0]["AVG(available_bikes)"] * 1.04)],
+             ['6am', Math.round(data[1]["AVG(available_bikes)"]), Math.ceil(data[1]["AVG(available_bikes)"] * 1.04)],
+             ['7am', Math.round(data[2]["AVG(available_bikes)"]), Math.ceil(data[2]["AVG(available_bikes)"] * 1.04)],
+             ['8am', Math.round(data[3]["AVG(available_bikes)"]), Math.ceil(data[3]["AVG(available_bikes)"] * 1.04)],
+             ['9am', Math.round(data[4]["AVG(available_bikes)"]), Math.ceil(data[4]["AVG(available_bikes)"] * 1.04)],
+             ['10am', Math.round(data[5]["AVG(available_bikes)"]), Math.ceil(data[5]["AVG(available_bikes)"] * 1.04)],
+             ['11am', Math.round(data[6]["AVG(available_bikes)"]), Math.ceil(data[6]["AVG(available_bikes)"] * 1.04)],
+             ['12pm', Math.round(data[7]["AVG(available_bikes)"]), Math.ceil(data[7]["AVG(available_bikes)"] * 1.04)],
+             ['1pm', Math.round(data[8]["AVG(available_bikes)"]), Math.ceil(data[8]["AVG(available_bikes)"] * 1.04)],
+             ['2pm', Math.round(data[9]["AVG(available_bikes)"]), Math.ceil(data[9]["AVG(available_bikes)"] * 1.04)],
+             ['3am', Math.round(data[10]["AVG(available_bikes)"]), Math.ceil(data[10]["AVG(available_bikes)"] * 1.04)],
+             ['4m', Math.round(data[11]["AVG(available_bikes)"]), Math.ceil(data[11]["AVG(available_bikes)"] * 1.04)],
+             ['5pm', Math.round(data[12]["AVG(available_bikes)"]), Math.ceil(data[12]["AVG(available_bikes)"] * 1.04)],
+             ['6pm', Math.round(data[13]["AVG(available_bikes)"]), Math.ceil(data[13]["AVG(available_bikes)"] * 1.04)],
+             ['7pm', Math.round(data[14]["AVG(available_bikes)"]), Math.ceil(data[14]["AVG(available_bikes)"] * 1.04)],
+             ['8pm', Math.round(data[15]["AVG(available_bikes)"]), Math.ceil(data[15]["AVG(available_bikes)"] * 1.04)],
+             ['9pm', Math.round(data[16]["AVG(available_bikes)"]), Math.ceil(data[16]["AVG(available_bikes)"] * 1.04)],
+             ['10pm', Math.round(data[17]["AVG(available_bikes)"]), Math.ceil(data[17]["AVG(available_bikes)"] * 1.04)],
+             ['11pm', Math.round(data[18]["AVG(available_bikes)"]), Math.ceil(data[18]["AVG(available_bikes)"] * 1.04)]
         ]);
 
         var options = {
