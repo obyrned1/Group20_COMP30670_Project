@@ -1,9 +1,11 @@
 function populateStationBox(bikes, stands) {
+        //Inserts station info into the information box underneath the dropdowns
         var boxInfo = '<p> No. of Available Bikes : ' + bikes + '</p>' + '<p> No. of Available Stands : ' + stands + '</p>' +'<p> Credit Card Terminal : Yes</p>' + '<p> Leap Card Accepted : Yes';
         document.getElementById('stationInfoBox').innerHTML = boxInfo;
 }
     
 function drawWeeklyChart(data) {
+        //Function to create a chart based on the average daily bikes for each day for a selected station
         var loading = ("<img src='../static/BikeBreaking.gif' style='height:300px;width:100%;'>");
         document.getElementById('chart').innerHTML = loading;
         var data = google.visualization.arrayToDataTable([
@@ -28,22 +30,23 @@ function drawWeeklyChart(data) {
         };
 
         var chart = new google.visualization.LineChart(document.getElementById('chart'));
-
         chart.draw(data, options);
-      }
-
+}
 
 function resetStation(station){
+        //Resets the station in the dropdown to match the station selected on the map
         document.getElementById("myDropdown").value=document.getElementById(station).value;
-    }
-    // some parts adapted from: https://stackoverflow.com/questions/30012913/google-map-api-v3-add-multiple-infowindows   
+}
+// some parts adapted from: https://stackoverflow.com/questions/30012913/google-map-api-v3-add-multiple-infowindows   
    
 function insertAddInfo(currentStation){
+        //Calls the createChart method based on the station selected
         chosenStation = currentStation;
         createChart(currentStation);
-    }    
+}    
         
 function createChart(currentStation){
+        //Pulls in data from the database relating to the station selected and calls the drawWeekly function to draw a chart with that information
         var xmlhttp = new XMLHttpRequest();
         var url = "/available/" + currentStation;
         
@@ -59,18 +62,23 @@ function createChart(currentStation){
             };
         xmlhttp.open("GET",url, true);
         xmlhttp.send();
-    }
+}
+
 function resetDropdown() {
-            var d = new Date();
-            var n = d.getDay();
+        //Resets the dropdown for day of week to the current day and loads an hourly chart for that day for the selected station
+        var d = new Date();
+        var n = d.getDay();
         document.getElementById("dayOfWeek").value=n;
         createHourlyChart(chosenStation, n);
-        }   
-        function insertAddHourlyInfo(day){
-        
+}   
+
+function insertAddHourlyInfo(day){
+        //Calls the createHourlyChart based on the day of the week selected
         createHourlyChart(chosenStation,day);
-        };    
-        function createHourlyChart(currentStation,day){
+}; 
+
+function createHourlyChart(currentStation,day){
+        //Pulls in data from the database relating to the station and day selected and calls the drawHourly function to draw a chart with that information
         var xmlhttp = new XMLHttpRequest();
         var url = "/hourly/" + currentStation + "/" + day;
         
@@ -86,8 +94,10 @@ function resetDropdown() {
             };
         xmlhttp.open("GET",url, true);
         xmlhttp.send();
-        }
-      function drawHourlyChart(data) {
+};
+
+function drawHourlyChart(data) {
+        //Function to create a chart based on the average hourly bikes for each hour for a selected station on the selected day
         var loading2 = ("<img src='../static/BikeBreaking.gif' style='height:300px;width:100%;'>");
         document.getElementById('hourlyChart').innerHTML = loading2;
         var data = google.visualization.arrayToDataTable([
@@ -126,30 +136,9 @@ function resetDropdown() {
 
         var chart = new google.visualization.LineChart(document.getElementById('hourlyChart'));
         chart.draw(data, options);
-      }
-
-/*
-function getWeather(){
-//call weather API from openweathermap
-    var weatherdata;
-    $.getJSON("http://api.openweathermap.org/data/2.5/weather?q=Dublin&id=7778677&APPID=2abe029b7b8d40e80d1ed447f4522f0d",function(data){
-    var currentWeather = data.weather[0].description;
-    var current_temp=data.main.temp;
-    var wind_speed=data.wind.speed;
-    var icon = data.weather[0].icon;
-    var iconUrl = ("<img src='http://openweathermap.org/img/w/" + icon + ".png'>");
-    
-    $('h3#weather').html("Current Weather in Dublin");
-    $('p#temp').html("Temperature: " + parseInt( + current_temp - 273.15) + " °C");
-    $('p#humidity').html("Wind Speed: " + wind_speed + " m/s");
-    $('p#wind').html(iconUrl);
-    
-})
 }
-*/
 
 function getWeather() {
-
     //call weather API from openweathermap
     var weatherdata;
     $.getJSON("http://api.openweathermap.org/data/2.5/forecast?q=Dublin&id=7778677&APPID=2abe029b7b8d40e80d1ed447f4522f0d",function(data){
@@ -157,27 +146,20 @@ function getWeather() {
     var dailydesc = "Daily Weather Forecast";
     var breakdown = "";
     
-//code for this 'for' loop was adapted from practical 5, exercise 5//
+    //code for this 'for' loop was adapted from practical 5, exercise 5//
     for (i = 0; i <= 32 ; i+= 8) {
-        
         var date = new Date(data.list[i].dt*1000);
         var timeStampCon = date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear();
         var weatherdesc = data.list[i].weather[0].description;
         var icon = data.list[i].weather[0].icon;
         var iconUrl = ("<img src='http://openweathermap.org/img/w/" + icon + ".png'>");
-
         
-//code for the below table formation adapted from practical 6, exercise 4//
-        
+        //code for the below table formation adapted from practical 6, exercise 4//
         breakdown += "<table id = 'dailytable'><tr><td>" + timeStampCon +"</tr></td><tr><td>" + iconUrl + "</tr></td><tr><td class = 'capitalisedesc'>" + weatherdesc + "</tr></td>";
-        
         breakdown += "</table>"
           
     }
-    
-        document.getElementById("dailyfore").innerHTML = breakdown;
-    
-        document.getElementById("daydesc").innerHTML = dailydesc;
-    
+    document.getElementById("dailyfore").innerHTML = breakdown;
+    document.getElementById("daydesc").innerHTML = dailydesc;
     })
-              }
+}
