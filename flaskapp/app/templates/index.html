@@ -210,7 +210,7 @@ $(window).load(function() {
         var listItem = '<option value="" selected disabled hidden>Choose Station</option>'; 
         //creates an option for each station with an value and id which can be used to call other functions
         for(i=0; i < stations.length; i++){
-            listItem += '<option value='+i+' id='+stations[i].value[3]+'>' + stations[i].value[0] +'</option>';
+            listItem += '<option class="hello" value='+i+' id='+stations[i].value[3]+'>' + stations[i].value[0] +'</option>';
         }
         
         document.getElementById('myDropdown').innerHTML = listItem; 
