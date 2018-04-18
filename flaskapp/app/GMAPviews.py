@@ -35,7 +35,6 @@ def index():
     returnDict['Static'] = getStationData()
     return render_template("index.html", **returnDict)
     
-#Will need to use the below to add robustness - if API goes down we will use this to place markers
 #@app.route('/stations')
 def getStationData():
     engine = connectDB()
@@ -46,39 +45,23 @@ def getStationData():
         stations.append(dict(row))
     return  stations#jsonify(stations=stations)
 
-#===============================================================================
-# @app.route("/available/<int:station_id>")
-# def get_stations(station_id):
-#     engine = connectDB()
-#     data = []
-#     rows = engine.execute("SELECT available_bikes from DynamicData where number = {};".format(station_id))
-#     for row in rows:
-#         data.append(dict(row))
-# 
-#     return jsonify(available=data) 
-#===============================================================================
 
-#@app.route('/dydata')
 def getDynamicData():
     apiKey = "c9ec7733fec3fc712434d79c0484b74847a1a37b"
     file = urllib.request.urlopen("https://api.jcdecaux.com/vls/v1/stations?contract=Dublin&apiKey=" + apiKey)
     # https://stackoverflow.com/questions/2835559/parsing-values-from-a-json-file
     str_file = file.read().decode('utf-8')
     standData = json.loads(str_file)
-    return standData
-
-#===============================================================================
-# @app.route("/occupancy/<int:station_id>")
-# def get_occupancy(station_id):
-#     engine = connectDB()
-#     df = pd.read_sql_query("select * from DynamicData where number = %(number)s", engine, params={"number": station_id}) 
-#     #df['last_update_date'] = pd.to_datetime(df.last_update, unit='ms')
-#     df.set_index('last_update', inplace=True)
-#     res = df['available_bikes'].resample('1d').mean()
-#     #res['dt'] = df.index
-#     print(res)
-#     return jsonify(data=json.dumps(list(zip(map(lambda x:x.isoformat(), res.index), res.values)))) 
-#===============================================================================
+    if standData != None:
+        return standData
+    else:
+        engine = connectDB()
+        conn = engine.connect()
+        stations = []
+        rows = conn.execute("SELECT StaticData.number, StaticData.latitude, StaticData.longitude, DynamicData.available_bikes, DynamicData.available_bike_stands,DynamicData.last_update FROM DublinBikesData.StaticData INNER JOIN DublinBikesData.DynamicData ON StaticData.number=DynamicData.number")
+        for row in rows:
+            stations.append(dict(row))
+        return stations
 
 @app.route("/available/<currentStation>")
 def getDayData(currentStation):
