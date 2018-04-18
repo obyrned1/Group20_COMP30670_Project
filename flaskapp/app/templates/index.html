@@ -52,7 +52,7 @@ $(window).load(function() {
 <div id="dropdownHolder">
 <div id="dds">
 <!--<div id="myDropdown">-->
-<select id='myDropdown' onchange = "insertAddInfo(stations[value].value[3]); resetDropdown();populateStationBox(stations[value].value[1], stations[value].value[2])"></select>
+<select id='myDropdown' onchange = "zoom(stations[value].value[4]);insertAddInfo(stations[value].value[3]); resetDropdown();populateStationBox(stations[value].value[1], stations[value].value[2])"></select>
     
 <!--    </div>-->
 <select id="dayOfWeek" onchange="insertAddHourlyInfo(value)" >
@@ -87,10 +87,12 @@ $(window).load(function() {
 <!-- The Map -->
 <script>
     var stations = [];
+    var dublin = {lat: 53.346880, lng: -6.265615,};
+    var map;
     
     function initMap() {
-        var dublin = {lat: 53.346880, lng: -6.265615,};
-        var map = new  google.maps.Map(document.getElementById('map'), {
+        
+        map = new  google.maps.Map(document.getElementById('map'), {
           zoom: 13.6,
           center: dublin
         });
@@ -104,7 +106,7 @@ $(window).load(function() {
         
         stations.push({
             key: {{ Station.number }},
-            value: ['{{ Station.address }}',{{ Station.available_bikes }},{{ Station.available_bike_stands}},{{ Station.number }}]
+            value: ['{{ Station.address }}',{{ Station.available_bikes }},{{ Station.available_bike_stands}},{{ Station.number }}, {lat: {{ Station.position.lat }}, lng: {{ Station.position.lng }},}]
                       });
         
                       
@@ -129,7 +131,8 @@ $(window).load(function() {
           title: stationName,
           available: (availablebikes/totalBikes)
             });
-       
+        
+    
          var infowindow = new google.maps.InfoWindow({});
          marker.addListener('click', function() {
            infowindow.setContent(this.contentString);
@@ -151,6 +154,13 @@ $(window).load(function() {
     
     
         {% endfor %}
+        
+        map.addListener('center_changed', function() {
+            window.setTimeout(function() {  
+                map.setCenter(dublin);
+                map.setZoom(13.6);
+                }, 10000);  
+          });
         
         var icons = {
           green: {
@@ -200,6 +210,7 @@ $(window).load(function() {
         map.controls[google.maps.ControlPosition.RIGHT_TOP].push
         (document.getElementById('legend'));
         
+         
 //        Create station dropdown from station dictionary created above
         stations = stations.sort(function (a, b) {return a.value[0].localeCompare( b.value[0] );
             });
@@ -210,10 +221,13 @@ $(window).load(function() {
             listItem += '<option value='+i+' id='+stations[i].value[3]+'>' + stations[i].value[0] +'</option>';
         }
          
-        document.getElementById('myDropdown').innerHTML = listItem;
+        document.getElementById('myDropdown').innerHTML = listItem; 
         }
-    
-
+        
+        function zoom(locate){
+            map.panTo(locate);
+            map.setZoom(17);  
+        }
 </script>
 <script async defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBRUrdJ4Tz9rLrHrOkwJWpA9QSYNJbWQ0Q&callback=initMap">
