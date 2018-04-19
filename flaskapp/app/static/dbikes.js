@@ -33,6 +33,11 @@ function drawWeeklyChart(data) {
         var options = {
           title: 'Daily Avg. Bike Availability',
           vAxis: {minValue: 0},
+          backgroundColor:{  
+                fill: 'lightgrey',
+                stroke: '#000',
+                strokeWidth: 3
+            },
           legend: { position: 'bottom' },
           animation: {
                 duration: 750,
@@ -149,6 +154,11 @@ function drawHourlyChart(data) {
 
         var options = {
           title: 'Hourly Avg. Bike Availability',
+            backgroundColor:{  
+                fill: 'lightgrey',
+                stroke: '#000',
+                strokeWidth: 3
+            },
           vAxis: {minValue: 0,
                  gridlines: {count:7}},
           legend: { position: 'bottom' },
@@ -173,7 +183,7 @@ function getWeather() {
     
     for (i = 0; i <= 32 ; i+= 8) {
         var date = new Date(data.list[i].dt*1000);
-        var timeStampCon = date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear();
+        var timeStampCon = date.getDate() + '/' + (date.getMonth() + 1);
         var weatherdesc = data.list[i].weather[0].description;
         var icon = data.list[i].weather[0].icon;
         var iconUrl = ("<img src='http://openweathermap.org/img/w/" + icon + ".png'>");
