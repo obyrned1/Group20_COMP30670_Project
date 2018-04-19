@@ -1,7 +1,9 @@
+
+// Function to populate the area below the dropdowns, with station information
 function populateStationBox(bikes, stands) {
-        //Inserts station info into the information box underneath the dropdowns
-        var boxInfo = '<p> No. of Available Bikes : ' + bikes + '</p>' + '<p> No. of Available Stands : ' + stands + '</p>' +
-            
+        
+    //Inserts station info into the information box underneath the dropdowns
+        var boxInfo = '<p> No. of Available Bikes : ' + bikes + '</p>' + '<p> No. of Available Stands : ' + stands + '</p>' +   
         '<div class="container" ><img class="image" style="width:100%;height:60px;" src="../static/leap_card.png">' + 
             '<div class="middle"><div class="text">Leap Card Compatible</div></div>';
         document.getElementById('stationInfoBox').innerHTML = boxInfo;

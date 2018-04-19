@@ -1,7 +1,9 @@
 <html>
 <head>
+    
 <!-- Sets a favicon for the page -->
 <link rel="shortcut icon" href="../static/cycling.png" type="image/x-icon">
+    
 <!-- The below link for Google Fonts was sourced from https://www.w3schools.com/howto/howto_google_fonts.asp-->
 <link href='https://fonts.googleapis.com/css?family=Open%20Sans' rel='stylesheet'>
 <title>{{ Title }}</title>
@@ -12,84 +14,119 @@
 </head>
  
 <script type="text/javascript">
+
 //Plays a GIF while the page gets ready to load in
+    
 $(window).load(function() {
     $(".loader").fadeOut("slow");
 });
+    
 </script>
     
 <body>
+<!--The loader class styles the gif that plays while the whole page is loading-->
 <div class="loader"></div> 
 
+    
+    
 <!--The Map-->
-<div class="scroll">
-    <div id="map"><!-- Place holder for where the map will appear --></div>
+
+    <!-- This is where the map appears-->
+    <div id="map"></div>
+
+    <!-- These two divs design the legend that overlays our map-->
     <div id="legend"><h3>Legend</h3></div>
     <div id="legend2"></div>
-</div>
+    
 
-<div class = "centredetail">
-    <div class = "minorinfo">
-        <!-- Inserts a widget showing all the tweets relating to DublinBikes -->
-        <a class="twitter-timeline"  href="https://twitter.com/hashtag/DublinBikes" data-height = "205" data-widget-id="985166481745948673">#DublinBikes Tweets</a>
-        <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>  
-    </div>
-    <div class = "minorinfo">
-        <h2>Dublin Bikes App</h2>
-        <p>Welcome to the Dublin Bikes app! Here you can find live data and historical usage trends to better plan your trips<br>
-        Please select a marker above or use the dropdowns below</p>
-    </div>
-    <div class = "minorinfo">
-        <div id="dailyfore">
-        <!-- Place holder for where the weather forecasts will appear -->
+    
+<!--Three smaller divs below the map-->
+    
+    <!--The centredetail class defines the properties of the three small divs below the map-->
+    <div class = "centredetail">
+        
+        <!-- Shows a twitter feed for all the tweets relating to DublinBikes -->
+        <div class = "minorinfo">
+            <a class="twitter-timeline"  href="https://twitter.com/hashtag/DublinBikes" data-height = "205" data-widget-id="985166481745948673">#DublinBikes Tweets</a>
+            <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>  
         </div>
+        
+        
+        <!--Presents general info to the user about the app-->
+        <div class = "minorinfo">
+            <p class="info"><b>Dublin Bikes App</b></p>
+            <p class ="info1">Welcome to the Dublin Bikes app! Here you can find live data and historical usage trends to better plan your trips<br>
+            Please select a marker above or use the dropdowns below</p>
+        </div>
+        
+        <!-- Placeholder for where the weather forecasts will appear -->
+        <div class = "minorinfo">
+            <div id="dailyfore">
+            </div>
+        </div>
+        
     </div>
-</div>
     
-<div class = "centredetail">    
-<!--Weekly Chart-->
-<div id = "chart" >
-<!-- Place holder for where the daily charts will appear -->
-</div>  
-<!--The Dropdowns  -->
-<div id="dropdownHolder">
-<div id="dds">
-<!--Dropdown list containing all the stations (populated in JS function) -->
-<select id='myDropdown' onchange = "zoom(stations[value].value[4]);insertAddInfo(stations[value].value[3]); resetDropdown();populateStationBox(stations[value].value[1], stations[value].value[2])"></select>
     
-<!--Dropdown list containing days of the week-->
-<select id="dayOfWeek" onchange="insertAddHourlyInfo(value)" >
-        <option value="" selected disabled hidden>Choose Day</option>
-        <option value =1>Monday</option>
-        <option value =2>Tuesday</option>
-        <option value =3>Wednesday</option>
-        <option value =4>Thursday</option>
-        <option value =5>Friday</option>
-        <option value =6>Saturday</option>
-        <option value =0>Sunday</option>
-</select>
-</div>
-    <div id = "stationInfoBox"><!-- Place holder for where the station info will appear --></div>
-</div> 
-    
-<!--Hourly Chart-->
-<div id = "hourlyChart">
-<!-- Place holder for where the hourly charts will appear -->
-</div>
-</div>
+     
+<!--Three larger divs below the smaller divs above map-->   
 
+    <!--The centredetail class defines the properties of these three larger divs-->
+    <div class = "centredetail"> 
+        
+        <!-- Place holder for where the daily charts will appear -->
+        <div id = "chart" ></div>  
+        
+        <!--The Dropdowns and station info-->
+        <div id="dropdownHolder">
+        
+            <div id="dds">
+                
+                <!--Dropdown list containing all the stations (populated in JS function) -->
+                <select id='myDropdown' onchange = "zoom(stations[value].value[4]);insertAddInfo(stations[value].value[3]); resetDropdown();populateStationBox(stations[value].value[1], stations[value].value[2])"></select>
+
+                <!--Dropdown list containing days of the week-->
+                <select id="dayOfWeek" onchange="insertAddHourlyInfo(value)" >
+                        <option value="" selected disabled hidden>Choose Day</option>
+                        <option value =1>Monday</option>
+                        <option value =2>Tuesday</option>
+                        <option value =3>Wednesday</option>
+                        <option value =4>Thursday</option>
+                        <option value =5>Friday</option>
+                        <option value =6>Saturday</option>
+                        <option value =0>Sunday</option>
+                </select>
+                
+            </div>
+                
+            <!-- Place holder for where the station info will appear -->
+            <div id = "stationInfoBox"></div>
+            
+        </div> 
+
+       <!-- Place holder for where the hourly charts will appear -->
+        <div id = "hourlyChart"></div>
+        
+    </div>
+
+    
+    
 <!-- Footer -->
 <div id="footer">More info: <a href ="http://www.dublinbikes.ie/">DublinBikes.ie</a></div>
 
+    
+   
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
   
 <!-- The Map -->
 <script>
-    var stations = [];
-    var dublin = {lat: 53.346880, lng: -6.265615,};
-    var map;
-    
-    function initMap() {
+var stations = [];
+var dublin = {lat: 53.346880, lng: -6.265615,};
+var map;
+
+// Function to create the map
+function initMap() {
+        
         map = new  google.maps.Map(document.getElementById('map'), {
           zoom: 13.6,
           center: dublin
@@ -99,14 +136,15 @@ $(window).load(function() {
         bikeLayer.setMap(map); // Adds cycling routes as an overlay
         
         {% for Station in Stations %}
-        //A loop to create markers and info windows for every station pulled in the JCDecause API request
+    // A loop to create markers and info windows for every station pulled in the JCDecause API request
         
-        //Inserts a dictionary containing station details into the stations array
+    // Inserts a dictionary containing station details into the stations array
         stations.push({
             key: {{ Station.number }},
             value: ['{{ Station.address }}',{{ Station.available_bikes }},{{ Station.available_bike_stands}},{{ Station.number }}, {lat: {{ Station.position.lat }}, lng: {{ Station.position.lng }},}]
                       });
         
+         
         var location = {lat: {{ Station.position.lat }}, lng: {{ Station.position.lng }},};
         var stationName = ' {{ Station.name }} ';
         var availablebikes = {{ Station.available_bikes }};
@@ -114,13 +152,16 @@ $(window).load(function() {
         var stationNumber = {{ Station.number}};
         var address = ' {{ Station.address }} ';
         var totalBikes = availablebikes + availablebikestands;
+        
+    // infoString contains all information that populates the information boxes, when markers are clicked
         var infoString = 
             '<h4>' + address + '</h4>'+
             '<p> No. of Available Bikes : ' + availablebikes + '</p>' + 
             '<p> No. of Available Stands : ' + availablebikestands + '</p>' +
             '<p class="button button5" onclick="insertAddInfo(' + stationNumber + ');populateStationBox(' + availablebikes + ',' + availablebikestands + '); resetDropdown();resetStation('+ stationNumber +')">More Information</p>'
             ;
-        //Inserts a marker for each station on the map
+    
+    // Inserts a marker for each station on the map
         var marker = new google.maps.Marker({
           position: location,
           draggable: false,
@@ -130,13 +171,14 @@ $(window).load(function() {
           available: (availablebikes/totalBikes)
             });
         
-        //Inserts an infowindow for each marker containing that stations details 
+    // Inserts an infowindow for each marker containing that stations details 
          var infowindow = new google.maps.InfoWindow({});
          marker.addListener('click', function() {
            infowindow.setContent(this.contentString);
            infowindow.open(map, this);
         });
-        //Colour the markers based on the percentage bikes available
+    
+    // Colour the markers based on the percentage bikes available
         if (  marker.available >= 0.75) {
                 marker.setIcon('http://maps.google.com/mapfiles/ms/icons/green-dot.png');
         }
@@ -151,13 +193,17 @@ $(window).load(function() {
             }
     
         {% endfor %}
-        // Resets the centre of the map after a time period
+        
+        
+    // Resets the centre of the map after a time period
         map.addListener('center_changed', function() {
             window.setTimeout(function() {  
                 map.setCenter(dublin);
                 map.setZoom(13.6);
                 }, 100000);  
           });
+     
+    // The below icons are used for the legend
         var icons = {
           green: {
             name: '> 75% Bikes Available',
@@ -176,13 +222,15 @@ $(window).load(function() {
             icon: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png'
           }
         };
+         
         var icons2 = {
           trails: {
             name: '',
             icon: "../static/bike_trails.png"
           }
         };
-        //Creates a legend item for each type of marker (e.g. green, red)
+         
+    // Creates a legend item for each type of marker (e.g. green, red)
         var legend = document.getElementById('legend');
         for (var key in icons) {
           var type = icons[key];
@@ -192,7 +240,8 @@ $(window).load(function() {
           div.innerHTML = '<img src="' + icon + '"height="22" width="22"> ' + name;
           legend.appendChild(div);
         }
-        //Creates a legend item for the biketrails
+         
+    // Creates a legend item for the biketrails
         var legend2 = document.getElementById('legend');
         for (var key in icons2) {
           var type = icons2[key];
@@ -202,30 +251,40 @@ $(window).load(function() {
           div.innerHTML = '<img src="' + icon + '"> ' + name;
           legend.appendChild(div);
         }
-        //Inserts the legend into the map
+         
+    // Inserts the legend into the map
         map.controls[google.maps.ControlPosition.RIGHT_TOP].push
         (document.getElementById('legend'));
         
-         //Put the stations in stations array in alphabetical order for the dropdown
+    // Put the stations in stations array in alphabetical order for the dropdown
         stations = stations.sort(function (a, b) {return a.value[0].localeCompare( b.value[0] );
             });
+        
+    // Creates the dropdown for selection o fstation, giving a value to each option
         var listItem = '<option value="" selected disabled hidden>Choose Station</option>'; 
-        //creates an option for each station with an value and id which can be used to call other functions
+        
+        // Creates an option for each station with an value and id which can be used to call other functions
         for(i=0; i < stations.length; i++){
             listItem += '<option class="hello" value='+i+' id='+stations[i].value[3]+'>' + stations[i].value[0] +'</option>';
         }
         
+    // Calls the html id that the dropdown will populate
         document.getElementById('myDropdown').innerHTML = listItem; 
         }
-        //Function to zoom in on the selected stations location
+    
+    // Function to zoom in on the selected stations location
     function zoom(locate){
         map.panTo(locate);
         map.setZoom(17);  
     }
 </script>
+    
+    
 <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBRUrdJ4Tz9rLrHrOkwJWpA9QSYNJbWQ0Q&callback=initMap">
     //Map API Key
 </script>
+    
+    
 <!-- Weather API --> 
 <script type="text/javascript">
     $( document ).ready(function() {
