@@ -34,7 +34,7 @@ function drawWeeklyChart(data) {
           title: 'Daily Avg. Bike Availability',
           vAxis: {minValue: 0},
           backgroundColor:{  
-                fill: 'lightgrey',
+                fill: 'ghostwhite',
                 stroke: '#000',
                 strokeWidth: 3
             },
@@ -155,7 +155,7 @@ function drawHourlyChart(data) {
         var options = {
           title: 'Hourly Avg. Bike Availability',
             backgroundColor:{  
-                fill: 'lightgrey',
+                fill: 'ghostwhite',
                 stroke: '#000',
                 strokeWidth: 3
             },
