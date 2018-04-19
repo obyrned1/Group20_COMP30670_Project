@@ -83,7 +83,7 @@ $(window).load(function() {
             <div id="dds">
                 
                 <!--Dropdown list containing all the stations (populated in JS function) -->
-                <select id='myDropdown' onchange = "zoom(stations[value].value[4]);insertAddInfo(stations[value].value[3]); resetDropdown();populateStationBox(stations[value].value[1], stations[value].value[2])"></select>
+                <select id='myDropdown' onchange = "zoom(stations[value].value[4]);insertAddInfo(stations[value].value[3]); resetDropdown();populateStationBox(stations[value].value[1], stations[value].value[2], stations[value].value[5])"></select>
 
                 <!--Dropdown list containing days of the week-->
                 <select id="dayOfWeek" onchange="insertAddHourlyInfo(value)" >
@@ -137,16 +137,28 @@ function initMap() {
         
         {% for Station in Stations %}
     // A loop to create markers and info windows for every station pulled in the JCDecause API request
+        var banking = '{{ Station.banking}}';
+        var bankInfo= "";
+        if (banking === 'True')
+            bankInfo += 'Yes';
+        else
+            bankInfo += 'No';
+        var bankValue = 0;
+         if (bankInfo === 'Yes')
+             bankValue = 1;
+        
+        
         
     // Inserts a dictionary containing station details into the stations array
         stations.push({
             key: {{ Station.number }},
-            value: ['{{ Station.address }}',{{ Station.available_bikes }},{{ Station.available_bike_stands}},{{ Station.number }}, {lat: {{ Station.position.lat }}, lng: {{ Station.position.lng }},}]
+            value: ['{{ Station.address }}',{{ Station.available_bikes }},{{ Station.available_bike_stands}},{{ Station.number }}, {lat: {{ Station.position.lat }}, lng: {{ Station.position.lng }},}, bankValue]
                       });
         
          
         var location = {lat: {{ Station.position.lat }}, lng: {{ Station.position.lng }},};
         var stationName = ' {{ Station.name }} ';
+        
         var availablebikes = {{ Station.available_bikes }};
         var availablebikestands = {{ Station.available_bike_stands}};
         var stationNumber = {{ Station.number}};
@@ -158,7 +170,9 @@ function initMap() {
             '<h4>' + address + '</h4>'+
             '<p> No. of Available Bikes : ' + availablebikes + '</p>' + 
             '<p> No. of Available Stands : ' + availablebikestands + '</p>' +
-            '<p class="button button5" onclick="insertAddInfo(' + stationNumber + ');populateStationBox(' + availablebikes + ',' + availablebikestands + '); resetDropdown();resetStation('+ stationNumber +')">More Information</p>'
+            '<p> Banking Available: ' + bankInfo + '</p>' +
+            '<p> Leap Card Compatible: Yes </p>' +
+            '<p class="button button5" onclick="insertAddInfo(' + stationNumber + ');populateStationBox(' + availablebikes + ',' + availablebikestands + ','+ bankValue +'); resetDropdown();resetStation('+ stationNumber +')">More Information</p>'
             ;
     
     // Inserts a marker for each station on the map

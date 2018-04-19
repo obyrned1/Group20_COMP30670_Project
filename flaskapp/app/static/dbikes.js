@@ -1,9 +1,12 @@
 
 // Function to populate the area below the dropdowns, with station information
-function populateStationBox(bikes, stands) {
-        
+function populateStationBox(bikes, stands, banking) {
+        var bankInfo = 'No';
+        if (banking === 1)
+            bankInfo='Yes';
     //Inserts station info into the information box underneath the dropdowns
-        var boxInfo = '<p> No. of Available Bikes : ' + bikes + '</p>' + '<p> No. of Available Stands : ' + stands + '</p>' +   
+        var boxInfo = '<p> No. of Available Bikes : ' + bikes + '</p>' + '<p> No. of Available Stands : ' + stands + '</p>' +
+            '<p> Banking Available: ' + bankInfo + '</p>' +
         '<div class="container" ><img class="image" style="width:100%;height:60px;" src="../static/leap_card.png">' + 
             '<div class="middle"><div class="text">Leap Card Compatible</div></div>';
         document.getElementById('stationInfoBox').innerHTML = boxInfo;
@@ -194,6 +197,5 @@ function getWeather() {
           
     }
     document.getElementById("dailyfore").innerHTML = breakdown;
-    document.getElementById("daydesc").innerHTML = dailydesc;
     })
 }
