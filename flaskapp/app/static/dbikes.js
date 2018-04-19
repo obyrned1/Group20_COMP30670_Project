@@ -8,11 +8,17 @@ function populateStationBox(bikes, stands) {
             '<div class="middle"><div class="text">Leap Card Compatible</div></div>';
         document.getElementById('stationInfoBox').innerHTML = boxInfo;
 }
-    
+
+
+
+// Function to create a chart based on the average daily bikes for each day for a selected station   
 function drawWeeklyChart(data) {
-        //Function to create a chart based on the average daily bikes for each day for a selected station
+        
+    // Call the div that the charts are going to populate, and fill it with a gif as the chart loads
         var loading = ("<img src='../static/bike.gif' style='height:300px;width:100%;'>");
         document.getElementById('chart').innerHTML = loading;
+    
+    // Creates the weekly charts with a blue line for average and a red for average when its raining
         var data = google.visualization.arrayToDataTable([
           ['Day', 'No. of Bikes', 'No. of Bikes (Raining)'],
           ['Monday', Math.round(data[1]["AVG(available_bikes)"]), Math.ceil(data[1]["AVG(available_bikes)"]*1.04)],
@@ -30,7 +36,7 @@ function drawWeeklyChart(data) {
           legend: { position: 'bottom' },
           animation: {
                 duration: 750,
-                startup: true //This is the new option
+                startup: true 
             }
         };
 
@@ -38,20 +44,24 @@ function drawWeeklyChart(data) {
         chart.draw(data, options);
 }
 
+
+//Resets the station in the dropdown to match the station selected on the map
 function resetStation(station){
-        //Resets the station in the dropdown to match the station selected on the map
         document.getElementById("myDropdown").value=document.getElementById(station).value;
 }
 // some parts adapted from: https://stackoverflow.com/questions/30012913/google-map-api-v3-add-multiple-infowindows   
    
+
+//Calls the createChart method based on the station selected
 function insertAddInfo(currentStation){
-        //Calls the createChart method based on the station selected
         chosenStation = currentStation;
         createChart(currentStation);
 }    
         
+
+//Pulls in data from the database relating to the station selected and calls the drawWeekly function to draw a chart with that information
 function createChart(currentStation){
-        //Pulls in data from the database relating to the station selected and calls the drawWeekly function to draw a chart with that information
+        
         var xmlhttp = new XMLHttpRequest();
         var url = "/available/" + currentStation;
         
@@ -69,21 +79,25 @@ function createChart(currentStation){
         xmlhttp.send();
 }
 
+
+//Resets the dropdown for day of week to the current day and loads an hourly chart for that day for the selected station
 function resetDropdown() {
-        //Resets the dropdown for day of week to the current day and loads an hourly chart for that day for the selected station
         var d = new Date();
         var n = d.getDay();
         document.getElementById("dayOfWeek").value=n;
         createHourlyChart(chosenStation, n);
 }   
 
+
+//Calls the createHourlyChart based on the day of the week selected
 function insertAddHourlyInfo(day){
-        //Calls the createHourlyChart based on the day of the week selected
         createHourlyChart(chosenStation,day);
 }; 
 
+
+//Pulls in data from the database relating to the station and day selected and calls the drawHourly function to draw a chart with that information
 function createHourlyChart(currentStation,day){
-        //Pulls in data from the database relating to the station and day selected and calls the drawHourly function to draw a chart with that information
+    
         var xmlhttp = new XMLHttpRequest();
         var url = "/hourly/" + currentStation + "/" + day;
         
@@ -101,10 +115,15 @@ function createHourlyChart(currentStation,day){
         xmlhttp.send();
 };
 
+
+//Function to create a chart based on the average hourly bikes for each hour for a selected station on the selected day
 function drawHourlyChart(data) {
-        //Function to create a chart based on the average hourly bikes for each hour for a selected station on the selected day
+        
+    // Call the div that the charts are going to populate, and fill it with a gif as the chart loads
         var loading2 = ("<img src='../static/bike.gif' style='height:300px;width:100%;'>");
         document.getElementById('hourlyChart').innerHTML = loading2;
+    
+    // Creates the weekly charts with a blue line for average and a red for average when its raining
         var data = google.visualization.arrayToDataTable([
              ['Day', 'No. of Bikes', 'No. of Bikes (Raining)'],
              ['5am', Math.round(data[0]["AVG(available_bikes)"]), Math.ceil(data[0]["AVG(available_bikes)"] * 1.04)],
@@ -135,7 +154,7 @@ function drawHourlyChart(data) {
           legend: { position: 'bottom' },
           animation: {
                 duration: 750,
-                startup: true //This is the new option
+                startup: true 
             }                
         };
 
@@ -143,15 +162,15 @@ function drawHourlyChart(data) {
         chart.draw(data, options);
 }
 
+
+//call weather API from openweathermap
 function getWeather() {
-    //call weather API from openweathermap
     var weatherdata;
     $.getJSON("http://api.openweathermap.org/data/2.5/forecast?q=Dublin&id=7778677&APPID=2abe029b7b8d40e80d1ed447f4522f0d",function(data){
 
     var dailydesc = "Daily Weather Forecast";
     var breakdown = "";
     
-    //code for this 'for' loop was adapted from practical 5, exercise 5//
     for (i = 0; i <= 32 ; i+= 8) {
         var date = new Date(data.list[i].dt*1000);
         var timeStampCon = date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear();
@@ -159,7 +178,7 @@ function getWeather() {
         var icon = data.list[i].weather[0].icon;
         var iconUrl = ("<img src='http://openweathermap.org/img/w/" + icon + ".png'>");
         
-        //code for the below table formation adapted from practical 6, exercise 4//
+    // Puts the 5 day-forecast in a table
         breakdown += "<table id = 'dailytable'><tr><td>" + timeStampCon +"</tr></td><tr><td>" + iconUrl + "</tr></td><tr><td class = 'capitalisedesc'>" + weatherdesc + "</tr></td>";
         breakdown += "</table>"
           
