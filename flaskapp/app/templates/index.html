@@ -22,9 +22,11 @@ $(window).load(function() {
 <div class="loader"></div> 
 
 <!--The Map-->
-<div id="map"><!-- Place holder for where the map will appear --></div>
-<div id="legend"><h3>Legend</h3></div>
-<div id="legend2"></div>
+<div class="scroll">
+    <div id="map"><!-- Place holder for where the map will appear --></div>
+    <div id="legend"><h3>Legend</h3></div>
+    <div id="legend2"></div>
+</div>
 
 <div class = "centredetail">
     <div class = "minorinfo">
@@ -154,7 +156,7 @@ $(window).load(function() {
             window.setTimeout(function() {  
                 map.setCenter(dublin);
                 map.setZoom(13.6);
-                }, 10000);  
+                }, 100000);  
           });
         var icons = {
           green: {

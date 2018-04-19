@@ -1,12 +1,15 @@
 function populateStationBox(bikes, stands) {
         //Inserts station info into the information box underneath the dropdowns
-        var boxInfo = '<p> No. of Available Bikes : ' + bikes + '</p>' + '<p> No. of Available Stands : ' + stands + '</p>' +'<p> Credit Card Terminal : Yes</p>' + '<p> Leap Card Accepted : Yes';
+        var boxInfo = '<p> No. of Available Bikes : ' + bikes + '</p>' + '<p> No. of Available Stands : ' + stands + '</p>' +
+            
+        '<div class="container" ><img class="image" style="width:100%;height:60px;" src="../static/leap_card.png">' + 
+            '<div class="middle"><div class="text">Leap Card Compatible</div></div>';
         document.getElementById('stationInfoBox').innerHTML = boxInfo;
 }
     
 function drawWeeklyChart(data) {
         //Function to create a chart based on the average daily bikes for each day for a selected station
-        var loading = ("<img src='../static/BikeBreaking.gif' style='height:300px;width:100%;'>");
+        var loading = ("<img src='../static/bike.gif' style='height:300px;width:100%;'>");
         document.getElementById('chart').innerHTML = loading;
         var data = google.visualization.arrayToDataTable([
           ['Day', 'No. of Bikes', 'No. of Bikes (Raining)'],
@@ -98,7 +101,7 @@ function createHourlyChart(currentStation,day){
 
 function drawHourlyChart(data) {
         //Function to create a chart based on the average hourly bikes for each hour for a selected station on the selected day
-        var loading2 = ("<img src='../static/BikeBreaking.gif' style='height:300px;width:100%;'>");
+        var loading2 = ("<img src='../static/bike.gif' style='height:300px;width:100%;'>");
         document.getElementById('hourlyChart').innerHTML = loading2;
         var data = google.visualization.arrayToDataTable([
              ['Day', 'No. of Bikes', 'No. of Bikes (Raining)'],
