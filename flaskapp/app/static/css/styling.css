@@ -50,6 +50,10 @@ body{
     text-align: center;
 }
 
+#timestamp {
+    font-weight: bold;
+}
+
 #dds{
     float: left;
     width: 100%;
@@ -118,20 +122,22 @@ select {
 }
 
 #footer {
-    text-align: right;
-    padding: 5px;
+    text-align: center;
     border-top: solid;
 }
 
 #footer a {
-    color: darkgreen;
+    color: whitesmoke;
+    text-decoration: none;
 }
 
 #footer a:hover {
-    background-color: white;
+    background-color: lightslategrey;
 }
 
+
 .minorinfo {
+    text-align: center;
     width: 25%;
     height: 205px;
     display: inline-block;

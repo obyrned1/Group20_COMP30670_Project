@@ -6,7 +6,7 @@ function populateStationBox(bikes, stands, banking) {
             bankInfo='Yes';
     //Inserts station info into the information box underneath the dropdowns
         var boxInfo = '<p> No. of Available Bikes : ' + bikes + '</p>' + '<p> No. of Available Stands : ' + stands + '</p>' +
-            '<p> Banking Available: ' + bankInfo + '</p>' +
+            '<p> Credit Card Accepted: ' + bankInfo + '</p>' +
         '<div class="container" ><img class="image" style="width:100%;height:60px;" src="../static/leap_card.png">' + 
             '<div class="middle"><div class="text">Leap Card Compatible</div></div>';
         document.getElementById('stationInfoBox').innerHTML = boxInfo;
@@ -144,8 +144,8 @@ function drawHourlyChart(data) {
              ['12pm', Math.round(data[7]["AVG(available_bikes)"]), Math.ceil(data[7]["AVG(available_bikes)"] * 1.04)],
              ['1pm', Math.round(data[8]["AVG(available_bikes)"]), Math.ceil(data[8]["AVG(available_bikes)"] * 1.04)],
              ['2pm', Math.round(data[9]["AVG(available_bikes)"]), Math.ceil(data[9]["AVG(available_bikes)"] * 1.04)],
-             ['3am', Math.round(data[10]["AVG(available_bikes)"]), Math.ceil(data[10]["AVG(available_bikes)"] * 1.04)],
-             ['4m', Math.round(data[11]["AVG(available_bikes)"]), Math.ceil(data[11]["AVG(available_bikes)"] * 1.04)],
+             ['3pm', Math.round(data[10]["AVG(available_bikes)"]), Math.ceil(data[10]["AVG(available_bikes)"] * 1.04)],
+             ['4pm', Math.round(data[11]["AVG(available_bikes)"]), Math.ceil(data[11]["AVG(available_bikes)"] * 1.04)],
              ['5pm', Math.round(data[12]["AVG(available_bikes)"]), Math.ceil(data[12]["AVG(available_bikes)"] * 1.04)],
              ['6pm', Math.round(data[13]["AVG(available_bikes)"]), Math.ceil(data[13]["AVG(available_bikes)"] * 1.04)],
              ['7pm', Math.round(data[14]["AVG(available_bikes)"]), Math.ceil(data[14]["AVG(available_bikes)"] * 1.04)],
@@ -186,12 +186,12 @@ function getWeather() {
     for (i = 0; i <= 32 ; i+= 8) {
         var date = new Date(data.list[i].dt*1000);
         var timeStampCon = date.getDate() + '/' + (date.getMonth() + 1);
-        var weatherdesc = data.list[i].weather[0].description;
+        var temp = Math.round(data.list[i].main.temp - 273.15);
         var icon = data.list[i].weather[0].icon;
         var iconUrl = ("<img src='http://openweathermap.org/img/w/" + icon + ".png'>");
         
     // Puts the 5 day-forecast in a table
-        breakdown += "<table id = 'dailytable'><tr><td>" + timeStampCon +"</tr></td><tr><td>" + iconUrl + "</tr></td><tr><td class = 'capitalisedesc'>" + weatherdesc + "</tr></td>";
+        breakdown += "<table id = 'dailytable'><tr><td id = 'timestamp'>" + timeStampCon +"</tr></td><tr><td>" + iconUrl + "</tr></td><tr><td>" + temp + "°C</tr></td>";
         breakdown += "</table>"
           
     }

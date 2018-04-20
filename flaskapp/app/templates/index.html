@@ -112,8 +112,9 @@ $(window).load(function() {
     
     
 <!-- Footer -->
-<div id="footer">More info: <a href ="http://www.dublinbikes.ie/">DublinBikes.ie</a></div>
-
+<div id="footer">
+    <p><a href ="http://www.dublinbikes.ie/">DublinBikes</a> | <a href = "https://www.just-eat.ie/">JustEat</a> | <a href = "https://www2.metweb.ie/">Met Éireann</a></p>
+    </div>  
     
    
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
@@ -170,7 +171,7 @@ function initMap() {
             '<h4>' + address + '</h4>'+
             '<p> No. of Available Bikes : ' + availablebikes + '</p>' + 
             '<p> No. of Available Stands : ' + availablebikestands + '</p>' +
-            '<p> Banking Available: ' + bankInfo + '</p>' +
+            '<p> Credit Card Accepted: ' + bankInfo + '</p>' +
             '<p> Leap Card Compatible: Yes </p>' +
             '<p class="button button5" onclick="insertAddInfo(' + stationNumber + ');populateStationBox(' + availablebikes + ',' + availablebikestands + ','+ bankValue +'); resetDropdown();resetStation('+ stationNumber +')">More Information</p>'
             ;
@@ -208,14 +209,6 @@ function initMap() {
     
         {% endfor %}
         
-        
-    // Resets the centre of the map after a time period
-//        map.addListener('center_changed', function() {
-//            window.setTimeout(function() {  
-//                map.setCenter(dublin);
-//                map.setZoom(13.6);
-//                }, 100000);  
-//          });
      
     // The below icons are used for the legend
         var icons = {
