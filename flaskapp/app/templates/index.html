@@ -1,28 +1,31 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    
+<meta charset="UTF-8">
+
 <!-- Sets a favicon for the page -->
 <link rel="shortcut icon" href="../static/cycling.png" type="image/x-icon">
     
 <!-- The below link for Google Fonts was sourced from https://www.w3schools.com/howto/howto_google_fonts.asp-->
 <link href='https://fonts.googleapis.com/css?family=Open%20Sans' rel='stylesheet'>
 <title>{{ Title }}</title>
-<link rel="stylesheet" href="{{ url_for('static', filename='css/styling.css') }}">
+<link rel="stylesheet" href="../static/css/styling.css">
 <script src = "http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.6.2.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 <script src="../static/dbikes.js"></script>
-</head>
+
  
-<script type="text/javascript">
+<script>
 
 //Plays a GIF while the page gets ready to load in
     
 $(window).load(function() {
     $(".loader").fadeOut("slow");
 });
-    
+
 </script>
-    
+
+</head>
 <body>
 <!--The loader class styles the gif that plays while the whole page is loading-->
 <div class="loader"></div> 
@@ -47,7 +50,7 @@ $(window).load(function() {
         
         <!-- Shows a twitter feed for all the tweets relating to DublinBikes -->
         <div class = "minorinfo">
-            <a class="twitter-timeline"  href="https://twitter.com/hashtag/DublinBikes" font-family="Arial, sans-serif" theme = 'dark' data-height = "205" data-link-color="#1DA1F2" data-chrome = transparent data-widget-id="985166481745948673">#DublinBikes Tweets</a>
+            <a class="twitter-timeline"  href="https://twitter.com/hashtag/DublinBikes" data-height = "200" data-link-color="#1DA1F2" data-chrome = transparent data-widget-id="985166481745948673">#DublinBikes Tweets</a>
             <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>  
         </div>
         
@@ -117,7 +120,7 @@ $(window).load(function() {
     </div>  
     
    
-<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script src="https://www.gstatic.com/charts/loader.js"></script>
   
 <!-- The Map -->
 <script>
@@ -293,7 +296,7 @@ function initMap() {
     
     
 <!-- Weather API --> 
-<script type="text/javascript">
+<script>
     $( document ).ready(function() {
         console.log( "document loaded" );
         getWeather();
