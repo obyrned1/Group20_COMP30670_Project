@@ -5,8 +5,13 @@
     background-repeat: no-repeat;
     background-size: cover;
 }
-h1 {
-    color: black;
+h2 {
+    color: #1DA1F2;
+    text-align: center;
+}
+
+h3 {
+    color: #1DA1F2;
     text-align: center;
 }
 
@@ -43,8 +48,6 @@ body{
 #dailytable {
     display: inline-block;
     width:20%;
-    padding-top: 25;
-    padding-bottom: 25;
     overflow: auto;
     text-align: center;
 }
@@ -55,6 +58,7 @@ body{
     margin-left: auto;
     margin-top: 30px;
     margin-right: auto;
+    margin-bottom: 10px;
     text-align: center;   
 }
 
@@ -91,7 +95,7 @@ body{
 /* The below code adapted from https://www.proy.info/style-select-dropdown-using-css/ */
 select {
    display: inline-block;
-   padding: 10px 70px 10px 13px;
+   padding: 10px 40px 10px 13px;
    max-width: 100%;
    height: auto;
    border: 1px solid #e3e3e3;
@@ -142,11 +146,6 @@ select {
     background-color: #DFDCE3;
 }
 
-.info{
-    font-size: 16pt;
-    margin-left: 30px;
-    margin-right: 30px;
-}
 .info1{
     margin-left: 30px;
     margin-right: 30px;
@@ -155,8 +154,12 @@ select {
 
 #stationInfoBox {
     text-align: center;
-    margin-top: 70px;
-    padding: 30px;
+    margin-top: 60px;
+    padding: 40px;
+}
+
+#stationInfoBox p{
+    margin: 5px;
 }
 
 .twitter-timeline {

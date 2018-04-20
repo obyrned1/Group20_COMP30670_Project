@@ -47,14 +47,14 @@ $(window).load(function() {
         
         <!-- Shows a twitter feed for all the tweets relating to DublinBikes -->
         <div class = "minorinfo">
-            <a class="twitter-timeline"  href="https://twitter.com/hashtag/DublinBikes" data-height = "205" data-chrome = transparent data-widget-id="985166481745948673">#DublinBikes Tweets</a>
+            <a class="twitter-timeline"  href="https://twitter.com/hashtag/DublinBikes" font-family="Arial, sans-serif" theme = 'dark' data-height = "205" data-link-color="#1DA1F2" data-chrome = transparent data-widget-id="985166481745948673">#DublinBikes Tweets</a>
             <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>  
         </div>
         
         
         <!--Presents general info to the user about the app-->
         <div class = "minorinfo">
-            <p class="info"><b>Dublin Bikes App</b></p>
+            <h2><b>Dublin Bikes App</b></h2>
             <p class ="info1">Welcome to the Dublin Bikes app! Here you can find live data and historical usage trends to better plan your trips<br>
             Please select a marker above or use the dropdowns below</p>
         </div>
@@ -306,6 +306,5 @@ function initMap() {
         getWeather();
     });
 </script>
-
 </body>
 </html>

@@ -181,8 +181,7 @@ function getWeather() {
     var weatherdata;
     $.getJSON("http://api.openweathermap.org/data/2.5/forecast?q=Dublin&id=7778677&APPID=2abe029b7b8d40e80d1ed447f4522f0d",function(data){
 
-    var dailydesc = "Daily Weather Forecast";
-    var breakdown = "";
+    var breakdown = "<h3>Dublin 5-Day Weather Forecast</h3>";
     
     for (i = 0; i <= 32 ; i+= 8) {
         var date = new Date(data.list[i].dt*1000);
