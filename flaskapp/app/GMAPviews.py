@@ -40,8 +40,8 @@ def index():
     
     returnDict = {}
     returnDict['Title'] = 'Dublin Bikes'
-#   returnDict['Stations'] = getDynamicData()
-    returnDict['Static'] = getStationData()
+    returnDict['Stations'] = getDynamicData()
+#   returnDict['Static'] = getStationData()
     return render_template("index.html", **returnDict)
     
     
