@@ -30,7 +30,7 @@ def connectDB():
 @app.route('/')
 def index():
     returnDict = {}
-    returnDict['Title'] = 'Dublin Bike Planner'
+    returnDict['Title'] = 'Dublin Bikes'
     returnDict['Stations'] = getDynamicData()
     returnDict['Static'] = getStationData()
     return render_template("index.html", **returnDict)
@@ -86,15 +86,4 @@ def getHourlyData(currentStation, day):
         for row in rows:
             hourlyData.append(dict(row))
     return jsonify(hourlyData)
-
-@app.route("/hourly/<currentStation>/<day>/<hour>")
-def getPrediction(currentStation, day, hour):
-    engine = connectDB()
-    predictData = []
-    conn = engine.connect()
-    string = "SELECT ROUND(AVG(available_bikes)) FROM DynamicData WHERE number =  {} AND EXTRACT(HOUR FROM last_update) = {} AND WEEKDAY(last_update)= {};".format(currentStation, hour ,day)
-    rows = conn.execute(string)
-    for row in rows:
-        predictData.append(dict(row))
-    return jsonify(predictData)
 
