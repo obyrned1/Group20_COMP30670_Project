@@ -2,31 +2,18 @@
 DublinBikesGroup20
 ==================
 
-
-.. image:: https://img.shields.io/pypi/v/dublinbikesgroup20.svg
-        :target: https://pypi.python.org/pypi/dublinbikesgroup20
-
-.. image:: https://img.shields.io/travis/oleathlc/dublinbikesgroup20.svg
-        :target: https://travis-ci.org/oleathlc/dublinbikesgroup20
-
-.. image:: https://readthedocs.org/projects/dublinbikesgroup20/badge/?version=latest
-        :target: https://dublinbikesgroup20.readthedocs.io/en/latest/?badge=latest
-        :alt: Documentation Status
-
-
-
-
 COMP30670 Project
-
-
-* Free software: MIT license
-* Documentation: https://dublinbikesgroup20.readthedocs.io.
-
 
 Features
 --------
 
-* TODO
+This application is for the users of the Dublin Bikes Service, which is a bike rental scheme in Dublin, Ireland.
+
+In order to run this application, do the following:
+
+	- Enter http://18.221.37.101:5000/ into your internet browser and enjoy. 
+
+
 
 Credits
 -------
